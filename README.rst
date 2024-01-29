@@ -3,7 +3,7 @@ Jira Assistant - Connect Excel with Jira
 
 |ProjectLogo|
 
-.. |ProjectLogo| image:: https://raw.githubusercontent.com/SharryXu/jira-assistant/main/logo.png
+.. |ProjectLogo| image:: https://raw.githubusercontent.com/jira-assistant/jira-assistant/main/logo.png
     :target: https://github.com/jira-assistant/jira-assistant
     :alt: Jira Assistant
 
