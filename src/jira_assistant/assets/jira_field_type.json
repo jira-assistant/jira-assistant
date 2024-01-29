@@ -1,0 +1,323 @@
+[
+    {
+        "type": "any",
+        "isBasic": true
+    },
+    {
+        "type": "date",
+        "isBasic": true
+    },
+    {
+        "type": "datetime",
+        "isBasic": true
+    },
+    {
+        "type": "string",
+        "isBasic": true
+    },
+    {
+        "type": "number",
+        "isBasic": true
+    },
+    {
+        "type": "emailAddress",
+        "isBasic": true
+    },
+    {
+        "type": "user",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "emailAddress",
+                "type": "string"
+            },
+            {
+                "name": "displayName",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "securitylevel",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "priority",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "watches",
+        "properties": [
+            {
+                "name": "watchCount",
+                "type": "number"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "comments-page",
+        "properties": [
+            {
+                "name": "comments",
+                "arrayItemType": "comment"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "comment",
+        "properties": [
+            {
+                "name": "author",
+                "type": "author"
+            },
+            {
+                "name": "id",
+                "type": "string"
+            },
+            {
+                "name": "body",
+                "type": "string"
+            },
+            {
+                "name": "created",
+                "type": "datetime"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "author",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "emailAddress",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "status",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "iconUrl",
+                "type": "string"
+            },
+            {
+                "name": "statusCategory",
+                "type": "statusCategory"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "statusCategory",
+        "properties": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "colorName",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "progress",
+        "properties": [
+            {
+                "name": "progress",
+                "type": "number"
+            },
+            {
+                "name": "total",
+                "type": "number"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "timetracking",
+        "properties": [
+            {
+                "name": "timeSpent",
+                "type": "string"
+            },
+            {
+                "name": "timeSpentSeconds",
+                "type": "number"
+            },
+            {
+                "name": "remainingEstimate",
+                "type": "string"
+            },
+            {
+                "name": "remainingEstimateSeconds",
+                "type": "number"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "option",
+        "properties": [
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "resolution",
+        "properties": [
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "issuetype",
+        "properties": [
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "id",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "project",
+        "properties": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "projectTypeKey",
+                "type": "string"
+            },
+            {
+                "name": "projectCategory",
+                "type": "projectCategory"
+            },
+            {
+                "name": "id",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "projectCategory",
+        "properties": [
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "issuelinks",
+        "arrayItemType": "issuelink",
+        "isBasic": false
+    },
+    {
+        "type": "issuelink",
+        "properties": [
+            {
+                "name": "id",
+                "type": "string"
+            }
+        ],
+        "isBasic": false
+    },
+    {
+        "type": "version",
+        "properties": [
+            {
+                "name": "name", "type": "string"
+            },
+            {
+                "name": "released", "type": "bool"
+            },
+            {
+                "name": "archived", "type": "bool"
+            },
+            {
+                "name": "releaseDate", "type": "date"
+            },
+            {
+                "name": "startDate", "type": "date"
+            },
+            {
+                "name": "userStartDate", "type": "date"
+            },
+            {
+                "name": "userReleaseDate", "type": "date"
+            },
+            {
+                "name": "projectId", "type": "number"
+            }
+        ],
+        "isBasic": false
+    }
+]

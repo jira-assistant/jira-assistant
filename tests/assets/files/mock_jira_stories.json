@@ -1,0 +1,995 @@
+{
+    "sd-123": {
+        "status": "CLOSED",
+        "domain": "A"
+    },
+    "a-1": {
+        "status": "CLOSED",
+        "domain": "A",
+        "originalStoryId": "d-1"
+    },
+    "d-1": {
+        "status": "PENDING",
+        "domain": "d"
+    },
+    "a-2": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-3": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-4": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "b-1": {
+        "status": "PENDING",
+        "domain": "B"
+    },
+    "b-2": {
+        "status": "PENDING",
+        "domain": "B"
+    },
+    "c-1": {
+        "status": "PENDING",
+        "domain": "C"
+    },
+    "c-2": {
+        "status": "PENDING",
+        "domain": "C"
+    },
+    "a-5": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-6": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-7": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-8": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-9": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-10": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-11": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-12": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-13": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-14": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-15": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-16": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-17": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-18": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-19": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-20": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-21": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-22": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-23": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-24": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-25": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-26": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-27": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-28": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-29": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-30": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-31": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-32": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-33": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-34": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-35": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-36": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-37": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-38": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-39": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-40": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-41": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-42": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-43": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-44": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-45": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-46": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-47": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-48": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-49": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-50": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-51": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-52": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-53": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-54": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-55": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-56": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-57": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-58": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-59": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-60": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-61": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-62": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-63": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-64": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-65": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-66": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-67": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-68": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-69": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-70": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-71": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-72": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-73": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-74": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-75": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-76": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-77": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-78": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-79": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-80": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-81": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-82": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-83": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-84": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-85": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-86": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-87": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-88": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-89": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-90": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-91": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-92": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-93": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-94": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-95": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-96": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-97": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-98": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-99": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-100": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-101": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-102": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-103": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-104": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-105": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-106": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-107": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-108": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-109": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-110": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-111": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-112": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-113": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-114": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-115": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-116": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-117": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-118": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-119": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-120": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-121": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-122": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-123": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-124": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-125": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-126": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-127": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-128": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-129": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-130": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-131": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-132": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-133": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-134": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-135": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-136": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-137": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-138": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-139": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-140": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-141": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-142": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-143": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-144": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-145": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-146": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-147": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-148": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-149": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-150": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-151": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-152": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-153": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-154": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-155": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-156": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-157": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-158": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-159": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-160": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-161": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-162": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-163": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-164": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-165": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-166": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-167": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-168": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-169": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-170": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-171": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-172": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-173": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-174": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-175": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-176": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-177": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-178": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-179": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-180": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-181": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-182": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-183": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-184": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-185": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-186": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-187": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-188": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-189": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-190": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-191": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-192": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-193": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-194": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-195": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-196": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-197": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-198": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-199": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-200": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-201": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-202": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-203": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-204": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-205": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-206": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-207": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-208": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-209": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-210": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-211": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-212": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-213": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-214": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-215": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-216": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-217": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-218": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-219": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-220": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-221": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-222": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-223": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-224": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-225": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-226": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-227": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-228": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-229": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-230": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-231": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-232": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-233": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-234": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-235": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-236": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-237": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-238": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-239": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-240": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-241": {
+        "status": "PENDING",
+        "domain": "A"
+    },
+    "a-242": {
+        "status": "PENDING",
+        "domain": "A"
+    }
+}

@@ -1,0 +1,44 @@
+[
+    {
+        "PreProcessSteps": [
+            {
+                "Name": null,
+                "Enabled": true,
+                "Config": {}
+            },
+            {
+                "Name": "FilterOutStoryWithoutIdABC",
+                "Enabled": true,
+                "Config": {}
+            }
+        ]
+    },
+    {
+        "Columns": [
+            {
+                "Index": 1,
+                "Name": "Entry/Last Updated Date",
+                "Type": "datetime",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 23,
+                "Name": "storyId",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            }
+        ]
+    }
+]

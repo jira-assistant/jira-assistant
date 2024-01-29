@@ -1,0 +1,451 @@
+[
+    {
+        "Version": 1
+    },
+    {
+        "PreProcessSteps": [
+            {
+                "Priority": 1,
+                "Name": "CreateJiraStory",
+                "Enabled": true,
+                "Config": {}
+            },
+            {
+                "Priority": 2,
+                "Name": "FilterOutStoryWithoutId",
+                "Enabled": true,
+                "Config": {}
+            },
+            {
+                "Priority": 3,
+                "Name": "RetrieveJiraInformation",
+                "Enabled": true,
+                "Config": {}
+            },
+            {
+                "Priority": 4,
+                "Name": "FilterOutStoryBasedOnJiraStatus",
+                "Enabled": true,
+                "Config": {
+                    "JiraStatuses": [
+                        "SPRINT COMPLETE",
+                        "PENDING RELEASE",
+                        "PRODUCTION TESTING",
+                        "CLOSED"
+                    ]
+                }
+            }
+        ],
+        "SortStrategies": [
+            {
+                "Name": "InlineWeights",
+                "Priority": 1,
+                "Enabled": true,
+                "Config": {}
+            },
+            {
+                "Name": "SortOrder",
+                "Priority": 2,
+                "Enabled": false,
+                "Config": {}
+            },
+            {
+                "Name": "SortOrder",
+                "Priority": 3,
+                "Enabled": true,
+                "Config": {
+                    "ParentScopeIndexRange": "12-19"
+                }
+            },
+            {
+                "Name": "RaiseRanking",
+                "Priority": 4,
+                "Enabled": true,
+                "Config": {
+                    "ParentScopeIndexRange": "12-19"
+                }
+            }
+        ]
+    },
+    {
+        "Columns": [
+            {
+                "Index": 1,
+                "Name": "Entry/Last Updated Date",
+                "Type": "datetime",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 2,
+                "Name": "Product Manager",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 3,
+                "Name": "Item",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "summary",
+                    "path": "summary"
+                }
+            },
+            {
+                "Index": 4,
+                "Name": "Jira Story Ticket(required)",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 5,
+                "Name": "initiative",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 6,
+                "Name": "Jira Epics(optional)",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 7,
+                "Name": "milestone",
+                "Type": "Milestone",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": true,
+                "ScopeSortOrder": true,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 8,
+                "Name": "needsToGetDone",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 9,
+                "Name": "notDelivered",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 10,
+                "Name": "Request",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 11,
+                "Name": "criticalDefect",
+                "Type": "bool",
+                "RequireSort": true,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 12,
+                "Name": "regulatoryComplianceUrgency",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 8,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 13,
+                "Name": "partnerPriority",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 7,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 14,
+                "Name": "productValue",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 6,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 15,
+                "Name": "revenue",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 4,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 16,
+                "Name": "marketingUrgency",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 5,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 17,
+                "Name": "infoSecFraudRiskUrgency",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 3,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 18,
+                "Name": "engineeringUrgency",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 2,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 19,
+                "Name": "defects",
+                "Type": "Priority",
+                "RequireSort": false,
+                "SortOrder": true,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 1,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 20,
+                "Name": "isThisAHardDate",
+                "Type": "bool",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 1
+            },
+            {
+                "Index": 21,
+                "Name": "lastDateOfPrioritzation",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 22,
+                "Name": "status",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "status",
+                    "path": "status.name"
+                }
+            },
+            {
+                "Index": 23,
+                "Name": "storyId",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 24,
+                "Name": "sprint",
+                "Type": "Milestone",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": true,
+                "ScopeSortOrder": true,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 25,
+                "Name": "domain",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "customfield_15601",
+                    "path": "customfield_15601.value"
+                },
+                "QueryJiraInfo": true
+            },
+            {
+                "Index": 26,
+                "Name": "projectType",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "project",
+                    "path": "project.key"
+                }
+            },
+            {
+                "Index": 27,
+                "Name": "issueType",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "issuetype",
+                    "path": "issuetype.name"
+                }
+            },
+            {
+                "Index": 28,
+                "Name": "description",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "description",
+                    "path": "description"
+                }
+            },
+            {
+                "Index": 29,
+                "Name": "developmentImpact",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "customfield_12426",
+                    "path": "customfield_12426"
+                }
+            }
+        ]
+    }
+]

@@ -1,0 +1,73 @@
+[
+    {
+        "SortStrategies": [
+            {
+                "Name": "InlineWeights",
+                "Priority": 1,
+                "Config": {}
+            },
+            {
+                "Name": "SortOrder",
+                "Priority": 2,
+                "Config": {}
+            },
+            {
+                "Name": "RaiseRanking",
+                "Priority": 3,
+                "Config": {}
+            }
+        ]
+    },
+    {
+        "Columns": [
+            {
+                "Index": 1,
+                "Name": "Entry/Last Updated Date",
+                "Type": "datetime",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 2,
+                "Name": "productManager",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 3,
+                "Name": "productManager",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+            {
+                "Index": 4,
+                "Name": "storyId",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            }
+        ]
+    }
+]

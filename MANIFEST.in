@@ -1,0 +1,6 @@
+recursive-include src/jira_assistant *.py *.json
+include *.py
+include *.rst
+include MANIFEST.in
+include LICENSE
+global-exclude *.py[cod] __pycache__
