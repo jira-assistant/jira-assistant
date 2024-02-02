@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  windows-build:
     runs-on: windows-2022
     continue-on-error: ${{ matrix.experimental }}
     strategy:
