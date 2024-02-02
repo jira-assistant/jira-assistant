@@ -1,1 +1,2 @@
+-r ../dev-requirements.txt
 mkdocs==1.5.3
