@@ -57,7 +57,7 @@ Jira Assistant - Connect Excel with Jira
     :target: https://jira-assistant.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |Codecov| image:: https://codecov.io/gh/jira-assistant/jira-assistant/branch/main/graph/badge.svg?token=BLI8NMS6S6 
+.. |Codecov| image:: https://codecov.io/gh/jira-assistant/jira-assistant/branch/main/graph/badge.svg?token=CRNM1vEsGf
     :target: https://codecov.io/gh/jira-assistant/jira-assistant
     :alt: Codecov
 
