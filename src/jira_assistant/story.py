@@ -8,11 +8,11 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from dateutil import parser
 
-from .excel_definition import ExcelDefinitionColumn
+from .excel_definition import ExcelDefinitionColumn, SortStrategy
 from .milestone import Milestone
 from .priority import Priority, convert_to_priority
 from .sprint_schedule import SprintScheduleStore
-from .utils import standardlize_column_name
+from .utils import standardlize_column_name, parse_index_range
 
 __all__ = [
     "Story",
@@ -293,12 +293,17 @@ def compare_story_based_on_inline_weights(
 def sort_stories_by_property_and_order(
     stories: "List[Story]",
     excel_definition_columns: "List[ExcelDefinitionColumn]",
-    config: Optional[Dict[str, Any]],
+    sort_strategy: Optional[SortStrategy],
 ):
     sort_rules: List[Tuple[str, bool]] = []
     excel_definition_columns.sort(key=itemgetter("index"), reverse=False)
 
-    if config is not None and "ParentScopeIndexRange" in config:
+    parent_scope_index: Optional[Set[int]] = None
+    if sort_strategy is not None:
+        parent_scope_config = sort_strategy.get_config("ParentScopeIndexRange")
+        parent_scope_index = parse_index_range(parent_scope_config)
+
+    if parent_scope_index is not None:
         column_definitions: Dict[int, ExcelDefinitionColumn] = {
             c["index"]: c for c in excel_definition_columns
         }
@@ -313,10 +318,7 @@ def sort_stories_by_property_and_order(
                 )
 
         _internal_sort_stories_by_property_and_order_considering_parent_range(
-            stories,
-            column_definitions,
-            sort_rules,
-            config["ParentScopeIndexRange"],
+            stories, column_definitions, sort_rules, parent_scope_index
         )
     else:
         for column in excel_definition_columns:
@@ -386,7 +388,7 @@ def _internal_sort_stories_by_property_and_order_considering_parent_range(
 def sort_stories_by_raise_ranking(
     stories: "List[Story]",
     excel_definition_columns: "List[ExcelDefinitionColumn]",
-    config: Optional[Dict[str, Any]],
+    sort_strategy: Optional[SortStrategy],
 ) -> "List[Story]":
     if stories is None:
         return []
@@ -396,8 +398,12 @@ def sort_stories_by_raise_ranking(
     result = []
 
     # New raise ranking mode.
-    # TODO: Fix the case sensitive issue.
-    if config is not None and "ParentScopeIndexRange" in config:
+    parent_scope_index: Optional[Set[int]] = None
+    if sort_strategy is not None:
+        parent_scope_config = sort_strategy.get_config("ParentScopeIndexRange")
+        parent_scope_index = parse_index_range(parent_scope_config)
+
+    if parent_scope_index is not None:
         for column in excel_definition_columns:
             if column["scope_raise_ranking"] > 0 and column["name"] is not None:
                 sort_rules.append(
@@ -417,10 +423,7 @@ def sort_stories_by_raise_ranking(
         }
 
         result = _internal_raise_story_ranking_by_property_considering_parent_level(
-            stories,
-            column_definitions,
-            sort_rules,
-            config["ParentScopeIndexRange"],
+            stories, column_definitions, sort_rules, parent_scope_index
         )
     else:
         for column in excel_definition_columns:

@@ -26,7 +26,11 @@ def strip_lower(statement: str) -> "str":
 
 
 def is_index_range_valid(statement: Optional[str]) -> bool:
-    if statement is None or _INDEX_RANGE_RULE.fullmatch(statement) is None:
+    if (
+        statement is None
+        or not statement.strip()
+        or _INDEX_RANGE_RULE.fullmatch(statement) is None
+    ):
         return False
     return True
 
@@ -44,6 +48,6 @@ def parse_index_range(statement: Optional[str]) -> "Optional[Set[int]]":
 
 
 def dict_has_key(dictionary: Dict, key: str) -> bool:
-    if key.lower() in [i.lower() for i in dictionary.keys()]:
+    if strip_lower(key) in [strip_lower(i) for i in dictionary.keys()]:
         return True
     return False
