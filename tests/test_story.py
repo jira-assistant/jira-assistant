@@ -2,6 +2,7 @@
 from decimal import Decimal
 
 from pytest import raises
+from jira_assistant.excel_definition import SortStrategy
 
 from jira_assistant.story import (
     compare_story_based_on_inline_weights,
@@ -102,7 +103,9 @@ def test_sort_stories_by_property_and_order_consider_parent_index():
     stories, factory = mock_story_data_for_property_sorting_consider_parent_index()
 
     sort_stories_by_property_and_order(
-        stories, factory.columns, {"ParentScopeIndexRange": (2, 5)}
+        stories,
+        factory.columns,
+        SortStrategy("SortOrder", True, 1, {"ParentScopeIndexRange": "2, 5"}),
     )
 
     assert len(stories) == 2

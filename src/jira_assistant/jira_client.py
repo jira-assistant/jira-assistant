@@ -427,9 +427,9 @@ class JiraClient:
                             JiraIssueType(issue_type.id, issue_type.name, proj.id)
                             for issue_type in response
                         ]
-                        self._project_issue_map_using_name[
-                            strip_lower(proj_name)
-                        ] = issue_types
+                        self._project_issue_map_using_name[strip_lower(proj_name)] = (
+                            issue_types
+                        )
                         self._project_issue_map_using_id[proj_id] = issue_types
                     except JIRAError as e:
                         print(
@@ -494,7 +494,6 @@ class JiraClient:
                     )
                     if field_types:
                         self._project_issue_field_map[(project_id, issue_type_id)] = [
-                            # TODO: Use jira library's properties.
                             self._convert_field_type_to_jira_field(field_type.raw)
                             for field_type in field_types
                         ]

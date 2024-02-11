@@ -381,13 +381,13 @@ def _run_sort_logics(
             sort_stories_by_property_and_order(
                 stories_need_sort,
                 excel_definition.get_columns(),
-                sort_strategy.config,
+                sort_strategy,
             )
         elif sort_strategy.name.lower() in "RaiseRanking".lower():
             stories_need_sort = sort_stories_by_raise_ranking(
                 stories_need_sort,
                 excel_definition.get_columns(),
-                sort_strategy.config,
+                sort_strategy,
             )
         print("Executing finish.")
 
