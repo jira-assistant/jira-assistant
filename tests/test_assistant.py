@@ -404,10 +404,13 @@ def test_create_jira_stories_invalid_value(capsys, tmpdir):
         )
 
         output = capsys.readouterr()
-        assert "MyValue has not allowed value: 3." in output.out
         assert (
-            "Allowed values: 1|2, ProjectType: SD and IssueType: Story." in output.out
+            "MyValue has not allowed value: 3. ProjectType: SD and IssueType: Story."
+            in output.out
         )
+        assert "Allowed values:" in output.out
+        assert "1. 1" in output.out
+        assert "2. 2" in output.out
 
 
 def test_create_jira_stories_invalid_project_type(capsys, tmpdir):

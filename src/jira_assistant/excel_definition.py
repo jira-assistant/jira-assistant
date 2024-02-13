@@ -175,6 +175,10 @@ class ExcelDefinitionColumn(TypedDict):
     jira_field_mapping: Optional[ExcelDefinitionColumnJiraFieldMapping]
     query_jira_info: bool
     update_jira_info: bool
+    delimiter: str
+
+
+_DEFAULT_VALUE_DELIMITER = "|"
 
 
 def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitionColumn:
@@ -191,6 +195,7 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
     column_jira_field_mapping = None
     column_query_jira_info = False
     column_update_jira_info = False
+    column_delimiter = _DEFAULT_VALUE_DELIMITER
 
     for key, value in json_item.items():
         if strip_lower(key) == strip_lower("index"):
@@ -235,6 +240,9 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
         elif strip_lower(key) == strip_lower("UpdateJiraInfo"):
             if value is not None:
                 column_update_jira_info = value
+        elif strip_lower(key) == strip_lower("Delimiter"):
+            if value is not None:
+                column_delimiter = strip_lower(value)
 
     return ExcelDefinitionColumn(
         index=column_index,
@@ -250,6 +258,7 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
         jira_field_mapping=column_jira_field_mapping,
         query_jira_info=column_query_jira_info,
         update_jira_info=column_update_jira_info,
+        delimiter=column_delimiter,
     )
 
 

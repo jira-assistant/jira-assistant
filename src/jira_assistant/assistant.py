@@ -173,13 +173,13 @@ def _check_allowed_value(
     if jira_field.allowed_values:
         if current_value is None or str(current_value) not in jira_field.allowed_values:
             print(
-                f"{excel_column_name} has not allowed value: {current_value}. Allowed values: {'|'.join(jira_field.allowed_values)}, ProjectType: {project_type_name} and IssueType: {issue_type_name}."  # pylint: disable=line-too-long
+                f"{excel_column_name} has not allowed value: {current_value}. ProjectType: {project_type_name} and IssueType: {issue_type_name}."  # pylint: disable=line-too-long
             )
+            print("Allowed values:")
+            for index, value in enumerate(jira_field.allowed_values):
+                print(f"{index + 1}. {value}")
             return False
     return True
-
-
-_DEFAULT_VALUE_DELIMITER = "|"
 
 
 def _assign_new_story_field(
@@ -192,7 +192,7 @@ def _assign_new_story_field(
         return
     jira_field_path = excel_column["jira_field_mapping"]["path"]
     if is_array:
-        new_story_fields[jira_field_path] = str(value).split(_DEFAULT_VALUE_DELIMITER)
+        new_story_fields[jira_field_path] = str(value).split(excel_column["delimiter"])
     else:
         new_story_fields[jira_field_path] = value
 
