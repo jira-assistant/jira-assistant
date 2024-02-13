@@ -24,6 +24,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=3,
@@ -39,6 +40,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=2,
@@ -54,6 +56,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=6,
@@ -69,6 +72,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=5,
@@ -84,6 +88,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=4,
@@ -99,6 +104,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=True,
             update_jira_info=True,
+            delimiter="|",
         ),
         ExcelDefinitionColumn(
             index=7,
@@ -114,6 +120,7 @@ _MOCK_STORY_FACTORY = StoryFactory(
             jira_field_mapping=None,
             query_jira_info=False,
             update_jira_info=False,
+            delimiter="|",
         ),
     ]
 )
