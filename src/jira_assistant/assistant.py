@@ -21,7 +21,7 @@ from .story import (
     sort_stories_by_property_and_order,
     sort_stories_by_raise_ranking,
 )
-from .utils import standardlize_column_name
+from .utils import standardlize_column_name, strip_lower
 
 __all__ = [
     "run_steps_and_sort_excel_file",
@@ -83,16 +83,21 @@ def _get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
         )
         return None
 
-    jira_client = JiraClient(jira_url, jira_acccess_token)
+    jira_timeout: Optional[float] = None
+    tmp = environ.get("JIRA_TIMEOUT", default=None)
+    if tmp is not None:
+        jira_timeout = float(tmp)
+
+    jira_client = JiraClient(jira_url, jira_acccess_token, jira_timeout)
 
     if not jira_client.health_check():
         print(
             """The jira access token is revoked.
-            Please use the update-jira-info command to add/update token."""
+           Please use the update-jira-info command to add/update token."""
         )
         return None
 
-    print(f"Jira info: {jira_url}")
+    print(f"Jira link: {jira_url}")
 
     return jira_client
 
@@ -174,6 +179,9 @@ def _check_allowed_value(
     return True
 
 
+_DEFAULT_VALUE_DELIMITER = "|"
+
+
 def _assign_new_story_field(
     is_array: bool,
     new_story_fields: Dict[str, Any],
@@ -182,12 +190,11 @@ def _assign_new_story_field(
 ):
     if excel_column is None or excel_column["jira_field_mapping"] is None:
         return
+    jira_field_path = excel_column["jira_field_mapping"]["path"]
     if is_array:
-        new_story_fields[excel_column["jira_field_mapping"]["path"]] = str(value).split(
-            "|"
-        )
+        new_story_fields[jira_field_path] = str(value).split(_DEFAULT_VALUE_DELIMITER)
     else:
-        new_story_fields[excel_column["jira_field_mapping"]["path"]] = value
+        new_story_fields[jira_field_path] = value
 
 
 def _create_jira_stories(
@@ -313,7 +320,7 @@ def _run_pre_steps(
 
     for pre_process_step in pre_process_steps:
         print(f"Executing step: {pre_process_step.name}...")
-        if pre_process_step.name.lower() in "RetrieveJiraInformation".lower():
+        if strip_lower(pre_process_step.name) == strip_lower("RetrieveJiraInformation"):
             need_call_jira_api: bool = False
             for excel_definition_column in excel_definition.get_columns():
                 if excel_definition_column["jira_field_mapping"] is not None:
@@ -330,11 +337,15 @@ def _run_pre_steps(
                 ):
                     print("Retrieve jira information failed.")
                     return
-        elif pre_process_step.name.lower() in "FilterOutStoryWithoutId".lower():
+        elif strip_lower(pre_process_step.name) == strip_lower(
+            "FilterOutStoryWithoutId"
+        ):
             for story in stories:
                 if story["storyid"] is None:
                     story.need_sort = False
-        elif pre_process_step.name.lower() in "FilterOutStoryBasedOnJiraStatus".lower():
+        elif strip_lower(pre_process_step.name) == strip_lower(
+            "FilterOutStoryBasedOnJiraStatus"
+        ):
             for story in stories:
                 if (
                     story["status"] is not None
@@ -343,7 +354,7 @@ def _run_pre_steps(
                     in pre_process_step.config.get("JiraStatuses", [])
                 ):
                     story.need_sort = False
-        elif pre_process_step.name.lower() in "CreateJiraStory".lower():
+        elif strip_lower(pre_process_step.name) == strip_lower("CreateJiraStory"):
             stories_need_to_create: List[Story] = []
             for story in stories:
                 if story["storyid"] is None or story["storyid"].strip() == "":
@@ -375,15 +386,15 @@ def _run_sort_logics(
 
     for sort_strategy in sort_strategies:
         print(f"Executing {sort_strategy.name} sorting...")
-        if sort_strategy.name.lower() in "InlineWeights".lower():
+        if strip_lower(sort_strategy.name) == strip_lower("InlineWeights"):
             stories_need_sort = sort_stories_by_inline_weights(stories_need_sort)
-        elif sort_strategy.name.lower() in "SortOrder".lower():
+        elif strip_lower(sort_strategy.name) == strip_lower("SortOrder"):
             sort_stories_by_property_and_order(
                 stories_need_sort,
                 excel_definition.get_columns(),
                 sort_strategy,
             )
-        elif sort_strategy.name.lower() in "RaiseRanking".lower():
+        elif strip_lower(sort_strategy.name) == strip_lower("RaiseRanking"):
             stories_need_sort = sort_stories_by_raise_ranking(
                 stories_need_sort,
                 excel_definition.get_columns(),

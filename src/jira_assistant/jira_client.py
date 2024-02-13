@@ -354,13 +354,21 @@ class JiraField:
         self._allowed_values = value
 
 
+_DEFAULT_JIRA_TIMEOUT = 20.0
+
+
 # Jira are case-sensitive APIs.
 class JiraClient:
-    def __init__(self, url: str, access_token: str) -> None:
+    def __init__(
+        self, url: str, access_token: str, timeout: Optional[float] = None
+    ) -> None:
+        if timeout is None:
+            timeout = _DEFAULT_JIRA_TIMEOUT
+
         self.jira = JIRA(
             server=url,
             token_auth=access_token,
-            timeout=20,
+            timeout=timeout,
             options={"verify": False},
         )
         self._field_cache: Dict[
