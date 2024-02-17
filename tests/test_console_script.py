@@ -26,6 +26,16 @@ def test_process_excel_file(tmpdir):
     assert (tmpdir / "happy_path_sorted.xlsx").exists()
 
 
+def test_process_excel_file_output_version():
+    result = run(
+        ["process-excel-file", "--version"],
+        capture_output=True,
+        check=True,
+    )
+
+    assert "process-excel-file" in result.stdout.decode("utf-8")
+
+
 def test_process_excel_file_apply_env_file(tmpdir):
     result = run(
         [
@@ -168,6 +178,16 @@ def test_generate_template_excel_definition(tmpdir):
     assert "excel-definition" in result.stdout.decode("utf-8")
 
 
+def test_generate_template_output_version():
+    result = run(
+        ["generate-template", "--version"],
+        capture_output=True,
+        check=True,
+    )
+
+    assert "generate-template" in result.stdout.decode("utf-8")
+
+
 def test_generate_template_excel(tmpdir):
     result = run(
         ["generate-template", "--output_folder", tmpdir, "excel"],
@@ -232,6 +252,16 @@ def test_update_jira_info():
 
     assert "Add/Update jira url success" in result.stdout.decode("utf-8")
     assert "Add/Update jira access token success" in result.stdout.decode("utf-8")
+
+
+def test_update_jira_info_output_version():
+    result = run(
+        ["update-jira-info", "--v"],
+        capture_output=True,
+        check=True,
+    )
+
+    assert "update-jira-info" in result.stdout.decode("utf-8")
 
 
 def test_update_jira_info_failed():
