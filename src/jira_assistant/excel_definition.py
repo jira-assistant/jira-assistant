@@ -488,7 +488,9 @@ class ExcelDefinition:
 
         return invalid_definitions
 
-    def _validate_column_definitions(self) -> "List[str]":
+    def _validate_column_definitions(  # pylint: disable=too-many-branches
+        self,
+    ) -> "List[str]":
         invalid_definitions = []
 
         # Validate the Columns
