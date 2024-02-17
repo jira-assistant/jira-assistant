@@ -488,7 +488,9 @@ class ExcelDefinition:
 
         return invalid_definitions
 
-    def _validate_column_definitions(self) -> "List[str]":
+    def _validate_column_definitions(  # pylint: disable=too-many-branches
+        self,
+    ) -> "List[str]":
         invalid_definitions = []
 
         # Validate the Columns
@@ -496,6 +498,8 @@ class ExcelDefinition:
         exist_indexes = []
         exist_column_names = []
         exist_inline_weights = []
+        exist_jira_field_names = []
+        exist_jira_field_paths = []
         for column in self.get_columns():
             column_index: int = column["index"]
             column_name: str = column["name"]
@@ -632,11 +636,22 @@ class ExcelDefinition:
                     invalid_definitions.append(
                         f"Jira Field Mapping has the invalid name. Column: {column_name}"
                     )
+                if jira_field_name in exist_jira_field_names:
+                    invalid_definitions.append(
+                        f"Column has duplicate jira field name. Name: {jira_field_name}, Column: {column_name}"
+                    )
+                exist_jira_field_names.append(jira_field_name)
+
                 jira_field_path = column_jira_field_mapping.get("path", None)
                 if jira_field_path is None or jira_field_path.isspace():
                     invalid_definitions.append(
                         f"Jira Field Mapping has the invalid path. Column: {column_name}"
                     )
+                if jira_field_path in exist_jira_field_paths:
+                    invalid_definitions.append(
+                        f"Column has duplicate jira field path. Path: {jira_field_path}, Column: {column_name}"
+                    )
+                exist_jira_field_paths.append(jira_field_path)
 
         if len(self.columns) > 0 and exist_story_id_column is False:
             invalid_definitions.append(
@@ -685,14 +700,15 @@ class ExcelDefinition:
 
     def get_column_by_jira_field_mapping_name(
         self, name: str
-    ) -> "Optional[ExcelDefinitionColumn]":
+    ) -> "List[ExcelDefinitionColumn]":
+        result: List[ExcelDefinitionColumn] = []
         for item in self.columns:
             jira_field_mapping = item.get("jira_field_mapping", None)
             if jira_field_mapping is not None and standardlize_column_name(
-                jira_field_mapping["name"]
+                jira_field_mapping["path"].split(".")[0]
             ) == standardlize_column_name(name):
-                return deepcopy(item)
-        return None
+                result.append(deepcopy(item))
+        return result
 
     def get_columns_name(self, standardlized: bool = True) -> "List[str]":
         if standardlized:

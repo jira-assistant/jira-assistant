@@ -456,7 +456,7 @@
                 "ScopeRaiseRanking": 0,
                 "JiraFieldMapping": {
                     "name": "myvalue",
-                    "path": "myvalue"
+                    "path": "myvalue.value"
                 }
             }
         ]
