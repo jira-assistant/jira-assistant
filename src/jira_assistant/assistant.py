@@ -123,6 +123,7 @@ def _query_jira_information(
         jira_fields.append(
             {
                 "name": definition_column["name"],
+                # Jira API not support specific property level.
                 "jira_name": definition_column["jira_field_mapping"]["name"],
                 "jira_path": definition_column["jira_field_mapping"]["path"],
             }
@@ -133,11 +134,11 @@ def _query_jira_information(
     )
 
     for story in stories:
-        story_id: str = story["storyid"].lower().strip()
+        story_id: str = strip_lower(story["storyid"])
         if story_id in jira_query_result:
             for jira_field in jira_fields:
                 story[jira_field["name"]] = jira_query_result[story_id].get(
-                    jira_field["jira_name"], None
+                    jira_field["jira_path"], None
                 )
         else:
             # Story ID has been changed because of convertion.
@@ -147,7 +148,7 @@ def _query_jira_information(
                 for jira_field in jira_fields:
                     story[jira_field["name"]] = (
                         list(tmp_res.values())[0]
-                        .get(jira_field["jira_name"], "")
+                        .get(jira_field["jira_path"], "")
                         .upper()
                     )
                 print(
@@ -166,17 +167,18 @@ Current: {story['storyid'].upper()}"
 def _check_allowed_value(
     current_value: Any,
     jira_field: JiraField,
-    excel_column_name: str,
+    excel_column: ExcelDefinitionColumn,
     project_type_name: str,
     issue_type_name: str,
 ) -> "bool":
-    if jira_field.allowed_values:
-        if current_value is None or str(current_value) not in jira_field.allowed_values:
+    if excel_column["jira_field_mapping"] is not None:
+        jira_field_path = excel_column["jira_field_mapping"]["path"]
+        if not jira_field.is_value_allowed(str(current_value), jira_field_path):
             print(
-                f"{excel_column_name} has not allowed value: {current_value}. ProjectType: {project_type_name} and IssueType: {issue_type_name}."  # pylint: disable=line-too-long
+                f"{excel_column['name']} has not allowed value: {current_value}. ProjectType: {project_type_name} and IssueType: {issue_type_name}."  # pylint: disable=line-too-long
             )
             print("Allowed values:")
-            for index, value in enumerate(jira_field.allowed_values):
+            for index, value in enumerate(jira_field.allowed_values[jira_field_path]):
                 print(f"{index + 1}. {value}")
             return False
     return True
@@ -242,57 +244,65 @@ Excel row number: {story.excel_row_index}."
         # Required fields
         all_fields_valid: bool = True
         for required_field in required_fields:
-            # TODO: Multiple same jira field in the definition file.
-            excel_column = excel_definition.get_column_by_jira_field_mapping_name(
+            excel_columns = excel_definition.get_column_by_jira_field_mapping_name(
                 required_field.id_
             )
-            if excel_column is None or excel_column["jira_field_mapping"] is None:
-                print(f"Excel definition missing required field: {required_field.id_}.")
+
+            if not excel_columns:
+                print(
+                    f"Excel definition missing required field: {required_field.id_}."  # pylint: disable=line-too-long
+                )
                 all_fields_valid = False
                 continue
-            excel_column_name = excel_column["name"]
-            if not hasattr(story, standardlize_column_name(excel_column_name)):
-                print(f"Story missing required field: {excel_column_name}.")
-                all_fields_valid = False
-                continue
-            current_value = story[standardlize_column_name(excel_column_name)]
-            if not _check_allowed_value(
-                current_value,
-                required_field,
-                excel_column_name,
-                project_type.name,
-                input_issue_type,
-            ):
-                all_fields_valid = False
-                continue
-            _assign_new_story_field(
-                required_field.is_array, new_story_fields, excel_column, current_value
-            )
+
+            for excel_column in excel_columns:
+                excel_column_name = excel_column["name"]
+                if not hasattr(story, standardlize_column_name(excel_column_name)):
+                    print(f"Story missing required field: {excel_column_name}.")
+                    all_fields_valid = False
+                    continue
+                current_value = story[standardlize_column_name(excel_column_name)]
+                if not _check_allowed_value(
+                    current_value,
+                    required_field,
+                    excel_column,
+                    project_type.name,
+                    input_issue_type,
+                ):
+                    all_fields_valid = False
+                    continue
+                _assign_new_story_field(
+                    required_field.is_array,
+                    new_story_fields,
+                    excel_column,
+                    current_value,
+                )
 
         # Not required fields
         for not_required_field in not_required_fields:
-            excel_column = excel_definition.get_column_by_jira_field_mapping_name(
+            excel_columns = excel_definition.get_column_by_jira_field_mapping_name(
                 not_required_field.id_
             )
-            if excel_column is None or excel_column["jira_field_mapping"] is None:
-                continue
-            excel_column_name = excel_column["name"]
-            if not hasattr(story, standardlize_column_name(excel_column_name)):
-                continue
-            is_array = not_required_field.is_array
-            current_value = story[standardlize_column_name(excel_column_name)]
-            if not _check_allowed_value(
-                current_value,
-                not_required_field,
-                excel_column_name,
-                project_type.name,
-                input_issue_type,
-            ):
-                all_fields_valid = False
-                continue
-            _assign_new_story_field(
-                is_array, new_story_fields, excel_column, current_value
-            )
+            for excel_column in excel_columns:
+                excel_column_name = excel_column["name"]
+                if not hasattr(story, standardlize_column_name(excel_column_name)):
+                    continue
+                is_array = not_required_field.is_array
+                current_value = story[standardlize_column_name(excel_column_name)]
+                if current_value is None:
+                    continue
+                if not _check_allowed_value(
+                    current_value,
+                    not_required_field,
+                    excel_column,
+                    project_type.name,
+                    input_issue_type,
+                ):
+                    all_fields_valid = False
+                    continue
+                _assign_new_story_field(
+                    is_array, new_story_fields, excel_column, current_value
+                )
 
         if not all_fields_valid:
             print("Please fix the above issues.")

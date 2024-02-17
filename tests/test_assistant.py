@@ -72,8 +72,9 @@ def test_run_steps_and_sort_excel_file(tmpdir):
                 [story_id_0, story_id_1], jira_fields
             )
             if (
-                query_result[story_id_0]["status"].upper() not in noneed_sort_statuses
-                and query_result[story_id_1]["status"].upper()
+                query_result[story_id_0]["status.name"].upper()
+                not in noneed_sort_statuses
+                and query_result[story_id_1]["status.name"].upper()
                 not in noneed_sort_statuses
             ):
                 assert (
@@ -132,8 +133,9 @@ def test_run_steps_and_sort_excel_file_addition_columns(tmpdir):
                 [story_id_0, story_id_1], jira_fields
             )
             if (
-                query_result[story_id_0]["status"].upper() not in noneed_sort_statuses
-                and query_result[story_id_1]["status"].upper()
+                query_result[story_id_0]["status.name"].upper()
+                not in noneed_sort_statuses
+                and query_result[story_id_1]["status.name"].upper()
                 not in noneed_sort_statuses
             ):
                 assert (
@@ -354,8 +356,9 @@ def test_run_steps_and_sort_excel_file_with_no_need_sort_stories(tmpdir):
                 [story_id_0, story_id_1], jira_fields
             )
             if (
-                query_result[story_id_0]["status"].upper() not in noneed_sort_statuses
-                and query_result[story_id_1]["status"].upper()
+                query_result[story_id_0]["status.name"].upper()
+                not in noneed_sort_statuses
+                and query_result[story_id_1]["status.name"].upper()
                 not in noneed_sort_statuses
             ):
                 assert (
