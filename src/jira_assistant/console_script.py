@@ -24,6 +24,19 @@ from .excel_operation import output_to_excel_file
 
 __all__ = ["process_excel_file", "generate_template", "update_jira_info"]
 
+if sys.version_info < (3, 8):
+    import importlib_metadata as metadata
+
+    version_ = metadata.version
+else:
+    from importlib.metadata import version
+
+    version_ = version
+
+
+def get_package_version() -> str:
+    return version_("jira_assistant")
+
 
 def get_args_for_process_excel_file() -> Namespace:
     """Process console command's arguments. Command: process_excel_file"""
@@ -80,6 +93,12 @@ def get_args_for_process_excel_file() -> Namespace:
         required=False,
         default=False,
         help="Only analyze the input and definition files. No side effects at all.",
+    )
+    parser.add_argument(
+        "--v",
+        "--version",
+        action="version",
+        version=f"%(prog)s {get_package_version()}",
     )
 
     args = parser.parse_args()
@@ -220,6 +239,12 @@ def get_args_for_generate_template() -> Namespace:
         required=False,
         help="Env file which contains info like jira url.",
     )
+    parser.add_argument(
+        "--v",
+        "--version",
+        action="version",
+        version=f"%(prog)s {get_package_version()}",
+    )
 
     return parser.parse_args()
 
@@ -347,6 +372,12 @@ def get_args_for_update_jira_info() -> Namespace:
         type=pathlib.Path,
         required=False,
         help="Custom env file",
+    )
+    parser.add_argument(
+        "--v",
+        "--version",
+        action="version",
+        version=f"%(prog)s {get_package_version()}",
     )
 
     return parser.parse_args()

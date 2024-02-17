@@ -281,7 +281,7 @@ class ExcelDefinition:
             raise ValueError("There is no content in the excel definition file.")
 
         try:
-            raw_data = loads(content)
+            raw_data = loads(s=content)
         except JSONDecodeError as e:
             raise SyntaxError(
                 f"The structure of excel definition file is wrong. Hint: {e.msg} in line {e.lineno}:{e.colno}."

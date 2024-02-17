@@ -92,7 +92,7 @@ def _init_jira_field_types(jira_field_type_file: Optional[pathlib.Path]):
     ):
         if jira_field_type_file is None:
             jira_field_type_file = DEFAULT_JIRA_FIELD_TYPE_FILE
-        for i in loads(jira_field_type_file.read_text(encoding="utf-8")):
+        for i in loads(s=jira_field_type_file.read_text(encoding="utf-8")):
             _jira_field_types.append(_parse_json_to_jira_field_type_definition(i))
 
 
