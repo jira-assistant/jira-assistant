@@ -216,6 +216,7 @@ def mock_search_response(
                             "value": mock_jira_stories[story_id]["domain"]
                         },
                         "status": {"name": mock_jira_stories[story_id]["status"]},
+                        "reporter": {"name": "Sharry", "displayName": "Big Monkey"},
                     },
                 }
             )
@@ -522,7 +523,11 @@ def mock_createmeta_specific_issue_type_response(
                 },
                 {
                     "required": True,
-                    "schema": {"type": "array", "items": "string", "system": "myvalue"},
+                    "schema": {
+                        "type": "array",
+                        "items": "myvalue",
+                        "system": "myvalue",
+                    },
                     "name": "My Value",
                     "fieldId": "MyValue",
                     "hasDefaultValue": False,
@@ -532,18 +537,30 @@ def mock_createmeta_specific_issue_type_response(
                             "self": "https://your_jira.com/rest/api/2/customFieldOption/13483",
                             "value": "1",
                             "id": "13483",
+                            "avataUrls": {
+                                "48*48": "www.abc.com",
+                                "24*24": "www.cde.com",
+                            },
                             "disabled": False,
                         },
                         {
                             "self": "https://your_jira.com/rest/api/2/customFieldOption/13484",
                             "value": "2",
                             "id": "13484",
+                            "avataUrls": {
+                                "48*48": "www.abc.com",
+                                "24*24": "www.cde.com",
+                            },
                             "disabled": False,
                         },
                         {
                             "self": "https://your_jira.com/rest/api/2/customFieldOption/13485",
                             "value": "3",
                             "id": "13485",
+                            "avataUrls": {
+                                "48*48": "www.abc.com",
+                                "24*24": "www.cde.com",
+                            },
                             "disabled": True,
                         },
                     ],

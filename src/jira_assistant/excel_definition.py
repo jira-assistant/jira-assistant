@@ -10,7 +10,7 @@ from datetime import datetime
 from json import loads
 from json.decoder import JSONDecodeError
 from pathlib import Path
-from typing import Any, List, Optional, Set, TypedDict, Union, Dict
+from typing import Any, List, Optional, TypedDict, Union, Dict
 
 from .milestone import Milestone
 from .priority import Priority
@@ -19,7 +19,7 @@ from .utils import (
     is_absolute_path_valid,
     standardlize_column_name,
     strip_lower,
-    parse_index_range,
+    is_index_range_valid,
 )
 
 __all__ = ["ExcelDefinition"]
@@ -66,6 +66,13 @@ class BasicStep:
     def config(self, value: Dict[str, Any]):
         self._config = value
 
+    def get_config(self, name: str) -> Optional[Any]:
+        if self._config is not None:
+            for key in self._config.keys():
+                if strip_lower(key) == strip_lower(name):
+                    return self._config[key]
+        return None
+
 
 class PreProcessStep(BasicStep):
     pass
@@ -78,30 +85,28 @@ def parse_json_item_to_pre_process_step(json_item: Any) -> PreProcessStep:
     pre_process_step_config: Dict[str, Any] = {}
 
     for key, value in json_item.items():
-        if key.lower() == "name".lower():
+        if strip_lower(key) == strip_lower("name"):
             if value is None or not isinstance(value, str):
                 raise ValueError(
                     "The Name property in the pre-process step is invalid."
                 )
             pre_process_step_name = value
-        if key.lower() == "enabled".lower():
+        if strip_lower(key) == strip_lower("enabled"):
             if value is None or not isinstance(value, bool):
                 pre_process_step_enabled = False
             else:
                 pre_process_step_enabled = value
-        if key.lower() == "priority".lower():
+        if strip_lower(key) == strip_lower("priority"):
             if value is None or not isinstance(value, int):
                 raise ValueError(
                     "The Priority property in the pre-process step is invalid."
                 )
             pre_process_step_priority = value
-        if key.lower() == "config".lower():
+        if strip_lower(key) == strip_lower("config"):
             pre_process_step_config = {}
             if value is not None and isinstance(value, dict):
-                for name in value:
-                    # More config support.
-                    if name.lower() == "JiraStatuses".lower():
-                        pre_process_step_config["JiraStatuses"] = value.get(name, None)
+                for key_, value_ in value.items():
+                    pre_process_step_config[key_] = value_
 
     return PreProcessStep(
         name=pre_process_step_name,
@@ -122,32 +127,26 @@ def parse_json_item_to_sort_strategy(json_item: Any) -> SortStrategy:
     strategy_config: Dict[str, Any] = {}
 
     for key, value in json_item.items():
-        if key.lower() == "name".lower():
+        if strip_lower(key) == strip_lower("name"):
             if value is None or not isinstance(value, str):
                 raise ValueError("The Name property in the sort strategy is invalid.")
             strategy_name = value
-        if key.lower() == "enabled".lower():
+        if strip_lower(key) == strip_lower("enabled"):
             if value is None or not isinstance(value, bool):
                 strategy_enabled = False
             else:
                 strategy_enabled = value
-        if key.lower() == "priority".lower():
+        if strip_lower(key) == strip_lower("priority"):
             if value is None or not isinstance(value, int):
                 raise ValueError(
                     "The Priority property in the sort strategy is invalid."
                 )
             strategy_priority = value
-        if key.lower() == "config".lower():
+        if strip_lower(key) == strip_lower("config"):
             strategy_config = {}
             if value is not None and isinstance(value, dict):
-                for name in value:
-                    # More config support.
-                    if name.lower() == "ParentScopeIndexRange".lower():
-                        strategy_config[
-                            name
-                        ] = ExcelDefinition.parse_raise_ranking_level_scope_index_expression(
-                            value.get(name, None)
-                        )
+                for key_, value_ in value.items():
+                    strategy_config[key_] = value_
 
     return SortStrategy(
         name=strategy_name,
@@ -176,6 +175,10 @@ class ExcelDefinitionColumn(TypedDict):
     jira_field_mapping: Optional[ExcelDefinitionColumnJiraFieldMapping]
     query_jira_info: bool
     update_jira_info: bool
+    delimiter: str
+
+
+_DEFAULT_VALUE_DELIMITER = "|"
 
 
 def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitionColumn:
@@ -192,9 +195,10 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
     column_jira_field_mapping = None
     column_query_jira_info = False
     column_update_jira_info = False
+    column_delimiter = _DEFAULT_VALUE_DELIMITER
 
     for key, value in json_item.items():
-        if key.lower() == "index".lower():
+        if strip_lower(key) == strip_lower("index"):
             if value is None:
                 raise ValueError("Column definition must has an index.")
             if isinstance(value, int):
@@ -203,7 +207,7 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
                 raise TypeError(
                     "The Index property type in the column definition is not integer."
                 )
-        elif key.lower() == "name".lower():
+        elif strip_lower(key) == strip_lower("name"):
             if value is None:
                 raise ValueError("Column definition must has a name.")
             if isinstance(value, str):
@@ -212,30 +216,33 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
                 raise TypeError(
                     "The Name property type in the column definition should be string."
                 )
-        elif key.lower() == "type".lower():
+        elif strip_lower(key) == strip_lower("type"):
             column_type = ExcelDefinition.convert_str_to_type(value)
-        elif key.lower() == "RequireSort".lower():
+        elif strip_lower(key) == strip_lower("RequireSort"):
             column_require_sort = value
-        elif key.lower() == "SortOrder".lower():
+        elif strip_lower(key) == strip_lower("SortOrder"):
             column_sort_order = value
-        elif key.lower() == "ScopeRequireSort".lower():
+        elif strip_lower(key) == strip_lower("ScopeRequireSort"):
             column_scope_require_sort = value
-        elif key.lower() == "ScopeSortOrder".lower():
+        elif strip_lower(key) == strip_lower("ScopeSortOrder"):
             column_scope_sort_order = value
-        elif key.lower() == "InlineWeights".lower():
+        elif strip_lower(key) == strip_lower("InlineWeights"):
             column_inline_weights = value
-        elif key.lower() == "RaiseRanking".lower():
+        elif strip_lower(key) == strip_lower("RaiseRanking"):
             column_raise_ranking = value
-        elif key.lower() == "ScopeRaiseRanking".lower():
+        elif strip_lower(key) == strip_lower("ScopeRaiseRanking"):
             column_scope_raise_ranking = value
-        elif key.lower() == "JiraFieldMapping".lower():
+        elif strip_lower(key) == strip_lower("JiraFieldMapping"):
             column_jira_field_mapping = value
-        elif key.lower() == "QueryJiraInfo".lower():
+        elif strip_lower(key) == strip_lower("QueryJiraInfo"):
             if value is not None:
                 column_query_jira_info = value
-        elif key.lower() == "UpdateJiraInfo".lower():
+        elif strip_lower(key) == strip_lower("UpdateJiraInfo"):
             if value is not None:
                 column_update_jira_info = value
+        elif strip_lower(key) == strip_lower("Delimiter"):
+            if value is not None:
+                column_delimiter = strip_lower(value)
 
     return ExcelDefinitionColumn(
         index=column_index,
@@ -251,6 +258,7 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
         jira_field_mapping=column_jira_field_mapping,
         query_jira_info=column_query_jira_info,
         update_jira_info=column_update_jira_info,
+        delimiter=column_delimiter,
     )
 
 
@@ -322,14 +330,6 @@ class ExcelDefinition:
             )
 
         return self
-
-    @staticmethod
-    def parse_raise_ranking_level_scope_index_expression(
-        expression: Union[Any, None],
-    ) -> Optional[Set[int]]:
-        if expression is None or not isinstance(expression, str):
-            return None
-        return parse_index_range(expression)
 
     def load_file(self, file: Union[str, Path]) -> "ExcelDefinition":
         """
@@ -479,14 +479,18 @@ class ExcelDefinition:
                     invalid_definitions.append(
                         f"Only RaiseRanking and SortOrder strategy support ParentScopeIndexRange config. Strategy: {strategy.name}."
                     )
-                if strategy.config["ParentScopeIndexRange"] is None:
+                if not is_index_range_valid(
+                    strategy.get_config("ParentScopeIndexRange")
+                ):
                     invalid_definitions.append(
-                        f"The format of the Parent Level Index Range is invalid. Strategy: {strategy.name}. Supported format strings like: 1-20 or 20,30 or empty string."
+                        f"The format of the Parent Level Index Range is invalid. Strategy: {strategy.name}. Supported format strings like: 1-20 or 20,30."
                     )
 
         return invalid_definitions
 
-    def _validate_column_definitions(self) -> "List[str]":
+    def _validate_column_definitions(  # pylint: disable=too-many-branches
+        self,
+    ) -> "List[str]":
         invalid_definitions = []
 
         # Validate the Columns
@@ -494,6 +498,8 @@ class ExcelDefinition:
         exist_indexes = []
         exist_column_names = []
         exist_inline_weights = []
+        exist_jira_field_names = []
+        exist_jira_field_paths = []
         for column in self.get_columns():
             column_index: int = column["index"]
             column_name: str = column["name"]
@@ -630,11 +636,22 @@ class ExcelDefinition:
                     invalid_definitions.append(
                         f"Jira Field Mapping has the invalid name. Column: {column_name}"
                     )
+                if jira_field_name in exist_jira_field_names:
+                    invalid_definitions.append(
+                        f"Column has duplicate jira field name. Name: {jira_field_name}, Column: {column_name}"
+                    )
+                exist_jira_field_names.append(jira_field_name)
+
                 jira_field_path = column_jira_field_mapping.get("path", None)
                 if jira_field_path is None or jira_field_path.isspace():
                     invalid_definitions.append(
                         f"Jira Field Mapping has the invalid path. Column: {column_name}"
                     )
+                if jira_field_path in exist_jira_field_paths:
+                    invalid_definitions.append(
+                        f"Column has duplicate jira field path. Path: {jira_field_path}, Column: {column_name}"
+                    )
+                exist_jira_field_paths.append(jira_field_path)
 
         if len(self.columns) > 0 and exist_story_id_column is False:
             invalid_definitions.append(
@@ -659,18 +676,18 @@ class ExcelDefinition:
         if type_str is None or not isinstance(type_str, str):
             return None
         type_str = strip_lower(type_str)
-        if type_str.lower() == "str":
+        if type_str == "str":
             return str
-        if type_str.lower() == "bool":
+        if type_str == "bool":
             return bool
-        if type_str.lower() == "datetime":
+        if type_str == "datetime":
             return datetime
-        if type_str.lower() == "priority":
+        if type_str == "priority":
             return Priority
-        if type_str.lower() == "milestone":
+        if type_str == "milestone":
             return Milestone
         # Currently, only support float/double
-        if type_str.lower() == "number":
+        if type_str == "number":
             return float
         return None
 
@@ -683,14 +700,15 @@ class ExcelDefinition:
 
     def get_column_by_jira_field_mapping_name(
         self, name: str
-    ) -> "Optional[ExcelDefinitionColumn]":
+    ) -> "List[ExcelDefinitionColumn]":
+        result: List[ExcelDefinitionColumn] = []
         for item in self.columns:
             jira_field_mapping = item.get("jira_field_mapping", None)
             if jira_field_mapping is not None and standardlize_column_name(
-                jira_field_mapping["name"]
+                jira_field_mapping["path"].split(".")[0]
             ) == standardlize_column_name(name):
-                return deepcopy(item)
-        return None
+                result.append(deepcopy(item))
+        return result
 
     def get_columns_name(self, standardlized: bool = True) -> "List[str]":
         if standardlized:

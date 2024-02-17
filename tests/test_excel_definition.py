@@ -145,6 +145,18 @@ def test_validate_duplicate_index():
     assert len(validation_result) == 1
 
 
+def test_validate_duplicate_jira_field():
+    excel_definition_filename = (
+        ASSETS_FILES / "excel_definition_duplicate_jira_field.json"
+    )
+    store = ExcelDefinition()
+    store.load_file(excel_definition_filename)
+
+    validation_result = store.validate()
+
+    assert len(validation_result) == 2
+
+
 def test_validate_duplicate_column_name():
     excel_definition_filename = (
         ASSETS_FILES / "excel_definition_duplicate_column_name.json"
