@@ -295,8 +295,8 @@ def test_validate_strategy_invalid_name():
     assert len(validation_result) == 1
 
 
-def test_validate_invalid_structure():
-    excel_definition_filename = ASSETS_FILES / "excel_definition_invalid_structure.txt"
+def test_validate_invalid_json():
+    excel_definition_filename = ASSETS_FILES / "excel_definition_invalid_json.txt"
     store = ExcelDefinition()
 
     with raises(Exception) as err:
