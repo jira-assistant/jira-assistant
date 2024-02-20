@@ -266,26 +266,26 @@ def generate_template():
 
         result: Optional[Path] = None
         if template_type == "excel":
-            result = _generate_excel_template(
-                _generate_timestamp_filename(output_folder, "excel-template", ".xlsx")
+            result = __generate_excel_template(
+                __generate_timestamp_filename(output_folder, "excel-template", ".xlsx")
             )
         elif template_type == "excel-definition":
             result = copyfile(
                 SRC_ASSETS / "excel_definition.json",
-                _generate_timestamp_filename(
+                __generate_timestamp_filename(
                     output_folder, "excel-definition-template", ".json"
                 ),
             )
         elif template_type == "sprint-schedule":
             result = copyfile(
                 SRC_ASSETS / "sprint_schedule.json",
-                _generate_timestamp_filename(
+                __generate_timestamp_filename(
                     output_folder, "sprint-schedule-template", ".json"
                 ),
             )
         elif template_type == "jira-field-mapping":
-            result = _generate_jira_field_mapping_template(
-                _generate_timestamp_filename(
+            result = __generate_jira_field_mapping_template(
+                __generate_timestamp_filename(
                     output_folder, "jira-field-mapping", ".json"
                 ),
                 args.env_file,
@@ -307,7 +307,7 @@ def generate_template():
         sys.exit(1)
 
 
-def _generate_timestamp_filename(
+def __generate_timestamp_filename(
     output_folder: Path, prefix: str, extension: str
 ) -> "Path":
     return (
@@ -316,7 +316,7 @@ def _generate_timestamp_filename(
     ).resolve()
 
 
-def _generate_excel_template(output_file: "Path") -> Optional[Path]:
+def __generate_excel_template(output_file: "Path") -> Optional[Path]:
     try:
         excel_definition = ExcelDefinition().load_file(
             SRC_ASSETS / "excel_definition.json"
@@ -332,7 +332,7 @@ def _generate_excel_template(output_file: "Path") -> Optional[Path]:
         return None
 
 
-def _generate_jira_field_mapping_template(
+def __generate_jira_field_mapping_template(
     output_file: "Path", env_file: Optional[Path] = None
 ) -> Optional[Path]:
     try:

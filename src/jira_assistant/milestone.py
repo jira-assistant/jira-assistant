@@ -19,28 +19,28 @@ class Milestone:
     # __init__ method cannot have classmethod attribute!
     # Otherwise, all instance will point to the same one.
     def __init__(self, raw: Any) -> None:
-        self.raw: str = raw
-        self.sprint = self.raw
-        self._priority = 0
+        self.__raw: str = raw
+        self.__sprint = self.__raw
+        self.__priority = 0
 
     @property
     def priority(self) -> int:
-        return self._priority
+        return self.__priority
 
     @priority.setter
     def priority(self, value: int):
-        self._priority = value
+        self.__priority = value
 
     def calc_priority(self, sprint_schedule: SprintScheduleStore) -> None:
-        if self.sprint is None:
+        if self.__sprint is None:
             self.priority = 0
         else:
-            self.priority = sprint_schedule.get_priority(self.sprint)
+            self.priority = sprint_schedule.get_priority(self.__sprint)
 
     def __str__(self) -> str:
-        if self.raw is None:
+        if self.__raw is None:
             return ""
-        return self.raw
+        return self.__raw
 
     def __lt__(self, __o: "Milestone") -> bool:
         if self.priority < __o.priority:

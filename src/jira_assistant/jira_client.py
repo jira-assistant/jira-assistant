@@ -34,58 +34,58 @@ class JiraFieldTypeDefinition:
         is_basic: Optional[bool],
         array_item_type: Optional[str],
     ) -> None:
-        self._type = type_
-        self._name = name
-        self._properties = properties
-        self._is_basic = is_basic
-        self._array_item_type = array_item_type
+        self.__type = type_
+        self.__name = name
+        self.__properties = properties
+        self.__is_basic = is_basic
+        self.__array_item_type = array_item_type
 
     @property
     def type_(self) -> Optional[str]:
-        return self._type
+        return self.__type
 
     @type_.setter
     def type_(self, value: str):
-        self._type = value
+        self.__type = value
 
     @property
     def name(self) -> Optional[str]:
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value: str):
-        self._name = value
+        self.__name = value
 
     @property
     def properties(self) -> Optional[List[Self]]:
-        return self._properties
+        return self.__properties
 
     @properties.setter
     def properties(self, value: Optional[List[Self]]):
-        self._properties = value
+        self.__properties = value
 
     @property
     def is_basic(self) -> Optional[bool]:
-        return self._is_basic
+        return self.__is_basic
 
     @is_basic.setter
     def is_basic(self, value: Optional[bool]):
-        self._is_basic = value
+        self.__is_basic = value
 
     @property
     def array_item_type(self) -> Optional[str]:
-        return self._array_item_type
+        return self.__array_item_type
 
     @array_item_type.setter
     def array_item_type(self, value: Optional[str]):
-        self._array_item_type = value
+        self.__array_item_type = value
 
 
 _jira_field_types: List[JiraFieldTypeDefinition] = []
 _current_jira_field_types_file_path: pathlib.Path = DEFAULT_JIRA_FIELD_TYPE_FILE
 
 
-def _init_jira_field_types(jira_field_type_file: Optional[pathlib.Path]):
+def __init_jira_field_types(jira_field_type_file: Optional[pathlib.Path]):
     if not _jira_field_types or (
         jira_field_type_file is not None
         and not _current_jira_field_types_file_path.samefile(jira_field_type_file)
@@ -93,10 +93,10 @@ def _init_jira_field_types(jira_field_type_file: Optional[pathlib.Path]):
         if jira_field_type_file is None:
             jira_field_type_file = DEFAULT_JIRA_FIELD_TYPE_FILE
         for i in loads(s=jira_field_type_file.read_text(encoding="utf-8")):
-            _jira_field_types.append(_parse_json_to_jira_field_type_definition(i))
+            _jira_field_types.append(__parse_json_to_jira_field_type_definition(i))
 
 
-def _parse_json_to_jira_field_type_definition(raw: Any) -> JiraFieldTypeDefinition:
+def __parse_json_to_jira_field_type_definition(raw: Any) -> JiraFieldTypeDefinition:
     definition = JiraFieldTypeDefinition(
         type_=None,
         is_basic=None,
@@ -112,7 +112,7 @@ def _parse_json_to_jira_field_type_definition(raw: Any) -> JiraFieldTypeDefiniti
         definition.properties = []
     for property_ in raw.get("properties", []):
         definition.properties.append(
-            _parse_json_to_jira_field_type_definition(property_)
+            __parse_json_to_jira_field_type_definition(property_)
         )
 
     return definition
@@ -123,7 +123,7 @@ def get_jira_field(
 ) -> Optional[JiraFieldTypeDefinition]:
     if field_type is None or len(field_type.strip()) == 0:
         return None
-    _init_jira_field_types(jira_field_type_file)
+    __init_jira_field_types(jira_field_type_file)
     for jira_field_type in _jira_field_types:
         if (
             jira_field_type.type_ is not None
@@ -135,24 +135,24 @@ def get_jira_field(
 
 class JiraFieldPropertyPathDefinition:
     def __init__(self, path: str, is_array: bool) -> None:
-        self._path = path
-        self._is_array = is_array
+        self.__path = path
+        self.__is_array = is_array
 
     @property
     def path(self) -> str:
-        return self._path
+        return self.__path
 
     @path.setter
     def path(self, value: str):
-        self._path = value
+        self.__path = value
 
     @property
     def is_array(self):
-        return self._is_array
+        return self.__is_array
 
     @is_array.setter
     def is_array(self, value: bool):
-        self._is_array = value
+        self.__is_array = value
 
 
 def get_field_paths_of_jira_field(
@@ -168,7 +168,7 @@ def get_field_paths_of_jira_field(
     result: List[JiraFieldPropertyPathDefinition] = []
     is_array_item = jira_field.array_item_type is not None
     # Following code will use the same jira field type file, so no need to pass.
-    _internal_get_field_paths_of_jira_field(
+    __internal_get_field_paths_of_jira_field(
         jira_field,
         is_array_item,
         [
@@ -182,7 +182,7 @@ def get_field_paths_of_jira_field(
     return result
 
 
-def _internal_get_field_paths_of_jira_field(
+def __internal_get_field_paths_of_jira_field(
     jira_field: Optional[JiraFieldTypeDefinition],
     is_array_item: bool,
     temp: List[JiraFieldPropertyPathDefinition],
@@ -199,7 +199,7 @@ def _internal_get_field_paths_of_jira_field(
                 )
             )
     if jira_field.array_item_type is not None:
-        _internal_get_field_paths_of_jira_field(
+        __internal_get_field_paths_of_jira_field(
             get_jira_field(jira_field.array_item_type), True, temp, final
         )
     if jira_field.properties is not None:
@@ -207,7 +207,7 @@ def _internal_get_field_paths_of_jira_field(
             if field_property.array_item_type is not None:
                 for item in temp:
                     item.path = connect_jira_field_path(item.path, field_property.name)
-                _internal_get_field_paths_of_jira_field(
+                __internal_get_field_paths_of_jira_field(
                     get_jira_field(field_property.array_item_type),
                     True,
                     temp,
@@ -229,7 +229,7 @@ def _internal_get_field_paths_of_jira_field(
                 continue
             for item in temp:
                 item.path = connect_jira_field_path(item.path, field_property.name)
-            _internal_get_field_paths_of_jira_field(
+            __internal_get_field_paths_of_jira_field(
                 child_field, is_array_item, temp, final
             )
     return None
@@ -247,55 +247,55 @@ def connect_jira_field_path(path_a: Optional[str], path_b: Optional[str]) -> str
 
 class JiraProject:
     def __init__(self, id_: int, name: str) -> None:
-        self._id = id_
-        self._name = name
+        self.__id = id_
+        self.__name = name
 
     @property
     def id_(self) -> int:
-        return self._id
+        return self.__id
 
     @id_.setter
     def id_(self, value: int):
-        self._id = value
+        self.__id = value
 
     @property
     def name(self) -> str:
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value: str):
-        self._name = value
+        self.__name = value
 
 
 class JiraIssueType:
     def __init__(self, id_: int, name: str, project_id: int) -> None:
-        self._id = id_
-        self._name = name
-        self._project_id = project_id
+        self.__id = id_
+        self.__name = name
+        self.__project_id = project_id
 
     @property
     def id_(self) -> int:
-        return self._id
+        return self.__id
 
     @id_.setter
     def id_(self, value: int):
-        self._id = value
+        self.__id = value
 
     @property
     def name(self) -> str:
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value: str):
-        self._name = value
+        self.__name = value
 
     @property
     def project_id(self) -> int:
-        return self._project_id
+        return self.__project_id
 
     @project_id.setter
     def project_id(self, value: int):
-        self._project_id = value
+        self.__project_id = value
 
 
 class JiraField:
@@ -307,55 +307,55 @@ class JiraField:
         id_: str,
         allowed_values: Optional[Dict[str, List[str]]],
     ) -> None:
-        self._required = required
-        self._is_array = is_array
-        self._name = name
-        self._id = id_
+        self.__required = required
+        self.__is_array = is_array
+        self.__name = name
+        self.__id = id_
         if allowed_values is not None:
-            self._allowed_values = allowed_values
+            self.__allowed_values = allowed_values
         else:
-            self._allowed_values = {}
+            self.__allowed_values = {}
 
     @property
     def required(self) -> bool:
-        return self._required
+        return self.__required
 
     @required.setter
     def required(self, value: bool):
-        self._required = value
+        self.__required = value
 
     @property
     def is_array(self) -> bool:
-        return self._is_array
+        return self.__is_array
 
     @is_array.setter
     def is_array(self, value: bool):
-        self._is_array = value
+        self.__is_array = value
 
     @property
     def name(self) -> str:
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value: str):
-        self._name = value
+        self.__name = value
 
     @property
     def id_(self) -> str:
-        return self._id
+        return self.__id
 
     @id_.setter
     def id_(self, value: str):
-        self._id = value
+        self.__id = value
 
     @property
     def allowed_values(self) -> Dict[str, List[str]]:
-        return self._allowed_values
+        return self.__allowed_values
 
     def is_value_allowed(self, value: Optional[str], jira_field_path: str) -> bool:
         if (
-            self._allowed_values.get(jira_field_path, None) is not None
-            and value not in self._allowed_values[jira_field_path]
+            self.__allowed_values.get(jira_field_path, None) is not None
+            and value not in self.__allowed_values[jira_field_path]
         ):
             return False
         return True
@@ -378,16 +378,16 @@ class JiraClient:
             timeout=timeout,
             options={"verify": False},
         )
-        self._field_cache: Dict[
+        self.__field_cache: Dict[
             str, Dict[str, Optional[List[JiraFieldPropertyPathDefinition]]]
         ] = {}
-        self._project_map: Dict[str, JiraProject] = {}
+        self.__project_map: Dict[str, JiraProject] = {}
         # The dict key is project_name
-        self._project_issue_map_using_name: Dict[str, List[JiraIssueType]] = {}
+        self.__project_issue_map_using_name: Dict[str, List[JiraIssueType]] = {}
         # The dict key is project_id
-        self._project_issue_map_using_id: Dict[int, List[JiraIssueType]] = {}
+        self.__project_issue_map_using_id: Dict[int, List[JiraIssueType]] = {}
         # The dict key is: (project_id, issue_id).
-        self._project_issue_field_map: Dict[Tuple[int, int], List[JiraField]] = {}
+        self.__project_issue_field_map: Dict[Tuple[int, int], List[JiraField]] = {}
 
     def health_check(self) -> bool:
         try:
@@ -405,7 +405,7 @@ class JiraClient:
                 prefetch=False,
             )
         except JIRAError as e:
-            print(f"Calling create story API failed. {self._extract_error_message(e)}")
+            print(f"Calling create story API failed. {self.__extract_error_message(e)}")
         return None
 
     def get_jira_browser_link(self, key: str) -> "str":
@@ -413,26 +413,26 @@ class JiraClient:
 
     def get_project_by_project_name(self, project_name: str) -> "Optional[JiraProject]":
         project_name = strip_lower(project_name)
-        result = self._project_map.get(project_name, None)
+        result = self.__project_map.get(project_name, None)
         if result is None:
             self.get_projects()
-        return self._project_map.get(project_name, None)
+        return self.__project_map.get(project_name, None)
 
     def get_projects(
         self, include_archived: bool = False, force_refresh: bool = False
     ) -> "List[JiraProject]":
         # Otherwise, if there is no project,
         # still will call API to retrieve project list.
-        if self._project_map and force_refresh is not True:
-            return list(self._project_map.values())
-        self._project_map.clear()
+        if self.__project_map and force_refresh is not True:
+            return list(self.__project_map.values())
+        self.__project_map.clear()
         project_response = self.jira.projects()
         for proj in project_response:
             if include_archived or proj.archived is False:
                 proj_name: str = proj.key
                 proj_id: int = proj.id
                 if proj_name:
-                    self._project_map[strip_lower(proj_name)] = JiraProject(
+                    self.__project_map[strip_lower(proj_name)] = JiraProject(
                         proj.id, proj.key
                     )
                     # loading project related issue types
@@ -442,23 +442,23 @@ class JiraClient:
                             JiraIssueType(issue_type.id, issue_type.name, proj.id)
                             for issue_type in response
                         ]
-                        self._project_issue_map_using_name[strip_lower(proj_name)] = (
+                        self.__project_issue_map_using_name[strip_lower(proj_name)] = (
                             issue_types
                         )
-                        self._project_issue_map_using_id[proj_id] = issue_types
+                        self.__project_issue_map_using_id[proj_id] = issue_types
                     except JIRAError as e:
                         print(
-                            f"""Get issue types failed. Project: {proj_name}. {self._extract_error_message(e)}"""  # pylint: disable=line-too-long
+                            f"""Get issue types failed. Project: {proj_name}. {self.__extract_error_message(e)}"""  # pylint: disable=line-too-long
                         )
                         continue
-        return list(self._project_map.values())
+        return list(self.__project_map.values())
 
     def get_issue_type_by_project_id_and_issue_name(
         self, project_id: int, issue_name: str
     ) -> "Optional[JiraIssueType]":
         match_result = [
             i
-            for i in self._project_issue_map_using_id[project_id]
+            for i in self.__project_issue_map_using_id[project_id]
             if strip_lower(i.name) == strip_lower(issue_name)
         ]
         if match_result:
@@ -469,11 +469,11 @@ class JiraClient:
         self, project_name: str, issue_name: str
     ) -> "Optional[JiraIssueType]":
         project_name = strip_lower(project_name)
-        if project_name not in self._project_issue_map_using_name:
+        if project_name not in self.__project_issue_map_using_name:
             return None
         match_result = [
             i
-            for i in self._project_issue_map_using_name[project_name]
+            for i in self.__project_issue_map_using_name[project_name]
             if strip_lower(i.name) == strip_lower(issue_name)
         ]
         if match_result:
@@ -482,15 +482,15 @@ class JiraClient:
 
     def get_issue_types(self, project_name: str) -> "List[JiraIssueType]":
         project_name = strip_lower(project_name)
-        result = self._project_issue_map_using_name.get(project_name, [])
+        result = self.__project_issue_map_using_name.get(project_name, [])
         if not result:
             self.get_project_by_project_name(project_name)
-        return self._project_issue_map_using_name.get(project_name, [])
+        return self.__project_issue_map_using_name.get(project_name, [])
 
     def get_fields_by_project_id_and_issue_id(
         self, project_id: int, issue_id: int
     ) -> "Tuple[List[JiraField], List[JiraField]]":
-        result = self._project_issue_field_map.get(
+        result = self.__project_issue_field_map.get(
             (project_id, issue_id),
             [],
         )
@@ -503,17 +503,17 @@ class JiraClient:
                 if (
                     project_id,
                     issue_type_id,
-                ) not in self._project_issue_field_map:
+                ) not in self.__project_issue_field_map:
                     field_types = self.jira.project_issue_fields(
                         str(project_id), str(issue_type_id)
                     )
                     if field_types:
-                        self._project_issue_field_map[(project_id, issue_type_id)] = [
-                            self._convert_field_type_to_jira_field(field_type.raw)
+                        self.__project_issue_field_map[(project_id, issue_type_id)] = [
+                            self.__convert_field_type_to_jira_field(field_type.raw)
                             for field_type in field_types
                         ]
         # Try to search again.
-        result = self._project_issue_field_map.get(
+        result = self.__project_issue_field_map.get(
             (project_id, issue_id),
             [],
         )
@@ -526,7 +526,7 @@ class JiraClient:
                 not_required_fields.append(item)
         return (required_fields, not_required_fields)
 
-    def _convert_field_type_to_jira_field(self, field_type: Any) -> "JiraField":
+    def __convert_field_type_to_jira_field(self, field_type: Any) -> "JiraField":
         result: JiraField
 
         result = JiraField(
@@ -544,7 +544,7 @@ class JiraClient:
         else:
             value_type = schema.get("type", "")
 
-        def _extract_allowed_values(item: Union[str, Dict], pre_key: str):
+        def __extract_allowed_values(item: Union[str, Dict], pre_key: str):
             if isinstance(item, str):
                 if dict_has_key(result.allowed_values, pre_key):
                     result.allowed_values[pre_key].append(item)
@@ -552,7 +552,7 @@ class JiraClient:
                     result.allowed_values[pre_key] = [item]
             if isinstance(item, dict):
                 for key, value in item.items():
-                    _extract_allowed_values(
+                    __extract_allowed_values(
                         value, connect_jira_field_path(pre_key, key)
                     )
 
@@ -561,7 +561,7 @@ class JiraClient:
                 disabled = allowed_value.get("disabled", False)
                 if not disabled:
                     for key, value in allowed_value.items():
-                        _extract_allowed_values(
+                        __extract_allowed_values(
                             value, connect_jira_field_path(value_type, key)
                         )
 
@@ -570,7 +570,7 @@ class JiraClient:
     def get_all_fields(
         self,
     ) -> "Dict[str, Dict[str, Optional[List[JiraFieldPropertyPathDefinition]]]]":
-        if not self._field_cache:
+        if not self.__field_cache:
             for field in self.jira.fields():
                 if "schema" not in field.keys():
                     continue
@@ -599,8 +599,8 @@ class JiraClient:
                         field_type, property_name
                     )
 
-                    self._field_cache[field["name"]] = temp
-        return self._field_cache
+                    self.__field_cache[field["name"]] = temp
+        return self.__field_cache
 
     def get_stories_detail(
         self, story_ids: List[str], jira_fields: List[Dict[str, str]]
@@ -614,7 +614,7 @@ class JiraClient:
             while end_index <= len(story_ids) and start_index < len(story_ids):
                 # print(f"Start: {start_index}, End: {end_index}")
                 final_result.update(
-                    self._internal_get_stories_detail(
+                    self.__internal_get_stories_detail(
                         story_ids[start_index:end_index], jira_fields
                     )
                 )
@@ -624,9 +624,9 @@ class JiraClient:
                 else:
                     end_index = start_index + (len(story_ids) - end_index)
             return final_result
-        return self._internal_get_stories_detail(story_ids, jira_fields)
+        return self.__internal_get_stories_detail(story_ids, jira_fields)
 
-    def _internal_get_stories_detail(
+    def __internal_get_stories_detail(
         self, story_ids: List[str], jira_fields: List[Dict[str, str]]
     ) -> "Dict[str, Dict[str, str]]":
         id_query = ",".join(
@@ -662,10 +662,10 @@ class JiraClient:
 
             return final_result
         except JIRAError as e:
-            print(f"Calling search API failed. {self._extract_error_message(e)}")
+            print(f"Calling search API failed. {self.__extract_error_message(e)}")
         return {}
 
-    def _extract_error_message(self, error: JIRAError) -> "str":
+    def __extract_error_message(self, error: JIRAError) -> "str":
         if error.status_code == 400 and error.response.text:
             error_response: Dict[str, Any] = error.response.json()
             error_messages = error_response.get("errorMessages", [])

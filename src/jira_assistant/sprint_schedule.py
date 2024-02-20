@@ -10,7 +10,7 @@ __all__ = ["SprintScheduleStore"]
 
 class SprintScheduleStore:
     def __init__(self) -> None:
-        self.store: List[Tuple[str, int]] = []
+        self.__store: List[Tuple[str, int]] = []
 
     def load(self, content: str):
         """
@@ -48,7 +48,7 @@ Hint: {e.msg} in line {e.lineno}:{e.colno}."""
 
             if is_valid_record and priority != -1:
                 for sprint in sprints:
-                    self.store.append((sprint, priority))
+                    self.__store.append((sprint, priority))
             sprints.clear()
             priority = -1
 
@@ -77,10 +77,10 @@ and the path should be absolute. File: {file}."""
                 schedule_file.close()
 
     def get_priority(self, sprint: str) -> int:
-        for item in self.store:
+        for item in self.__store:
             if sprint.upper() in item[0].upper():
                 return item[1]
         return 0
 
     def total_count(self) -> int:
-        return len(self.store)
+        return len(self.__store)
