@@ -19,9 +19,6 @@ class SprintScheduleStore:
         :param content:
             JSON string content
         """
-        if content is None:
-            return
-
         try:
             raw_data = loads(content)
         except JSONDecodeError as e:
