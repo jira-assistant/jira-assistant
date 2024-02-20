@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import pathlib
-from json import loads
-from json.decoder import JSONDecodeError
+from json import loads, JSONDecodeError
 from pathlib import Path
 from typing import List, Tuple, Union
 from .utils import strip_lower
@@ -27,30 +26,34 @@ class SprintScheduleStore:
             raw_data = loads(content)
         except JSONDecodeError as e:
             raise SyntaxError(
-                f"""The structure of sprint schedule file is wrong.
-                Hint: {e.msg} in line {e.lineno}:{e.colno}."""
+                f"""The structure of sprint schedule file is wrong. \
+Hint: {e.msg} in line {e.lineno}:{e.colno}."""
             ) from e
 
-        priority = 0
+        priority = -1
         sprints: List[str] = []
         for raw_item in raw_data:
+            is_valid_record: bool = True
             for name, configuration in raw_item.items():
-                if strip_lower(name) in strip_lower("priority"):
+                if strip_lower(name) == strip_lower("priority"):
                     if configuration is None or not isinstance(configuration, int):
                         # Just skip invalid items.
+                        is_valid_record = False
                         continue
                     priority = configuration
-                if strip_lower(name) in strip_lower("sprints"):
+                if strip_lower(name) == strip_lower("sprints"):
                     if configuration is None or not isinstance(configuration, list):
+                        is_valid_record = False
                         continue
                     for sprint in configuration:
                         if isinstance(sprint, str) and len(sprint) > 0:
                             sprints.append(sprint)
 
-            for sprint in sprints:
-                self.store.append((sprint, priority))
+            if is_valid_record and priority != -1:
+                for sprint in sprints:
+                    self.store.append((sprint, priority))
             sprints.clear()
-            priority = 0
+            priority = -1
 
     def load_file(self, file: Union[str, Path]):
         """
@@ -66,8 +69,8 @@ class SprintScheduleStore:
             or not pathlib.Path(file).exists()
         ):
             raise FileNotFoundError(
-                f"""Please make sure the sprint schedule file exist 
-                and the path should be absolute. File: {file}."""
+                f"""Please make sure the sprint schedule file exist \
+and the path should be absolute. File: {file}."""
             )
 
         with open(file=file, mode="r", encoding="utf-8") as schedule_file:
