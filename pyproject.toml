@@ -43,7 +43,7 @@ dependencies = [
     'importlib_metadata; python_version < "3.8"',
     'requests-mock >= 1.10.0',
 ]
-version = "0.1.26"
+version = "0.1.27"
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "pylint"]
@@ -61,5 +61,7 @@ where = ["src"]
 
 [project.scripts]
 process-excel-file = "jira_assistant:process_excel_file"
+# This is for users who comes from the sharry-jira-tool
+sort-excel-file = "jira_assistant:process_excel_file"
 generate-template = "jira_assistant:generate_template"
 update-jira-info = "jira_assistant:update_jira_info"

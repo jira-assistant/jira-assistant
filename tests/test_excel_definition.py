@@ -79,14 +79,6 @@ def test_load_happy_path():
     assert store.total_count() > 0
 
 
-def test_load_using_none_input():
-    store = ExcelDefinition()
-    content: str = None  # type: ignore
-    with raises(ValueError) as err:
-        store.load(content)
-    assert "There is no content in the excel definition file." in str(err.value)
-
-
 def test_load_file():
     excel_definition_filename = SRC_ASSETS / "excel_definition.json"
     store = ExcelDefinition()

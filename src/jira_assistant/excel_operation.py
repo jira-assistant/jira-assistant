@@ -123,11 +123,11 @@ Column name: {column_value}."""
                 min_col=1,
                 max_col=len(actual_excel_columns),
             ):
-                if _should_skip(row):
+                if __should_skip(row):
                     continue
 
                 story: Story = story_factory.create_story()
-                story.excel_row_index = _extract_row_number(row)
+                story.excel_row_index = __extract_row_number(row)
                 actual_column_values: List[Cell] = list(row)
 
                 for actual_column_index, actual_column_name in enumerate(
@@ -180,7 +180,7 @@ Column name: {column_value}."""
     return (actual_excel_columns, stories)
 
 
-def _should_skip(row: tuple) -> bool:
+def __should_skip(row: tuple) -> bool:
     if len(row) == 0:
         return True
     first_cell_value = row[0].value
@@ -189,7 +189,7 @@ def _should_skip(row: tuple) -> bool:
     return False
 
 
-def _extract_row_number(row: tuple) -> int:
+def __extract_row_number(row: tuple) -> int:
     if len(row) == 0 or row[0].row is None:
         return 0
     return int(row[0].row)

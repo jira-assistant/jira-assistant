@@ -58,27 +58,27 @@ def convert_to_datetime(raw: Any) -> Optional[datetime]:
 
 class Story:
     def __init__(self, factory: "StoryFactory") -> None:
-        self._need_sort = True
-        self._excel_row_index = 0
+        self.__need_sort = True
+        self.__excel_row_index = 0
         if factory is None:
             raise ValueError("Story must be created from a specific factory!")
         self.factory = factory
 
     @property
     def need_sort(self) -> bool:
-        return self._need_sort
+        return self.__need_sort
 
     @need_sort.setter
     def need_sort(self, value: bool):
-        self._need_sort = value
+        self.__need_sort = value
 
     @property
     def excel_row_index(self) -> int:
-        return self._excel_row_index
+        return self.__excel_row_index
 
     @excel_row_index.setter
     def excel_row_index(self, value: int):
-        self._excel_row_index = value
+        self.__excel_row_index = value
 
     def __getitem__(self, property_name: str) -> Any:
         return getattr(self, standardlize_column_name(property_name))
@@ -154,14 +154,14 @@ class StoryFactory:
     def __init__(self, columns: "List[ExcelDefinitionColumn]") -> None:
         if columns is None:
             raise ValueError("Columns must be provided!")
-        self._columns = columns
-        self._inline_weight_compare_rules = (
+        self.__columns = columns
+        self.__inline_weight_compare_rules = (
             self.__generate_inline_weights_compare_rules()
         )
 
     def __generate_inline_weights_compare_rules(self) -> "List[Tuple[str, int]]":
         rules = []
-        for column in self._columns:
+        for column in self.__columns:
             if column["inline_weights"] > 0:
                 rules.append(
                     (
@@ -174,11 +174,11 @@ class StoryFactory:
 
     @property
     def columns(self):
-        return self._columns
+        return self.__columns
 
     @property
     def inline_weights_compare_rules(self) -> "List[Tuple[str, int]]":
-        return self._inline_weight_compare_rules
+        return self.__inline_weight_compare_rules
 
     def create_story(self) -> Story:
         return Story(self)
@@ -317,7 +317,7 @@ def sort_stories_by_property_and_order(
                     )
                 )
 
-        _internal_sort_stories_by_property_and_order_considering_parent_range(
+        __internal_sort_stories_by_property_and_order_considering_parent_range(
             stories, column_definitions, sort_rules, parent_scope_index
         )
     else:
@@ -330,17 +330,17 @@ def sort_stories_by_property_and_order(
                     )
                 )
 
-        _internal_sort_stories_by_property_and_order(stories, sort_rules)
+        __internal_sort_stories_by_property_and_order(stories, sort_rules)
 
 
-def _internal_sort_stories_by_property_and_order(
+def __internal_sort_stories_by_property_and_order(
     stories: "List[Story]", sort_rules: "List[Tuple[str, bool]]"
 ):
     for column_name, sort_order in reversed(sort_rules):
         stories.sort(key=attrgetter(column_name), reverse=sort_order)
 
 
-def _internal_sort_stories_by_property_and_order_considering_parent_range(
+def __internal_sort_stories_by_property_and_order_considering_parent_range(
     stories: "List[Story]",
     story_columns: "Dict[int, ExcelDefinitionColumn]",
     sort_rules: "List[Tuple[str, bool]]",
@@ -422,7 +422,7 @@ def sort_stories_by_raise_ranking(
             c["index"]: c for c in excel_definition_columns
         }
 
-        result = _internal_raise_story_ranking_by_property_considering_parent_level(
+        result = __internal_raise_story_ranking_by_property_considering_parent_level(
             stories, column_definitions, sort_rules, parent_scope_index
         )
     else:
@@ -441,12 +441,12 @@ def sort_stories_by_raise_ranking(
         sort_rules.sort(key=lambda x: x[1], reverse=True)  # sort by raise_ranking
 
         for property_name, _ in sort_rules:
-            result = _internal_raise_story_ranking_by_property(stories, property_name)
+            result = __internal_raise_story_ranking_by_property(stories, property_name)
 
     return result
 
 
-def _internal_raise_story_ranking_by_property(
+def __internal_raise_story_ranking_by_property(
     stories: "List[Story]", property_name: str
 ) -> "List[Story]":
     if stories is None or len(stories) == 0:
@@ -454,10 +454,10 @@ def _internal_raise_story_ranking_by_property(
     # Use first story as example
     if not hasattr(stories[0], property_name):
         return stories
-    return _raise_story_ranking_by_property(stories, property_name)
+    return __raise_story_ranking_by_property(stories, property_name)
 
 
-def _internal_raise_story_ranking_by_property_considering_parent_level(
+def __internal_raise_story_ranking_by_property_considering_parent_level(
     stories: "List[Story]",
     story_columns: "Dict[int, ExcelDefinitionColumn]",
     sort_rules: "List[Tuple[str, int]]",
@@ -486,7 +486,7 @@ def _internal_raise_story_ranking_by_property_considering_parent_level(
 
         # Same parent level process
         for column_name, _ in reversed(sort_rules):
-            stories[begin_index : end_index + 1] = _raise_story_ranking_by_property(
+            stories[begin_index : end_index + 1] = __raise_story_ranking_by_property(
                 stories[begin_index : end_index + 1], column_name
             )
 
@@ -497,7 +497,7 @@ def _internal_raise_story_ranking_by_property_considering_parent_level(
 
 
 # Only bool indicator for now
-def _raise_story_ranking_by_property(
+def __raise_story_ranking_by_property(
     stories: "List[Story]", property_name: str
 ) -> "List[Story]":
     if not isinstance(getattr(stories[0], property_name), bool):

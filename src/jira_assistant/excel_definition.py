@@ -29,48 +29,48 @@ class BasicStep:
     def __init__(
         self, name: str, enabled: bool, priority: int, config: Optional[Dict[str, Any]]
     ) -> None:
-        self._name: str = name
-        self._enabled: bool = enabled
-        self._priority: int = priority
-        self._config: Optional[Dict[str, Any]] = config
+        self.__name: str = name
+        self.__enabled: bool = enabled
+        self.__priority: int = priority
+        self.__config: Optional[Dict[str, Any]] = config
 
     @property
     def name(self) -> str:
-        return self._name
+        return self.__name
 
     @name.setter
     def name(self, value: str):
-        self._name = value
+        self.__name = value
 
     @property
     def enabled(self) -> bool:
-        return self._enabled
+        return self.__enabled
 
     @enabled.setter
     def enabled(self, value: bool):
-        self._enabled = value
+        self.__enabled = value
 
     @property
     def priority(self) -> int:
-        return self._priority
+        return self.__priority
 
     @priority.setter
     def priority(self, value: int):
-        self._priority = value
+        self.__priority = value
 
     @property
     def config(self) -> Optional[Dict[str, Any]]:
-        return self._config
+        return self.__config
 
     @config.setter
     def config(self, value: Dict[str, Any]):
-        self._config = value
+        self.__config = value
 
     def get_config(self, name: str) -> Optional[Any]:
-        if self._config is not None:
-            for key in self._config.keys():
+        if self.__config is not None:
+            for key in self.__config.keys():
                 if strip_lower(key) == strip_lower(name):
-                    return self._config[key]
+                    return self.__config[key]
         return None
 
 
@@ -264,10 +264,10 @@ def parse_json_item_to_excel_definition_column(json_item: Any) -> ExcelDefinitio
 
 class ExcelDefinition:
     def __init__(self) -> None:
-        self.version = 1
-        self.columns: list[ExcelDefinitionColumn] = []
-        self.sort_strategies: list[SortStrategy] = []
-        self.pre_process_steps: list[PreProcessStep] = []
+        self.__version = 1
+        self.__columns: list[ExcelDefinitionColumn] = []
+        self.__sort_strategies: list[SortStrategy] = []
+        self.__pre_process_steps: list[PreProcessStep] = []
 
     def load(self, content: str) -> "ExcelDefinition":
         """
@@ -276,9 +276,6 @@ class ExcelDefinition:
         :param content:
             JSON string content
         """
-
-        if content is None:
-            raise ValueError("There is no content in the excel definition file.")
 
         try:
             raw_data = loads(s=content)
@@ -293,12 +290,14 @@ class ExcelDefinition:
             if not isinstance(raw_part, dict):
                 continue
             for name, configuration in raw_part.items():
-                if strip_lower(name) == strip_lower("Version"):
-                    self.version = configuration
+                if strip_lower(name) == strip_lower("Version") and isinstance(
+                    configuration, int
+                ):
+                    self.__version = configuration
                 elif strip_lower(name) == strip_lower("PreProcessSteps"):
                     for item in configuration:
                         try:
-                            self.pre_process_steps.append(
+                            self.__pre_process_steps.append(
                                 parse_json_item_to_pre_process_step(item)
                             )
                         except (TypeError, ValueError) as e:
@@ -306,7 +305,7 @@ class ExcelDefinition:
                 elif strip_lower(name) == strip_lower("SortStrategies"):
                     for item in configuration:
                         try:
-                            self.sort_strategies.append(
+                            self.__sort_strategies.append(
                                 parse_json_item_to_sort_strategy(item)
                             )
                         except (TypeError, ValueError) as e:
@@ -314,7 +313,7 @@ class ExcelDefinition:
                 elif strip_lower(name) == strip_lower("Columns"):
                     for item in configuration:
                         try:
-                            self.columns.append(
+                            self.__columns.append(
                                 parse_json_item_to_excel_definition_column(item)
                             )
                         except (TypeError, ValueError) as e:
@@ -354,12 +353,12 @@ class ExcelDefinition:
 
     def validate(self) -> "List":
         return (
-            self._validate_pre_process_steps()
-            + self._validate_sort_strategies()
-            + self._validate_column_definitions()
+            self.__validate_pre_process_steps()
+            + self.__validate_sort_strategies()
+            + self.__validate_column_definitions()
         )
 
-    def _validate_pre_process_steps(self) -> "List[str]":
+    def __validate_pre_process_steps(self) -> "List[str]":
         invalid_definitions = []
         valid_pre_process_steps = [
             "CreateJiraStory".lower(),
@@ -370,7 +369,7 @@ class ExcelDefinition:
 
         # Validate PreProcessSteps
         pre_process_step_priorities: List[int] = []
-        for pre_process_step in self.pre_process_steps:
+        for pre_process_step in self.__pre_process_steps:
             if pre_process_step.name.lower() not in valid_pre_process_steps:
                 invalid_definitions.append("The PreProcessStep name is invalid.")
                 continue
@@ -442,12 +441,12 @@ class ExcelDefinition:
 
         return invalid_definitions
 
-    def _validate_sort_strategies(self) -> "List[str]":
+    def __validate_sort_strategies(self) -> "List[str]":
         invalid_definitions = []
 
         # Validate Strategies
         strategy_priorities: List[int] = []
-        for strategy in self.sort_strategies:
+        for strategy in self.__sort_strategies:
             if strategy.name.isspace() or len(strategy.name) == 0:
                 invalid_definitions.append("The strategy name is invalid.")
                 # If strategy name is invalid, no need to check more.
@@ -488,7 +487,7 @@ class ExcelDefinition:
 
         return invalid_definitions
 
-    def _validate_column_definitions(  # pylint: disable=too-many-branches
+    def __validate_column_definitions(  # pylint: disable=too-many-branches
         self,
     ) -> "List[str]":
         invalid_definitions = []
@@ -653,17 +652,18 @@ class ExcelDefinition:
                     )
                 exist_jira_field_paths.append(jira_field_path)
 
-        if len(self.columns) > 0 and exist_story_id_column is False:
+        if len(self.__columns) > 0 and exist_story_id_column is False:
             invalid_definitions.append(
                 "Must have a column named StoryId so that program can identify the record."
             )
 
         if len(invalid_definitions) == 0:
-            self.columns.sort(key=lambda c: c["index"], reverse=False)
+            self.__columns.sort(key=lambda c: c["index"], reverse=False)
 
-            if len(self.columns) > 0 and (
-                self.columns[0]["index"] != 1
-                or self.columns[len(self.columns) - 1]["index"] != len(self.columns)
+            if len(self.__columns) > 0 and (
+                self.__columns[0]["index"] != 1
+                or self.__columns[len(self.__columns) - 1]["index"]
+                != len(self.__columns)
             ):
                 invalid_definitions.append(
                     "Column Index must be in continuation and starts from 1."
@@ -692,17 +692,17 @@ class ExcelDefinition:
         return None
 
     def __iter__(self):
-        for item in self.columns:
+        for item in self.__columns:
             yield item
 
     def get_columns(self) -> "List[ExcelDefinitionColumn]":
-        return deepcopy(self.columns)
+        return deepcopy(self.__columns)
 
     def get_column_by_jira_field_mapping_name(
         self, name: str
     ) -> "List[ExcelDefinitionColumn]":
         result: List[ExcelDefinitionColumn] = []
-        for item in self.columns:
+        for item in self.__columns:
             jira_field_mapping = item.get("jira_field_mapping", None)
             if jira_field_mapping is not None and standardlize_column_name(
                 jira_field_mapping["path"].split(".")[0]
@@ -713,37 +713,42 @@ class ExcelDefinition:
     def get_columns_name(self, standardlized: bool = True) -> "List[str]":
         if standardlized:
             return [
-                standardlize_column_name(item.get("name", "")) for item in self.columns
+                standardlize_column_name(item.get("name", ""))
+                for item in self.__columns
             ]
-        return [item["name"] for item in self.columns]
+        return [item["name"] for item in self.__columns]
 
     @property
     def max_column_index(self) -> int:
-        return self.columns[len(self.columns) - 1]["index"]
+        return self.__columns[len(self.__columns) - 1]["index"]
 
     @property
     def column_count(self) -> int:
-        return len(self.columns)
+        return len(self.__columns)
 
     def get_sort_strategies(self, enabled: bool = True) -> "List[SortStrategy]":
         result: list[SortStrategy] = []
-        for sort_strategy in self.sort_strategies:
+        for sort_strategy in self.__sort_strategies:
             if sort_strategy.enabled == enabled:
                 result.append(deepcopy(sort_strategy))
-        result.sort(key=ExcelDefinition._sort_priority_map, reverse=False)
+        result.sort(key=ExcelDefinition.__sort_priority_map, reverse=False)
         return result
 
     def get_pre_process_steps(self, enabled: bool = True) -> "List[PreProcessStep]":
         result: list[PreProcessStep] = []
-        for pre_process_step in self.pre_process_steps:
+        for pre_process_step in self.__pre_process_steps:
             if pre_process_step.enabled == enabled:
                 result.append(deepcopy(pre_process_step))
-        result.sort(key=ExcelDefinition._sort_priority_map, reverse=False)
+        result.sort(key=ExcelDefinition.__sort_priority_map, reverse=False)
         return result
 
     @staticmethod
-    def _sort_priority_map(item: BasicStep) -> int:
+    def __sort_priority_map(item: BasicStep) -> int:
         return item.priority
 
     def total_count(self):
-        return len(self.columns)
+        return len(self.__columns)
+
+    @property
+    def version(self) -> int:
+        return self.__version

@@ -41,14 +41,14 @@ DEFAULT_SPRINT_SCHEDULE_FILE = ASSETS / "sprint_schedule.json"
 DEFAULT_EXCEL_DEFINITION_FILE = ASSETS / "excel_definition.json"
 
 
-def _clear_env_variables():
+def __clear_env_variables():
     if "JIRA_URL" in environ:
         del environ["JIRA_URL"]
     if "JIRA_ACCESS_TOKEN" in environ:
         del environ["JIRA_ACCESS_TOKEN"]
 
 
-def _get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
+def __get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
     if env_file is None:
         if not load_dotenv(ASSETS / ".env"):
             print(
@@ -58,7 +58,7 @@ def _get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
             )
             return None
     else:
-        _clear_env_variables()
+        __clear_env_variables()
         if not load_dotenv(env_file):
             print("The env file is invalid. Please double check the env file.")
             return None
@@ -102,12 +102,12 @@ def _get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
     return jira_client
 
 
-def _query_jira_information(
+def __query_jira_information(
     stories: List[Story],
     excel_definition: ExcelDefinition,
     env_file: Optional[Path] = None,
 ) -> bool:
-    jira_client = _get_jira_client(env_file)
+    jira_client = __get_jira_client(env_file)
 
     if jira_client is None:
         return False
@@ -164,7 +164,7 @@ Current: {story['storyid'].upper()}"
     return True
 
 
-def _check_allowed_value(
+def __check_allowed_value(
     current_value: Any,
     jira_field: JiraField,
     excel_column: ExcelDefinitionColumn,
@@ -184,7 +184,7 @@ def _check_allowed_value(
     return True
 
 
-def _assign_new_story_field(
+def __assign_new_story_field(
     is_array: bool,
     new_story_fields: Dict[str, Any],
     excel_column: ExcelDefinitionColumn,
@@ -199,12 +199,12 @@ def _assign_new_story_field(
         new_story_fields[jira_field_path] = value
 
 
-def _create_jira_stories(
+def __create_jira_stories(
     stories: List[Story],
     excel_definition: ExcelDefinition,
     env_file: Optional[Path] = None,
 ) -> bool:
-    jira_client = _get_jira_client(env_file)
+    jira_client = __get_jira_client(env_file)
 
     if jira_client is None:
         return False
@@ -262,7 +262,7 @@ Excel row number: {story.excel_row_index}."
                     all_fields_valid = False
                     continue
                 current_value = story[standardlize_column_name(excel_column_name)]
-                if not _check_allowed_value(
+                if not __check_allowed_value(
                     current_value,
                     required_field,
                     excel_column,
@@ -271,7 +271,7 @@ Excel row number: {story.excel_row_index}."
                 ):
                     all_fields_valid = False
                     continue
-                _assign_new_story_field(
+                __assign_new_story_field(
                     required_field.is_array,
                     new_story_fields,
                     excel_column,
@@ -291,7 +291,7 @@ Excel row number: {story.excel_row_index}."
                 current_value = story[standardlize_column_name(excel_column_name)]
                 if current_value is None:
                     continue
-                if not _check_allowed_value(
+                if not __check_allowed_value(
                     current_value,
                     not_required_field,
                     excel_column,
@@ -300,7 +300,7 @@ Excel row number: {story.excel_row_index}."
                 ):
                     all_fields_valid = False
                     continue
-                _assign_new_story_field(
+                __assign_new_story_field(
                     is_array, new_story_fields, excel_column, current_value
                 )
 
@@ -320,7 +320,7 @@ Excel row number: {story.excel_row_index}."
     return True
 
 
-def _run_pre_steps(
+def __run_pre_steps(
     stories: List[Story],
     excel_definition: ExcelDefinition,
     env_file: Optional[Path] = None,
@@ -342,7 +342,7 @@ def _run_pre_steps(
                 for story in stories:
                     if story.need_sort and story["storyid"] is not None:
                         stories_need_call_jira.append(story)
-                if not _query_jira_information(
+                if not __query_jira_information(
                     stories_need_call_jira, excel_definition, env_file
                 ):
                     print("Retrieve jira information failed.")
@@ -371,7 +371,7 @@ def _run_pre_steps(
                     stories_need_to_create.append(story)
 
             if stories_need_to_create:
-                if not _create_jira_stories(
+                if not __create_jira_stories(
                     stories_need_to_create, excel_definition, env_file
                 ):
                     print("Error occurred when creating Jira stories.")
@@ -379,7 +379,7 @@ def _run_pre_steps(
         print("Executing finish.")
 
 
-def _run_sort_logics(
+def __run_sort_logics(
     stories: List[Story], excel_definition: ExcelDefinition
 ) -> Tuple[List[Story], List[Story]]:
     stories_no_need_sort = []
@@ -477,9 +477,9 @@ def run_steps_and_sort_excel_file(
         print("There are no stories inside the excel file.")
         return
 
-    _run_pre_steps(stories, excel_definition, env_file)
+    __run_pre_steps(stories, excel_definition, env_file)
 
-    stories_need_sort, stories_no_need_sort = _run_sort_logics(
+    stories_need_sort, stories_no_need_sort = __run_sort_logics(
         stories, excel_definition
     )
 
@@ -497,7 +497,7 @@ def generate_jira_field_mapping_file(
     file: Union[str, Path], over_write: bool = True, env_file: Optional[Path] = None
 ) -> bool:
     """Generate jira field mapping"""
-    jira_client = _get_jira_client(env_file)
+    jira_client = __get_jira_client(env_file)
 
     if jira_client is None:
         return False
