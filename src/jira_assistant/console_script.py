@@ -41,54 +41,58 @@ def get_package_version() -> str:
 def get_args_for_process_excel_file() -> Namespace:
     """Process console command's arguments. Command: process_excel_file"""
     parser = ArgumentParser(
-        description="Jira tool: Used to pre-process and sort stories",
+        description="Used to pre-process and sort stories",
         formatter_class=ArgumentDefaultsHelpFormatter,
         allow_abbrev=False,
     )
 
-    parser.add_argument(
-        "input_file", metavar="input_file", type=pathlib.Path, help="Source Excel file."
-    )
+    parser.add_argument("input_file", type=pathlib.Path, help="Source Excel file.")
     parser.add_argument(
         "-o",
+        "--output-folder",
         "--output_folder",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Output folder.",
     )
     parser.add_argument(
+        "--excel-definition-file",
         "--excel_definition_file",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Excel definition file. File format: JSON.",
     )
     parser.add_argument(
+        "--sprint-schedule-file",
         "--sprint_schedule_file",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Milestone priority file. File format: JSON.",
     )
     parser.add_argument(
+        "--over-write",
         "--over_write",
-        metavar="",
+        metavar="True|False",
         type=bool,
         required=False,
         default=True,
         help="Whether or not to over write existing file.",
     )
     parser.add_argument(
+        "--env-file",
         "--env_file",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Env file which contains info like jira url.",
     )
     parser.add_argument(
+        "--dry-run",
         "--dry_run",
-        metavar="",
+        metavar="True|False",
         type=bool,
         required=False,
         default=False,
@@ -211,7 +215,7 @@ def process_excel_file() -> None:
 def get_args_for_generate_template() -> Namespace:
     """Process console command's arguments. Command: generate_template"""
     parser = ArgumentParser(
-        description="Jira tool: Used to generate templates",
+        description="Used to generate templates",
         formatter_class=ArgumentDefaultsHelpFormatter,
         allow_abbrev=False,
     )
@@ -221,20 +225,22 @@ def get_args_for_generate_template() -> Namespace:
         metavar="template_type",
         type=str,
         help="""What kind of file template you want to generate.
-        Choices: excel, excel-definition, sprint-schedule or jira-field-mapping.""",
+Choices: excel, excel-definition, sprint-schedule or jira-field-mapping.""",
         choices=["excel", "excel-definition", "sprint-schedule", "jira-field-mapping"],
     )
     parser.add_argument(
         "-o",
+        "--output-folder",
         "--output_folder",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Output folder.",
     )
     parser.add_argument(
+        "--env-file",
         "--env_file",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Env file which contains info like jira url.",
@@ -346,14 +352,15 @@ def __generate_jira_field_mapping_template(
 def get_args_for_update_jira_info() -> Namespace:
     """Process console command's arguments. Command: update_jira_info"""
     parser = ArgumentParser(
-        description="Jira tool: Used to add/update jira url or access token.",
+        description="Used to add/update jira url or access token.",
         formatter_class=ArgumentDefaultsHelpFormatter,
         allow_abbrev=False,
     )
 
     parser.add_argument(
+        "--access-token",
         "--access_token",
-        metavar="",
+        metavar="<token>",
         type=str,
         required=False,
         help="Please follow the documentation to get your own access token.",
@@ -361,14 +368,15 @@ def get_args_for_update_jira_info() -> Namespace:
 
     parser.add_argument(
         "--url",
-        metavar="",
+        metavar="<jira url>",
         type=str,
         required=False,
         help="Please provide the JIRA website url.",
     )
     parser.add_argument(
+        "--env-file",
         "--env_file",
-        metavar="",
+        metavar="<path>",
         type=pathlib.Path,
         required=False,
         help="Custom env file",

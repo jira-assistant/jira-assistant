@@ -128,13 +128,13 @@ Currently, we are using the `jira access token`__ to do the validation and that 
 
 .. code-block:: console
 
-    update-jira-info --token <access_token> --url <jira_url>
+    update-jira-info --access-token <access_token> --url <jira_url>
 
 If you want to use your own definition files before processing the excel, you can run below command to access some templates which can help you understand the definition file.
 
 .. code-block:: console
 
-    generate-template excel-definition --output_folder <folder_you_want>
+    generate-template excel-definition --output-folder <folder_you_want>
 
 For more details, please check the help message like below:
 
@@ -162,7 +162,16 @@ If you want to customize the definition file to adapt the new Excel, you can do 
 
   [
       {
+          "version": 1
+      },
+      {
           "PreProcessSteps": [
+              {
+                  "Priority": 1,
+                  "Name": "CreateJiraStory",
+                  "Enabled": true,
+                  "Config": {}
+              },
               {
                   "Name": "FilterOutStoryWithoutId",
                   "Enabled": true,
@@ -232,7 +241,12 @@ If you want to customize the definition file to adapt the new Excel, you can do 
                   "ScopeSortOrder": false,
                   "InlineWeights": 0,
                   "RaiseRanking": 0,
-                  "ScopeRaiseRanking": 0
+                  "ScopeRaiseRanking": 0,
+                  "JiraFieldMapping": {
+                      "name": "customfield_15601",
+                      "path": "customfield_15601.value"
+                  },
+                  "QueryJiraInfo": true
               }
           ]
       }

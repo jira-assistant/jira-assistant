@@ -43,7 +43,7 @@ dependencies = [
     'importlib_metadata; python_version < "3.8"',
     'requests-mock >= 1.10.0',
 ]
-version = "0.1.27"
+version = "0.1.28"
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "pylint"]
