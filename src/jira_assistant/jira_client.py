@@ -7,7 +7,7 @@ import warnings
 
 from json import loads
 
-from typing import Any, Dict, List, Optional, TypedDict, Tuple, Union
+from typing import Any, Dict, List, Optional, Required, TypedDict, Tuple, Union
 
 from jira import JIRA, JIRAError, Issue
 from urllib3 import disable_warnings
@@ -133,26 +133,9 @@ def get_jira_field(
     return None
 
 
-class JiraFieldPropertyPathDefinition:
-    def __init__(self, path: str, is_array: bool) -> None:
-        self.__path = path
-        self.__is_array = is_array
-
-    @property
-    def path(self) -> str:
-        return self.__path
-
-    @path.setter
-    def path(self, value: str):
-        self.__path = value
-
-    @property
-    def is_array(self):
-        return self.__is_array
-
-    @is_array.setter
-    def is_array(self, value: bool):
-        self.__is_array = value
+class JiraFieldPropertyPathDefinition(TypedDict):
+    path: Required[str]
+    is_array: Required[bool]
 
 
 def get_field_paths_of_jira_field(
@@ -164,7 +147,9 @@ def get_field_paths_of_jira_field(
     if jira_field is None:
         return None
     if jira_field.is_basic is True:
-        return [JiraFieldPropertyPathDefinition(field_property_name, False)]
+        return [
+            JiraFieldPropertyPathDefinition(path=field_property_name, is_array=False)
+        ]
     result: List[JiraFieldPropertyPathDefinition] = []
     is_array_item = jira_field.array_item_type is not None
     # Following code will use the same jira field type file, so no need to pass.
@@ -173,8 +158,8 @@ def get_field_paths_of_jira_field(
         is_array_item,
         [
             JiraFieldPropertyPathDefinition(
-                field_property_name,
-                is_array_item,
+                path=field_property_name,
+                is_array=is_array_item,
             )
         ],
         result,
@@ -194,8 +179,8 @@ def __internal_get_field_paths_of_jira_field(
         for item in temp:
             final.append(
                 JiraFieldPropertyPathDefinition(
-                    connect_jira_field_path(item.path, jira_field.name),
-                    is_array_item,
+                    path=connect_jira_field_path(item["path"], jira_field.name),
+                    is_array=is_array_item,
                 )
             )
     if jira_field.array_item_type is not None:
@@ -206,7 +191,9 @@ def __internal_get_field_paths_of_jira_field(
         for field_property in jira_field.properties:
             if field_property.array_item_type is not None:
                 for item in temp:
-                    item.path = connect_jira_field_path(item.path, field_property.name)
+                    item["path"] = connect_jira_field_path(
+                        item["path"], field_property.name
+                    )
                 __internal_get_field_paths_of_jira_field(
                     get_jira_field(field_property.array_item_type),
                     True,
@@ -222,13 +209,17 @@ def __internal_get_field_paths_of_jira_field(
                 for item in temp:
                     final.append(
                         JiraFieldPropertyPathDefinition(
-                            connect_jira_field_path(item.path, field_property.name),
-                            is_array_item,
+                            path=connect_jira_field_path(
+                                item["path"], field_property.name
+                            ),
+                            is_array=is_array_item,
                         )
                     )
                 continue
             for item in temp:
-                item.path = connect_jira_field_path(item.path, field_property.name)
+                item["path"] = connect_jira_field_path(
+                    item["path"], field_property.name
+                )
             __internal_get_field_paths_of_jira_field(
                 child_field, is_array_item, temp, final
             )
