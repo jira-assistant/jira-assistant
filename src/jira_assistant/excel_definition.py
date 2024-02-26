@@ -692,8 +692,7 @@ class ExcelDefinition:
         return None
 
     def __iter__(self):
-        for item in self.__columns:
-            yield item
+        yield from self.__columns
 
     def get_columns(self) -> "List[ExcelDefinitionColumn]":
         return deepcopy(self.__columns)
