@@ -9,7 +9,7 @@ from jira_assistant.excel_definition import (
     parse_json_item_to_sort_strategy,
 )
 
-from . import ASSETS_FILES, SRC_ASSETS
+from . import ASSETS_FILES
 
 
 def test_pre_process_step():
@@ -71,7 +71,7 @@ def test_parse_json_item_to_sort_strategy_invalid_priority():
 
 
 def test_load_happy_path():
-    excel_definition_filename = SRC_ASSETS / "excel_definition.json"
+    excel_definition_filename = ASSETS_FILES / "excel_definition.json"
 
     store = ExcelDefinition()
     with open(excel_definition_filename, encoding="utf-8") as file:
@@ -80,7 +80,7 @@ def test_load_happy_path():
 
 
 def test_load_file():
-    excel_definition_filename = SRC_ASSETS / "excel_definition.json"
+    excel_definition_filename = ASSETS_FILES / "excel_definition.json"
     store = ExcelDefinition()
     store.load_file(excel_definition_filename)
     assert store.total_count() > 0
@@ -98,7 +98,7 @@ def test_load_file_none():
 
 
 def test_iter():
-    excel_definition_filename = SRC_ASSETS / "excel_definition.json"
+    excel_definition_filename = ASSETS_FILES / "excel_definition.json"
     store = ExcelDefinition()
     store.load_file(excel_definition_filename)
     items = []
@@ -108,7 +108,7 @@ def test_iter():
 
 
 def test_validate():
-    excel_definition_filename = SRC_ASSETS / "excel_definition.json"
+    excel_definition_filename = ASSETS_FILES / "excel_definition.json"
     store = ExcelDefinition()
     store.load_file(excel_definition_filename)
 
@@ -395,5 +395,21 @@ def test_validate_filter_out_story_based_on_jira_status_missing_status():
 
     assert (
         "The PreProcessStep: FilterOutStoryBasedOnJiraStatus must have a column named Status."
+        in validation_result[0]
+    )
+
+
+def test_validate_filter_out_story_based_on_jira_status_missing_pre_step():
+    excel_definition_filename = (
+        ASSETS_FILES
+        / "excel_definition_filter_out_story_based_on_jira_status_missing_pre_step.json"
+    )
+    store = ExcelDefinition()
+    store.load_file(excel_definition_filename)
+
+    validation_result = store.validate()
+
+    assert (
+        "The step named RetrieveJiraInformation must be processed before FilterOutStoryBasedOnJiraStatus."
         in validation_result[0]
     )
