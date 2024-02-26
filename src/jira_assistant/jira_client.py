@@ -7,11 +7,11 @@ import warnings
 
 from json import loads
 
-from typing import Any, Dict, List, Optional, Required, TypedDict, Tuple, Union
+from typing import Any, Dict, List, Optional, TypedDict, Tuple, Union
 
 from jira import JIRA, JIRAError, Issue
 from urllib3 import disable_warnings
-from typing_extensions import NotRequired, Self
+from typing_extensions import Required, NotRequired, Self
 
 from .utils import dict_has_key, strip_lower
 
