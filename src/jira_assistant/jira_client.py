@@ -183,6 +183,7 @@ def __internal_get_field_paths_of_jira_field(
                     is_array=is_array_item,
                 )
             )
+        temp.clear()
     if jira_field.array_item_type is not None:
         __internal_get_field_paths_of_jira_field(
             get_jira_field(jira_field.array_item_type), True, temp, final
@@ -215,25 +216,28 @@ def __internal_get_field_paths_of_jira_field(
                             is_array=is_array_item,
                         )
                     )
-                continue
-            for item in temp:
-                item["path"] = connect_jira_field_path(
-                    item["path"], field_property.name
+            else:
+                __internal_get_field_paths_of_jira_field(
+                    child_field,
+                    is_array_item,
+                    [
+                        JiraFieldPropertyPathDefinition(
+                            path=connect_jira_field_path(
+                                item["path"], field_property.name
+                            ),
+                            is_array=item["is_array"],
+                        )
+                        for item in temp
+                    ],
+                    final,
                 )
-            __internal_get_field_paths_of_jira_field(
-                child_field, is_array_item, temp, final
-            )
     return None
 
 
-def connect_jira_field_path(path_a: Optional[str], path_b: Optional[str]) -> str:
-    if path_a is not None and path_b is not None:
-        return path_a + "." + path_b
-    if path_a is None and path_b is not None:
-        return path_b
-    if path_a is not None and path_b is None:
-        return path_a
-    return ""
+def connect_jira_field_path(
+    *paths: Optional[str], joint_char: str = ".", end_char: str = ""
+) -> str:
+    return f"{joint_char.join([path for path in paths if path])}{end_char}"
 
 
 class JiraProject:
@@ -360,6 +364,8 @@ class JiraClient:
     def __init__(
         self, url: str, access_token: str, timeout: Optional[float] = None
     ) -> None:
+        # Authentication/Authorization
+        # https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis/
         if timeout is None:
             timeout = _DEFAULT_JIRA_TIMEOUT
 

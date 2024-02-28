@@ -48,6 +48,13 @@ def test_connect_jira_field_path():
     assert connect_jira_field_path("a", None) == "a"
     assert connect_jira_field_path(None, "b") == "b"
     assert connect_jira_field_path(None, None) == ""
+    assert connect_jira_field_path("a", "b", "c") == "a.b.c"
+    assert connect_jira_field_path("a", "b", "c", joint_char="|") == "a|b|c"
+    assert (
+        connect_jira_field_path("a", "b", "c", joint_char="|", end_char="&") == "a|b|c&"
+    )
+    assert connect_jira_field_path() == ""
+    assert connect_jira_field_path(end_char="&") == "&"
 
 
 def test_get_stories_detail():
@@ -388,11 +395,9 @@ def test_get_field_paths_of_jira_field_use_array_type_no_hierarchy():
     assert "abc.comments.author.emailAddress" in [
         item["path"] for item in actual_field_paths
     ]
-    assert "abc.comments.author.id" in [item["path"] for item in actual_field_paths]
-    assert "abc.comments.author.body" in [item["path"] for item in actual_field_paths]
-    assert "abc.comments.author.created" in [
-        item["path"] for item in actual_field_paths
-    ]
+    assert "abc.comments.id" in [item["path"] for item in actual_field_paths]
+    assert "abc.comments.body" in [item["path"] for item in actual_field_paths]
+    assert "abc.comments.created" in [item["path"] for item in actual_field_paths]
 
 
 def test_create_story_failed(capsys):
