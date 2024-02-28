@@ -1,12 +1,10 @@
 # Gathering Jira Information
 
-[TOC]
+Inside this package, there is a shell command named `process-excel-file` and using this tool can help us to retrieve jira ticket's properties. 
 
-Inside this package, there is a command tool named `process-excel-file` and using this tool can help us to retrieve jira ticket's properties. 
+## Step 1: Prepare the definition file
 
-## Step 1: Prepare the excel definition file.
-
-You need to prepare an excel definition file like below.
+![excel_definition_example](../_static/image/quick_start/gathering_jira_info/excel_definition_example.png)
 
 ```json
 [
@@ -55,18 +53,47 @@ You need to prepare an excel definition file like below.
                     "name": "summary",
                     "path": "summary"
                 }
+            },
+            {
+                "Index": 3,
+                "Name": "Story Desc",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "description",
+                    "path": "description"
+                },
+				"QueryJiraInfo": true
             }
         ]
     }
-}
+]
 ```
 
-## Step 2
+## Step 2: Prepare the Excel file
 
 You need to create an excel file like below.
 
-![example_excel](../_static/image/quick_start/gathering_jira_info/example_excel.png)
+![excel_example](../_static/image/quick_start/gathering_jira_info/excel_example.png)
 
-## Step 3
+## Step 3: Running the shell command
 
-Running the following command.
+![running_command](../_static/image/quick_start/gathering_jira_info/running_command.png)
+
+## Step 4: Congratulations!!!
+
+Now, you can see the **excel_sorted.xlsx** file has been created successfully!
+
+![folder_snapshot](../_static/image/quick_start/gathering_jira_info/folder_snapshot.png)
+
+Open the Excel file and compare it with the ticket in the browser.
+
+![excel_sorted](../_static/image/quick_start/gathering_jira_info/excel_sorted.png)
+
+![ticket_from_ui](../_static/image/quick_start/gathering_jira_info/ticket_from_ui.png)
