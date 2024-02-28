@@ -37,4 +37,4 @@ process-excel-file 0.1.*
 
 ## That's it!
 
-That's it - you can now check out the [Quickstart](../quick_start/index.md) or go to the [Tutorial](../tutorial/index.md).
+That's it - you can now check out the [Quickstart](../quick_start/index.md) or go to the [Reference](../reference/index.md).
