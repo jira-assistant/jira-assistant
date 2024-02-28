@@ -6,8 +6,8 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
-            "request": "test",
+            "type": "debugpy",
+            "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "env": {

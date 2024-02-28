@@ -79,7 +79,7 @@ If you have any ideas or good requirements related to this package, please let u
 
 Installation
 ============
-`jira-assistant` can be installed from PyPI using `pip` (note that the package name is different from the importable name)::
+`jira-assistant` can be installed from PyPI using `pip` ::
 
     pip install -U jira-assistant
 

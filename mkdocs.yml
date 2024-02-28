@@ -1,0 +1,33 @@
+site_name: Jira Assistant
+site_url: https://pypi.org/project/jira-assistant/
+site_description: Jira Assistant Documentation
+site_author: Sharry Xu
+repo_url: https://github.com/jira-assistant/jira-assistant
+nav:
+    - 🚀Home: index.md
+    - 🛠️Installation:
+        - 'Install Jira Assistant': 'installation/install_jira_assistant.md'
+    - 💡Quickstart:
+        - 'Gathering Jira Info': 'quick_start/gathering_jira_info.md'
+        - 'Create Jira Story': 'quick_start/create_jira_story.md'
+        - 'Sort Excel File': 'quick_start/sort_excel_file.md'
+    - 🧰Reference:
+        - 'process-excel-file': 'reference/process_excel_file.md'
+        - 'generate-template': 'reference/generate_template.md'
+        - 'update-jira-info': 'reference/update_jira_info.md'
+    - 📚Tutorial:
+        - 'Developer Guide': 'tutorial/developer_guide.md'
+    - 🪪License: license.md
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - python
+        - powershell
+plugins:
+    - search:
+        min_search_length: 3
+markdown_extensions:
+    - toc:
+        permalink: "#"
+        baselevel: 1

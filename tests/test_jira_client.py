@@ -48,6 +48,13 @@ def test_connect_jira_field_path():
     assert connect_jira_field_path("a", None) == "a"
     assert connect_jira_field_path(None, "b") == "b"
     assert connect_jira_field_path(None, None) == ""
+    assert connect_jira_field_path("a", "b", "c") == "a.b.c"
+    assert connect_jira_field_path("a", "b", "c", joint_char="|") == "a|b|c"
+    assert (
+        connect_jira_field_path("a", "b", "c", joint_char="|", end_char="&") == "a|b|c&"
+    )
+    assert connect_jira_field_path() == ""
+    assert connect_jira_field_path(end_char="&") == "&"
 
 
 def test_get_stories_detail():
@@ -346,14 +353,14 @@ def test_get_field_paths_of_jira_field_use_child_array_type():
         "array-level1", "abc", ASSETS_FILES / "jira_field_type.json"
     )
     assert actual_field_paths is not None
-    assert "abc.name.level3" in [item.path for item in actual_field_paths]
+    assert "abc.name.level3" in [item["path"] for item in actual_field_paths]
 
 
 def test_get_field_paths_of_jira_field_use_basic_type():
     actual_field_paths = get_field_paths_of_jira_field("string", "customfield_17001")
     assert actual_field_paths is not None
-    assert "customfield_17001" == actual_field_paths[0].path
-    assert not actual_field_paths[0].is_array
+    assert "customfield_17001" == actual_field_paths[0]["path"]
+    assert not actual_field_paths[0]["is_array"]
 
 
 def test_get_field_paths_of_jira_field_use_complex_type_no_hierarchy():
@@ -361,8 +368,8 @@ def test_get_field_paths_of_jira_field_use_complex_type_no_hierarchy():
     actual_field_paths = get_field_paths_of_jira_field("author", "abc")
     assert actual_field_paths is not None
     assert len(actual_field_paths) == 2
-    assert "abc.name" in [item.path for item in actual_field_paths]
-    assert "abc.emailAddress" in [item.path for item in actual_field_paths]
+    assert "abc.name" in [item["path"] for item in actual_field_paths]
+    assert "abc.emailAddress" in [item["path"] for item in actual_field_paths]
 
 
 def test_get_field_paths_of_jira_field_use_complex_type_multiple_hierarchy():
@@ -370,13 +377,13 @@ def test_get_field_paths_of_jira_field_use_complex_type_multiple_hierarchy():
     actual_field_paths = get_field_paths_of_jira_field("project", "abc")
     assert actual_field_paths is not None
     assert len(actual_field_paths) == 6
-    assert "abc.name" in [item.path for item in actual_field_paths]
-    assert "abc.key" in [item.path for item in actual_field_paths]
-    assert "abc.projectTypeKey" in [item.path for item in actual_field_paths]
+    assert "abc.name" in [item["path"] for item in actual_field_paths]
+    assert "abc.key" in [item["path"] for item in actual_field_paths]
+    assert "abc.projectTypeKey" in [item["path"] for item in actual_field_paths]
     assert "abc.projectCategory.description" in [
-        item.path for item in actual_field_paths
+        item["path"] for item in actual_field_paths
     ]
-    assert "abc.projectCategory.name" in [item.path for item in actual_field_paths]
+    assert "abc.projectCategory.name" in [item["path"] for item in actual_field_paths]
 
 
 def test_get_field_paths_of_jira_field_use_array_type_no_hierarchy():
@@ -384,13 +391,13 @@ def test_get_field_paths_of_jira_field_use_array_type_no_hierarchy():
     actual_field_paths = get_field_paths_of_jira_field("comments-page", "abc")
     assert actual_field_paths is not None
     assert len(actual_field_paths) == 5
-    assert "abc.comments.author.name" in [item.path for item in actual_field_paths]
+    assert "abc.comments.author.name" in [item["path"] for item in actual_field_paths]
     assert "abc.comments.author.emailAddress" in [
-        item.path for item in actual_field_paths
+        item["path"] for item in actual_field_paths
     ]
-    assert "abc.comments.author.id" in [item.path for item in actual_field_paths]
-    assert "abc.comments.author.body" in [item.path for item in actual_field_paths]
-    assert "abc.comments.author.created" in [item.path for item in actual_field_paths]
+    assert "abc.comments.id" in [item["path"] for item in actual_field_paths]
+    assert "abc.comments.body" in [item["path"] for item in actual_field_paths]
+    assert "abc.comments.created" in [item["path"] for item in actual_field_paths]
 
 
 def test_create_story_failed(capsys):

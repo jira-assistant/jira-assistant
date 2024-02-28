@@ -1,33 +1,48 @@
-# jira-assistant: helps you deal with Jira and Excel more efficient
+# Jira Assistant Documentation
 
-[TOC]
+![ProjectLogo](https://raw.githubusercontent.com/jira-assistant/jira-assistant/main/logo.png)
 
-The `jira-assistant` package is a collection of tools which can help you to interact with Jira and Excel for doing further processing.
+![PyPI](https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square)
+![SupportedVersions](https://img.shields.io/pypi/pyversions/jira-assistant)
+![Download](https://static.pepy.tech/personalized-badge/jira-assistant?period=month&units=international_system&left_color=black&right_color=blue&left_text=downloads/month)
+![Package Size](https://img.shields.io/github/repo-size/jira-assistant/jira-assistant)
+![GitHubIssues](https://img.shields.io/github/issues/jira-assistant/jira-assistant)
+![Linux](https://github.com/jira-assistant/jira-assistant/actions/workflows/python-3-linux-test.yml/badge.svg)
+![Mac OS](https://github.com/jira-assistant/jira-assistant/actions/workflows/python-3-macos-test.yml/badge.svg)
+![Windows](https://github.com/jira-assistant/jira-assistant/actions/workflows/python-3-windows-test.yml/badge.svg)
+![Pylint](https://github.com/jira-assistant/jira-assistant/actions/workflows/pylint.yml/badge.svg)
+![MyPy](https://github.com/jira-assistant/jira-assistant/actions/workflows/mypy.yml/badge.svg)
+![CodeQL](https://github.com/jira-assistant/jira-assistant/workflows/CodeQL/badge.svg)
+![Documentation](https://readthedocs.org/projects/jira-assistant/badge/?version=latest)
+![Codecov](https://codecov.io/gh/jira-assistant/jira-assistant/branch/main/graph/badge.svg?token=CRNM1vEsGf)
+![CodeClimate](https://api.codeclimate.com/v1/badges/571f5fe0a3e8fccbb3ff/maintainability)
+![CodeFactor](https://www.codefactor.io/repository/github/jira-assistant/jira-assistant/badge)
+![License](https://img.shields.io/github/license/jira-assistant/jira-assistant)
 
-`jira-assistant` requires: Python 3.8+
+## Installation
 
-## A quick example for end user
+`jira-assistant` can be installed from PyPI using `pip`
 
-```powershell
-process-excel-file source.xlsx
-```
-
-## And here is another quick example for developer
-
-```python
-import pathlib
-from jira_assistant import run_steps_and_sort_excel_file
-HERE = pathlib.Path().resolve()
-run_steps_and_sort_excel_file(HERE / "source.xlsx", HERE / "target.xlsx")
+```shell
+pip install -U jira-assistant
 ```
 
 ## Features
 
-* Parsing the excel file which usually been downloaded from the Jira platform.
-* Sorting the excel records using some specific logic.
-* Generating the target excel file which contains the result.
-* The excel file structure can be customized by JSON file.
+1. Parsing the excel file using information from the Jira platform.
+2. Create new stories on the Jira platform.
+3. Multiple existed procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to apply for the processing.
+4. Sorting the records based on multiple sorting algorithms which can be modified and combined in the JSON file.
+5. The excel file structure can be customized by JSON file.
 
-## Bugs/Requests
+## Code
 
-Please use the [GitHub issue tracker](https://github.com/jira-assistant/jira-assistant/issues) to submit bugs or request features.
+The code and issue tracker are hosted on [GitHub](https://github.com/jira-assistant/jira-assistant).
+
+## Author
+
+The jira-assistant was written by Sharry Xu <sharry.xu@outlook.com> in 2022.
+
+## License
+
+All contributions after December 1, 2022 released under MIT license.

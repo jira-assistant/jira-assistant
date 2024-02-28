@@ -1,10 +1,10 @@
-# Gathering information from Jira
+# Gathering Jira Information
 
 [TOC]
 
 Inside this package, there is a command tool named `process-excel-file` and using this tool can help us to retrieve jira ticket's properties. 
 
-## Step 1
+## Step 1: Prepare the excel definition file.
 
 You need to prepare an excel definition file like below.
 
@@ -65,7 +65,7 @@ You need to prepare an excel definition file like below.
 
 You need to create an excel file like below.
 
-![gathering-information-from-jira-pic-1](https://raw.githubusercontent.com/SharryXu/jira-assistant/main/docs/img/gathering-information-from-jira-pic-1.png)
+![example_excel](../_static/image/quick_start/gathering_jira_info/example_excel.png)
 
 ## Step 3
 

@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, TypedDict, Tuple, Union
 
 from jira import JIRA, JIRAError, Issue
 from urllib3 import disable_warnings
-from typing_extensions import NotRequired, Self
+from typing_extensions import Required, NotRequired, Self
 
 from .utils import dict_has_key, strip_lower
 
@@ -133,26 +133,9 @@ def get_jira_field(
     return None
 
 
-class JiraFieldPropertyPathDefinition:
-    def __init__(self, path: str, is_array: bool) -> None:
-        self.__path = path
-        self.__is_array = is_array
-
-    @property
-    def path(self) -> str:
-        return self.__path
-
-    @path.setter
-    def path(self, value: str):
-        self.__path = value
-
-    @property
-    def is_array(self):
-        return self.__is_array
-
-    @is_array.setter
-    def is_array(self, value: bool):
-        self.__is_array = value
+class JiraFieldPropertyPathDefinition(TypedDict):
+    path: Required[str]
+    is_array: Required[bool]
 
 
 def get_field_paths_of_jira_field(
@@ -164,7 +147,9 @@ def get_field_paths_of_jira_field(
     if jira_field is None:
         return None
     if jira_field.is_basic is True:
-        return [JiraFieldPropertyPathDefinition(field_property_name, False)]
+        return [
+            JiraFieldPropertyPathDefinition(path=field_property_name, is_array=False)
+        ]
     result: List[JiraFieldPropertyPathDefinition] = []
     is_array_item = jira_field.array_item_type is not None
     # Following code will use the same jira field type file, so no need to pass.
@@ -173,8 +158,8 @@ def get_field_paths_of_jira_field(
         is_array_item,
         [
             JiraFieldPropertyPathDefinition(
-                field_property_name,
-                is_array_item,
+                path=field_property_name,
+                is_array=is_array_item,
             )
         ],
         result,
@@ -194,10 +179,11 @@ def __internal_get_field_paths_of_jira_field(
         for item in temp:
             final.append(
                 JiraFieldPropertyPathDefinition(
-                    connect_jira_field_path(item.path, jira_field.name),
-                    is_array_item,
+                    path=connect_jira_field_path(item["path"], jira_field.name),
+                    is_array=is_array_item,
                 )
             )
+        temp.clear()
     if jira_field.array_item_type is not None:
         __internal_get_field_paths_of_jira_field(
             get_jira_field(jira_field.array_item_type), True, temp, final
@@ -206,7 +192,9 @@ def __internal_get_field_paths_of_jira_field(
         for field_property in jira_field.properties:
             if field_property.array_item_type is not None:
                 for item in temp:
-                    item.path = connect_jira_field_path(item.path, field_property.name)
+                    item["path"] = connect_jira_field_path(
+                        item["path"], field_property.name
+                    )
                 __internal_get_field_paths_of_jira_field(
                     get_jira_field(field_property.array_item_type),
                     True,
@@ -222,27 +210,34 @@ def __internal_get_field_paths_of_jira_field(
                 for item in temp:
                     final.append(
                         JiraFieldPropertyPathDefinition(
-                            connect_jira_field_path(item.path, field_property.name),
-                            is_array_item,
+                            path=connect_jira_field_path(
+                                item["path"], field_property.name
+                            ),
+                            is_array=is_array_item,
                         )
                     )
-                continue
-            for item in temp:
-                item.path = connect_jira_field_path(item.path, field_property.name)
-            __internal_get_field_paths_of_jira_field(
-                child_field, is_array_item, temp, final
-            )
+            else:
+                __internal_get_field_paths_of_jira_field(
+                    child_field,
+                    is_array_item,
+                    [
+                        JiraFieldPropertyPathDefinition(
+                            path=connect_jira_field_path(
+                                item["path"], field_property.name
+                            ),
+                            is_array=item["is_array"],
+                        )
+                        for item in temp
+                    ],
+                    final,
+                )
     return None
 
 
-def connect_jira_field_path(path_a: Optional[str], path_b: Optional[str]) -> str:
-    if path_a is not None and path_b is not None:
-        return path_a + "." + path_b
-    if path_a is None and path_b is not None:
-        return path_b
-    if path_a is not None and path_b is None:
-        return path_a
-    return ""
+def connect_jira_field_path(
+    *paths: Optional[str], joint_char: str = ".", end_char: str = ""
+) -> str:
+    return f"{joint_char.join([path for path in paths if path])}{end_char}"
 
 
 class JiraProject:
@@ -369,6 +364,8 @@ class JiraClient:
     def __init__(
         self, url: str, access_token: str, timeout: Optional[float] = None
     ) -> None:
+        # Authentication/Authorization
+        # https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis/
         if timeout is None:
             timeout = _DEFAULT_JIRA_TIMEOUT
 
