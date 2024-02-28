@@ -8,13 +8,13 @@ nav:
     - 🛠️Installation:
         - 'Install Jira Assistant': 'installation/install_jira_assistant.md'
     - 💡Quickstart:
-        - 'Gathering Jira Info': 'quick_start/gathering_jira_info.md'
-        - 'Create Jira Story': 'quick_start/create_jira_story.md'
+        - 'Query Jira Info': 'quick_start/gathering_jira_info.md'
         - 'Sort Excel File': 'quick_start/sort_excel_file.md'
+        - 'Create Jira Story': 'quick_start/create_jira_story.md'
     - 🧰Reference:
-        - 'process-excel-file': 'reference/process_excel_file.md'
-        - 'generate-template': 'reference/generate_template.md'
-        - 'update-jira-info': 'reference/update_jira_info.md'
+        - 'Process Excel File': 'reference/process_excel_file.md'
+        - 'Template Files': 'reference/generate_template.md'
+        - 'Add/Update Jira Information': 'reference/update_jira_info.md'
     - 📚Tutorial:
         - 'Developer Guide': 'tutorial/developer_guide.md'
     - 🪪License: license.md

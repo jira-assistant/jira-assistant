@@ -1,3 +1,3 @@
 # Tutorial
 
-1. [Developer](./developer_guide.md)
+1. [Developer Guide](./developer_guide.md)
