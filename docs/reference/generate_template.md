@@ -111,6 +111,7 @@ You can use this command to get all file examples you will need when you are usi
 >>> Indicate how to parse the cell value from the Excel.
 >>> Support: `str` *(string)*, `bool` *(true/false)*, `datetime` 
 >>> *(datetime)*, `priority` *(priority)*, `milestone` *(sprint)* and `number` *(digital number)*.
+>>> Notice: `priority` type support `Critical`, `High`, `Middle`, `Low` and `NA`.
 >> #### `RequireSort`
 >>> Indicate whether the column need be sorted or not. Support: `true`/`false`.
 >> #### `SortOrder`

@@ -1,6 +1,6 @@
 # Jira Assistant Documentation
 
-![ProjectLogo](https://raw.githubusercontent.com/jira-assistant/jira-assistant/main/logo.png)
+![ProjectLogo](./img/logo.png)
 
 ![PyPI](https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square)
 ![SupportedVersions](https://img.shields.io/pypi/pyversions/jira-assistant)
