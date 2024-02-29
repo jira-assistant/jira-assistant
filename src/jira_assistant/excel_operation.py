@@ -6,7 +6,7 @@ import pathlib
 import warnings
 from os import remove
 from pathlib import Path
-from typing import List, Optional, Tuple, TypedDict, Union
+from typing import Any, List, Optional, Tuple, TypedDict, Union
 
 import openpyxl
 from openpyxl.workbook import Workbook
@@ -181,7 +181,7 @@ Column name: {column_value}."""
     return (actual_excel_columns, stories)
 
 
-def __should_skip(row: tuple[Cell, ...]) -> bool:
+def __should_skip(row: Tuple[Cell, ...]) -> bool:
     is_all_cell_empty = True
     for cell in row:
         if (
@@ -194,7 +194,7 @@ def __should_skip(row: tuple[Cell, ...]) -> bool:
     return is_all_cell_empty
 
 
-def __extract_row_number(row: tuple[Cell, ...]) -> int:
+def __extract_row_number(row: Tuple[Cell, ...]) -> int:
     for cell in row:
         if cell and not isinstance(cell, EmptyCell):
             return int(cell.row)
