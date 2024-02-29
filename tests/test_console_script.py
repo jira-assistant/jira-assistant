@@ -10,7 +10,7 @@ def test_process_excel_file(tmpdir):
     result = run(
         [
             "process-excel-file",
-            ASSETS_FILES / "happy_path.xlsx",
+            ASSETS_FILES / "excel.xlsx",
             "--output-folder",
             tmpdir,
             "--excel-definition-file",
@@ -23,7 +23,7 @@ def test_process_excel_file(tmpdir):
     )
 
     assert "xlsx has been saved" in result.stdout.decode("utf-8")
-    assert (tmpdir / "happy_path_sorted.xlsx").exists()
+    assert (tmpdir / "excel_sorted.xlsx").exists()
 
 
 def test_process_excel_file_output_version():
@@ -40,7 +40,7 @@ def test_process_excel_file_apply_env_file(tmpdir):
     result = run(
         [
             "process-excel-file",
-            ASSETS_FILES / "happy_path.xlsx",
+            ASSETS_FILES / "excel.xlsx",
             "--output_folder",
             tmpdir,
             "--excel_definition_file",
@@ -55,14 +55,14 @@ def test_process_excel_file_apply_env_file(tmpdir):
     )
 
     assert "xlsx has been saved" in result.stdout.decode("utf-8")
-    assert (tmpdir / "happy_path_sorted.xlsx").exists()
+    assert (tmpdir / "excel_sorted.xlsx").exists()
 
 
 def test_process_excel_file_run_twice(tmpdir):
     result = run(
         [
             "process-excel-file",
-            ASSETS_FILES / "happy_path.xlsx",
+            ASSETS_FILES / "excel.xlsx",
             "--excel_definition_file",
             ASSETS_FILES / "excel_definition_avoid_jira_operations.json",
             "--sprint_schedule_file",
@@ -75,12 +75,12 @@ def test_process_excel_file_run_twice(tmpdir):
     )
 
     assert "xlsx has been saved" in result.stdout.decode("utf-8")
-    assert (tmpdir / "happy_path_sorted.xlsx").exists()
+    assert (tmpdir / "excel_sorted.xlsx").exists()
 
     result = run(
         [
             "process-excel-file",
-            ASSETS_FILES / "happy_path.xlsx",
+            ASSETS_FILES / "excel.xlsx",
             "--excel_definition_file",
             ASSETS_FILES / "excel_definition_avoid_jira_operations.json",
             "--sprint_schedule_file",
@@ -93,7 +93,7 @@ def test_process_excel_file_run_twice(tmpdir):
     )
 
     assert "xlsx has been saved" in result.stdout.decode("utf-8")
-    assert (tmpdir / "happy_path_sorted_1.xlsx").exists()
+    assert (tmpdir / "excel_sorted_1.xlsx").exists()
 
 
 def test_process_excel_file_using_invalid_definition_file():
@@ -101,7 +101,7 @@ def test_process_excel_file_using_invalid_definition_file():
         run(
             [
                 "process-excel-file",
-                ASSETS_FILES / "happy_path.xlsx",
+                ASSETS_FILES / "excel.xlsx",
                 "--excel_definition_file",
                 ASSETS_FILES / "excel_definition_invalid_json.txt",
                 "--sprint_schedule_file",
@@ -152,7 +152,7 @@ def test_process_excel_file_output_folder_not_exist(tmpdir):
     result = run(
         [
             "process-excel-file",
-            ASSETS_FILES / "happy_path.xlsx",
+            ASSETS_FILES / "excel.xlsx",
             "--output_folder",
             tmpdir,
             "--excel_definition_file",

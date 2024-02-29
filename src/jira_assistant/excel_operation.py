@@ -183,10 +183,12 @@ Column name: {column_value}."""
 def __should_skip(row: tuple) -> bool:
     if len(row) == 0:
         return True
-    first_cell_value = row[0].value
-    if first_cell_value is None or len(str(first_cell_value)) == 0:
-        return True
-    return False
+    is_all_cell_empty = True
+    for cell in row:
+        value = cell.value
+        if value is not None and str(value).strip():
+            is_all_cell_empty = False
+    return is_all_cell_empty
 
 
 def __extract_row_number(row: tuple) -> int:
