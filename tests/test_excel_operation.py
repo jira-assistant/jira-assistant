@@ -40,6 +40,22 @@ def test_read_excel_file_duplicate_column():
     assert "The input excel file has duplicate column." in str(e.value)
 
 
+def test_read_excel_file_empty_row():
+    excel_definition = ExcelDefinition()
+    excel_definition.load_file(SRC_ASSETS / "excel_definition.json")
+    sprint_schedule = SprintScheduleStore()
+    sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
+
+    columns, stories = read_excel_file(
+        ASSETS_FILES / "excel_with_empty_row.xlsx",
+        excel_definition,
+        sprint_schedule,
+    )
+
+    assert len(columns) == 29
+    assert len(stories) == 2
+
+
 def test_read_excel_file_missing_columns():
     excel_definition = ExcelDefinition()
     excel_definition.load_file(SRC_ASSETS / "excel_definition.json")
