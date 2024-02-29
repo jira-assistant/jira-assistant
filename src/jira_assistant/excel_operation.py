@@ -13,6 +13,7 @@ from openpyxl.workbook import Workbook
 from openpyxl.worksheet._read_only import ReadOnlyWorksheet
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.cell.cell import Cell
+from openpyxl.cell.read_only import EmptyCell
 from urllib3 import disable_warnings
 
 from .excel_definition import ExcelDefinition, ExcelDefinitionColumn
@@ -180,21 +181,24 @@ Column name: {column_value}."""
     return (actual_excel_columns, stories)
 
 
-def __should_skip(row: tuple) -> bool:
-    if len(row) == 0:
-        return True
+def __should_skip(row: Tuple[Cell, ...]) -> bool:
     is_all_cell_empty = True
     for cell in row:
-        value = cell.value
-        if value is not None and str(value).strip():
+        if (
+            cell
+            and not isinstance(cell, EmptyCell)
+            and cell.value is not None
+            and str(cell.value).strip()
+        ):
             is_all_cell_empty = False
     return is_all_cell_empty
 
 
-def __extract_row_number(row: tuple) -> int:
-    if len(row) == 0 or row[0].row is None:
-        return 0
-    return int(row[0].row)
+def __extract_row_number(row: Tuple[Cell, ...]) -> int:
+    for cell in row:
+        if cell and not isinstance(cell, EmptyCell):
+            return int(cell.row)
+    return 0
 
 
 def output_to_excel_file(
