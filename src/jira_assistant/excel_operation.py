@@ -6,7 +6,7 @@ import pathlib
 import warnings
 from os import remove
 from pathlib import Path
-from typing import Any, List, Optional, Tuple, TypedDict, Union
+from typing import List, Optional, Tuple, TypedDict, Union
 
 import openpyxl
 from openpyxl.workbook import Workbook
