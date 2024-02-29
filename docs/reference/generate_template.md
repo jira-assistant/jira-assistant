@@ -106,31 +106,37 @@ You can use this command to get all file examples you will need when you are usi
 >> #### `Index`
 >>> Need to start from **1** to **N**. Support: `1`, `2` and so on.
 >> #### `Name`
->>> Should be the same name from the Excel file. 
->> Cannot be empty string or duplicate in the definition file.
+>>> Should be the same name from the Excel file. Support: non-empty string.
 >> #### `Type`
->>> Currently, we support `str` *(string)*, `bool` *(true/false)*, `datetime` 
+>>> Indicate how to parse the cell value from the Excel.
+>>> Support: `str` *(string)*, `bool` *(true/false)*, `datetime` 
 >>> *(datetime)*, `priority` *(priority)*, `milestone` *(sprint)* and `number` *(digital number)*.
+>>> Notice: `priority` type support `Critical`, `High`, `Middle`, `Low` and `NA`.
 >> #### `RequireSort`
 >>> Indicate whether the column need be sorted or not. Support: `true`/`false`.
 >> #### `SortOrder`
 >>> Indicate the sort order. Support: `true` *(descending)* /`false` *(ascending)*.
 >> #### `ScopeRequireSort`
->>> Same as `RequireSort` but add scope limition. 
->>> The scope range will be configed in the *Sort Strategy*.
+>>> Same as `RequireSort` but add scope limition. The scope range will be configed in the *Sort Strategy*.
+>>> Support: `true`/`false`.
 >> #### `ScopeSortOrder`
 >>> Same as `SortOrder` but applied to the `ScopeRequireSort` option.
+>>> Support: `true` *(descending)* /`false` *(ascending)*.
 >> #### `InlineWeights`
 >>> Indicate the weight of the column. Support: `0` *(no weight)* or `*`.
 >> #### `RaiseRanking`
 >>> Indicate whether the current record need to be raised to the top of the list or not.
->>> Only support column which `Type` is `bool`.
+>>> Only column of which `Type` is `bool` is allowed to do this operation.
+>>> Support: `true`/`false`.
 >> #### `ScopeRaiseRanking`
 >>> Same as `RaiseRanking` but add scope limition.
+>>> Support: `true`/`false`.
 >> #### `JiraFieldMapping`
 >>> Indicate the relationship with Jira ticket.
+>>> Support: JSON item like `{ name: "jira_name", path: "jira_field_path" }`.
 >> #### `QueryJiraInfo`
 >>> Indicate whether the column need to query the Jira platform when executing the `RetrieveJiraInformation` pre-step.
+>>> Support: `true`/`false`.
 
 > ## Sprint Schedule
 

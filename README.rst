@@ -3,7 +3,7 @@ Jira Assistant - Connect Excel with Jira
 
 |ProjectLogo|
 
-.. |ProjectLogo| image:: https://raw.githubusercontent.com/jira-assistant/jira-assistant/main/logo.png
+.. |ProjectLogo| image:: https://raw.githubusercontent.com/jira-assistant/jira-assistant/main/docs/img/logo.png
     :target: https://github.com/jira-assistant/jira-assistant
     :alt: Jira Assistant
 
@@ -77,6 +77,10 @@ Collecting Ideas!!!
 ===================
 If you have any ideas or good requirements related to this package, please let us know and we will do our best to fulfill! Please send emails to <sharry.xu@outlook.com>.
 
+Documentation
+=============
+For full documentation, including installation, tutorials and PDF documents, please see https://jira-assistant.readthedocs.io/en/stable/
+
 Installation
 ============
 `jira-assistant` can be installed from PyPI using `pip` ::
@@ -96,194 +100,10 @@ https://github.com/jira-assistant/jira-assistant
 Features
 ========
 
-* Parsing the excel file using information from the Jira platform.
+* Quering the Jira platform to fulfill the excel file.
 * Create new stories on the Jira platform.
-* Multiple existed procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to apply for the processing.
-* Sorting the records based on multiple sorting algorithms which can be modified and combined in the JSON file.
-* The excel file structure can be customized by JSON file.
-
-Documentation
-=============
-
-For full documentation, including installation, tutorials and PDF documents, please see https://jira-assistant.readthedocs.io/en/stable/
-
-Get Started
-================
-You can run below command in the PowerShell (Windows OS) or Shell (UNIX OS) to process the excel files.
-
-.. code-block:: console
-
-    process-excel-file source.xlsx
-
-After that, you can find the output file in the same folder along with the source file. 
-For more details, please check the help message like below:
-
-.. code-block:: console
-
-    process-excel-file -h
-
-Currently, we are using the `jira access token`__ to do the validation and that means we need you to generate your own access token from the website first.
-
-.. __: https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html
-
-.. code-block:: console
-
-    update-jira-info --access-token <access_token> --url <jira_url>
-
-If you want to use your own definition files before processing the excel, you can run below command to access some templates which can help you understand the definition file.
-
-.. code-block:: console
-
-    generate-template excel-definition --output-folder <folder_you_want>
-
-For more details, please check the help message like below:
-
-.. code-block:: console
-
-    generate-template -h
-
-
-Code Example For Developer
-==========================
-Here's a simple program, just to give you an idea about how to use this package.
-
-.. code-block:: python
-
-  import pathlib
-  from jira_assistant import run_steps_and_sort_excel_file
-  HERE = pathlib.Path().resolve()
-  run_steps_and_sort_excel_file(HERE / "source.xlsx", HERE / "target.xlsx")
-
-If you want to customize the definition file to adapt the new Excel, you can do below steps.
-
-1. Creating the definition file like below. Inside the :code:`PreProcessSteps` list, you can determine the procedure which will be triggered before sorting and also inside the :code:`SortStrategyPriority` list, you can decide the sort algorithms' order. Note: We need to make sure there is one column named ``StoryId`` and only one.
-
-.. code-block:: json
-
-  [
-      {
-          "version": 1
-      },
-      {
-          "PreProcessSteps": [
-              {
-                  "Priority": 1,
-                  "Name": "CreateJiraStory",
-                  "Enabled": true,
-                  "Config": {}
-              },
-              {
-                  "Name": "FilterOutStoryWithoutId",
-                  "Enabled": true,
-                  "Priority": 1,
-                  "Config": {}
-              },
-              {
-                  "Name": "RetrieveJiraInformation",
-                  "Enabled": true,
-                  "Priority": 2,
-                  "Config": {}
-              },
-              {
-                  "Name": "FilterOutStoryBasedOnJiraStatus",
-                  "Enabled": true,
-                  "Priority": 3,
-                  "Config": {
-                      "JiraStatuses": [
-                          "SPRINT COMPLETE",
-                          "PENDING RELEASE",
-                          "PRODUCTION TESTING",
-                          "CLOSED"
-                      ]
-                  }
-              }
-          ],
-          "SortStrategies": [
-            {
-                "Name": "InlineWeights",
-                "Priority": 1,
-                "Enabled": true,
-                "Config": {}
-            },
-            {
-                "Name": "SortOrder",
-                "Priority": 2,
-                "Enabled": true,
-                "Config": {}
-            },
-            {
-                "Name": "SortOrder",
-                "Priority": 3,
-                "Enabled": true,
-                "Config": {
-                    "ParentScopeIndexRange": "12-19"
-                }
-            },
-            {
-                "Name": "RaiseRanking",
-                "Priority": 4,
-                "Enabled": true,
-                "Config": {
-                    "ParentScopeIndexRange": "12-19"
-                }
-            }
-        ]
-      },
-      {
-          "Columns": [
-              {
-                  "Index": 1,
-                  "Name": "Entry/Last Updated Date",
-                  "Type": "datetime",
-                  "RequireSort": false,
-                  "SortOrder": false,
-                  "ScopeRequireSort": false,
-                  "ScopeSortOrder": false,
-                  "InlineWeights": 0,
-                  "RaiseRanking": 0,
-                  "ScopeRaiseRanking": 0,
-                  "JiraFieldMapping": {
-                      "name": "customfield_15601",
-                      "path": "customfield_15601.value"
-                  },
-                  "QueryJiraInfo": true
-              }
-          ]
-      }
-  ]
-
-2. Indicating the definition file location to the :code:`run_steps_and_sort_excel_file` method like below.
-
-.. code-block:: python
-
-  run_steps_and_sort_excel_file(
-      HERE / "source.xlsx", 
-      HERE / "target.xlsx", 
-      excel_definition_file=HERE / "definition_file.json"
-  )
-
-Meantime, you can follow the same way to customize the milestone priority file.
-
-1. Configuration file
-
-.. code-block:: json
-
-  [
-      {
-        "Priority": 1,
-        "Sprints": ["R134 S1", "M109"]
-      }
-  ]
-
-2. Code example
-
-.. code-block:: python
-
-  run_steps_and_sort_excel_file(
-      HERE / "source.xlsx", 
-      HERE / "target.xlsx", 
-      sprint_schedule_file=HERE / "milestone_priority.json"
-  )
+* Multiple defined procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to process the Excel file.
+* Sorting the Excel rows based on multiple sorting algorithms which can be choosed and combined.
 
 Author
 ======
