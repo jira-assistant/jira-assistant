@@ -17,6 +17,8 @@ We need to create a definition file which contains the **SortStrategies** part.
 
 ## Step 2: Prepare the Excel file
 
+![sort_excel_file_excel](../_static/image/quick_start/sort_excel_file/sort_excel_file_excel.png)
+
 ## Step 3: Running the shell command
 
 ## Step 4: Congratulations!!!
