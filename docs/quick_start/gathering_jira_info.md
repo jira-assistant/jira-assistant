@@ -91,15 +91,15 @@ For more info about this command, please check [template files](../reference/gen
 
 ## Step 2: Prepare the Excel file
 
-You need to create an excel file like below.
+Now, we can create the Excel file according to the definition file.
 
 ![excel_example](../_static/image/quick_start/gathering_jira_info/excel_example.png)
 
-## Step 3: Running the shell command
-
-Now, we have the definition file and the Excel file.
+Below snapshot shows what kind of files we've created for now.
 
 ![folder_snapshot](../_static/image/quick_start/gathering_jira_info/folder_snapshot.png)
+
+## Step 3: Running the shell command
 
 Running the `process-excel-file` can give us the final result.
 

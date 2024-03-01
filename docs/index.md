@@ -29,11 +29,10 @@ pip install -U jira-assistant
 
 ## Features
 
-1. Parsing the excel file using information from the Jira platform.
+1. Quering the Jira platform to fulfill the excel file.
 2. Create new stories on the Jira platform.
-3. Multiple existed procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to apply for the processing.
-4. Sorting the records based on multiple sorting algorithms which can be modified and combined in the JSON file.
-5. The excel file structure can be customized by JSON file.
+3. Multiple defined procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to process the Excel file.
+4. Sorting the Excel rows based on multiple sorting algorithms which can be choosed and combined.
 
 ## Code
 
