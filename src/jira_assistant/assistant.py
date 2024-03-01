@@ -462,7 +462,7 @@ def run_steps_and_sort_excel_file(
     if len(validation_result) != 0:
         print(
             """Validating excel definition failed.
-            Please check below information to fix first."""
+Please check below information to fix first."""
         )
         for item in validation_result:
             print(item)
@@ -573,7 +573,7 @@ def dry_run_steps_and_sort_excel_file(
     if len(validation_result) != 0:
         print(
             """Validating excel definition failed.
-            Please check below information to fix first."""
+Please check below information to fix first."""
         )
         for item in validation_result:
             print(item)

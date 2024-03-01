@@ -663,7 +663,17 @@ class ExcelDefinition:
                     )
                 exist_jira_field_paths.append(jira_field_path)
 
-        if len(self.__columns) > 0 and exist_story_id_column is False:
+        # If there is step name 'CreateJiraStory' or 'RetrieveJiraInformation'
+        # or 'FilterOutStoryWithoutId', the StoryId must exist.
+        if (
+            (
+                self.get_pre_process_step_by_name("CreateJiraStory")
+                or self.get_pre_process_step_by_name("FilterOutStoryWithoutId")
+                or self.get_pre_process_step_by_name("RetrieveJiraInformation")
+            )
+            and len(self.__columns) > 0
+            and exist_story_id_column is False
+        ):
             invalid_definitions.append(
                 "Must have a column named StoryId so that program can identify the record."
             )
@@ -753,10 +763,13 @@ class ExcelDefinition:
         return result
 
     def get_pre_process_step_by_name(
-        self, step_name: str
+        self, step_name: str, enabled: bool = True
     ) -> "Optional[PreProcessStep]":
         for pre_process_step in self.__pre_process_steps:
-            if strip_lower(pre_process_step.name) == strip_lower(step_name):
+            if (
+                strip_lower(pre_process_step.name) == strip_lower(step_name)
+                and pre_process_step.enabled == enabled
+            ):
                 return deepcopy(pre_process_step)
         return None
 

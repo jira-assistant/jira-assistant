@@ -1,5 +1,15 @@
 [
     {
+        "PreProcessSteps": [
+            {
+                "Priority": 1,
+                "Name": "RetrieveJiraInformation",
+                "Enabled": true,
+                "Config": {}
+            }
+        ]
+    },
+    {
         "SortStrategies": [
             {
                 "Name": "InlineWeights",
