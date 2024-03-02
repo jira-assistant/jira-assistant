@@ -27,8 +27,8 @@ from . import ASSETS_ENV_FILES, ASSETS_FILES, SRC_ASSETS
 def test_run_steps_and_sort_excel_file(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -40,7 +40,7 @@ def test_run_steps_and_sort_excel_file(tmpdir):
         sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
 
         _, stories = read_excel_file(
-            tmpdir / "happy_path_sorted.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition,
             sprint_schedule,
         )
@@ -86,8 +86,8 @@ def test_run_steps_and_sort_excel_file(tmpdir):
 def test_run_steps_and_sort_excel_file_addition_columns(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_addition_columns.xlsx",
-            tmpdir / "happy_path_addition_columns_sorted.xlsx",
+            ASSETS_FILES / "excel_addition_columns.xlsx",
+            tmpdir / "excel_addition_columns_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -99,7 +99,7 @@ def test_run_steps_and_sort_excel_file_addition_columns(tmpdir):
         sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
 
         columns, stories = read_excel_file(
-            tmpdir / "happy_path_addition_columns_sorted.xlsx",
+            tmpdir / "excel_addition_columns_sorted.xlsx",
             excel_definition,
             sprint_schedule,
         )
@@ -147,8 +147,8 @@ def test_run_steps_and_sort_excel_file_addition_columns(tmpdir):
 def test_run_steps_and_sort_excel_file_use_default_files(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             env_file=ASSETS_ENV_FILES / "default.env",
         )
 
@@ -158,7 +158,7 @@ def test_run_steps_and_sort_excel_file_use_default_files(tmpdir):
         sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
 
         _, stories = read_excel_file(
-            tmpdir / "happy_path_sorted.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition,
             sprint_schedule,
         )
@@ -169,8 +169,8 @@ def test_run_steps_and_sort_excel_file_use_default_files(tmpdir):
 def test_run_steps_and_sort_excel_file_use_wrong_excel_definition_file(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=ASSETS_FILES
             / "excel_definition_duplicate_index.json",
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -192,8 +192,8 @@ def test_run_steps_and_sort_excel_file_with_empty_excel_file(tmpdir):
 def test_run_steps_and_sort_excel_file_with_raise_ranking_file(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=str(
                 ASSETS_FILES / "excel_definition_with_raise_ranking.json"
             ),
@@ -202,7 +202,7 @@ def test_run_steps_and_sort_excel_file_with_raise_ranking_file(tmpdir):
         )
 
         _, stories = read_stories_from_excel(
-            tmpdir / "happy_path_sorted.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             SRC_ASSETS / "excel_definition.json",
             SRC_ASSETS / "sprint_schedule.json",
         )
@@ -221,8 +221,8 @@ def test_run_steps_and_sort_excel_file_with_raise_ranking_file(tmpdir):
 def test_run_steps_and_sort_excel_file_missing_jira_url(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "missing_jira_url.env",
@@ -234,8 +234,8 @@ def test_run_steps_and_sort_excel_file_missing_jira_url(capsys, tmpdir):
 def test_run_steps_and_sort_excel_file_missing_access_token(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "missing_jira_access_token.env",
@@ -251,8 +251,8 @@ def test_run_steps_and_sort_excel_file_jira_health_check_failed(capsys, tmpdir):
         adapter=mock_jira_requests_with_failed_status_code(),
     ):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path.xlsx",
-            tmpdir / "happy_path_sorted.xlsx",
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -309,8 +309,8 @@ def test_generate_jira_field_mapping_file_over_write_is_false(tmpdir):
 def test_run_steps_and_sort_excel_file_with_no_need_sort_stories(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_with_no_need_sort_stories.xlsx",
-            tmpdir / "happy_path_with_no_need_sort_stories_sorted.xlsx",
+            ASSETS_FILES / "excel_with_no_need_sort_stories.xlsx",
+            tmpdir / "excel_with_no_need_sort_stories_sorted.xlsx",
             excel_definition_file=str(ASSETS_FILES / "excel_definition.json"),
             sprint_schedule_file=str(ASSETS_FILES / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -322,7 +322,7 @@ def test_run_steps_and_sort_excel_file_with_no_need_sort_stories(tmpdir):
         sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
 
         _, stories = read_excel_file(
-            tmpdir / "happy_path_with_no_need_sort_stories_sorted.xlsx",
+            tmpdir / "excel_with_no_need_sort_stories_sorted.xlsx",
             excel_definition,
             sprint_schedule,
         )
@@ -370,8 +370,8 @@ def test_run_steps_and_sort_excel_file_with_no_need_sort_stories(tmpdir):
 def test_create_jira_stories_and_sort_excel_file(tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_create_story.xlsx",
-            tmpdir / "happy_path_create_story_sorted.xlsx",
+            ASSETS_FILES / "excel_create_story.xlsx",
+            tmpdir / "excel_create_story_sorted.xlsx",
             excel_definition_file=str(
                 ASSETS_FILES / "excel_definition_create_story.json"
             ),
@@ -385,7 +385,7 @@ def test_create_jira_stories_and_sort_excel_file(tmpdir):
         sprint_schedule.load_file(ASSETS_FILES / "sprint_schedule.json")
 
         _, stories = read_excel_file(
-            tmpdir / "happy_path_create_story_sorted.xlsx",
+            tmpdir / "excel_create_story_sorted.xlsx",
             excel_definition,
             sprint_schedule,
         )
@@ -397,8 +397,8 @@ def test_create_jira_stories_and_sort_excel_file(tmpdir):
 def test_create_jira_stories_invalid_value(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_create_story_invalid_value.xlsx",
-            tmpdir / "happy_path_create_story_invalid_value_sorted.xlsx",
+            ASSETS_FILES / "excel_create_story_invalid_value.xlsx",
+            tmpdir / "excel_create_story_invalid_value_sorted.xlsx",
             excel_definition_file=str(
                 ASSETS_FILES / "excel_definition_create_story.json"
             ),
@@ -419,8 +419,8 @@ def test_create_jira_stories_invalid_value(capsys, tmpdir):
 def test_create_jira_stories_invalid_project_type(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_create_story_invalid_project_type.xlsx",
-            tmpdir / "happy_path_create_story_invalid_project_type_sorted.xlsx",
+            ASSETS_FILES / "excel_create_story_invalid_project_type.xlsx",
+            tmpdir / "excel_create_story_invalid_project_type_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -432,8 +432,8 @@ def test_create_jira_stories_invalid_project_type(capsys, tmpdir):
 def test_create_jira_stories_invalid_issue_type(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_create_story_invalid_issue_type.xlsx",
-            tmpdir / "happy_path_create_story_invalid_issue_type_sorted.xlsx",
+            ASSETS_FILES / "excel_create_story_invalid_issue_type.xlsx",
+            tmpdir / "excel_create_story_invalid_issue_type_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -442,24 +442,11 @@ def test_create_jira_stories_invalid_issue_type(capsys, tmpdir):
         assert "IssueType: WHH is not supported." in output.out
 
 
-# def test_create_jira_stories_missing_required_field(capsys, tmpdir):
-#    with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
-#        run_steps_and_sort_excel_file(
-#            ASSETS_FILES / "happy_path_create_story_missing_required_field.xlsx",
-#            tmpdir / "happy_path_create_story_missing_required_field_sorted.xlsx",
-#            excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
-#            sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
-#            env_file=ASSETS_ENV_FILES / "default.env",
-#        )
-#        output = capsys.readouterr()
-#        assert "IssueType: sd missing required fields." in output.out
-
-
 def test_create_jira_stories_no_project_type(capsys, tmpdir):
     with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
         run_steps_and_sort_excel_file(
-            ASSETS_FILES / "happy_path_create_story_no_project_type.xlsx",
-            tmpdir / "happy_path_create_story_no_project_type_sorted.xlsx",
+            ASSETS_FILES / "excel_create_story_no_project_type.xlsx",
+            tmpdir / "excel_create_story_no_project_type_sorted.xlsx",
             excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
             sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
             env_file=ASSETS_ENV_FILES / "default.env",
@@ -470,7 +457,7 @@ def test_create_jira_stories_no_project_type(capsys, tmpdir):
 
 def test_dry_run_steps_and_sort_excel_file(capsys):
     dry_run_steps_and_sort_excel_file(
-        ASSETS_FILES / "happy_path_with_no_need_sort_stories.xlsx",
+        ASSETS_FILES / "excel_with_no_need_sort_stories.xlsx",
         excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
         sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
     )

@@ -24,35 +24,10 @@ If you want to customize the definition file to adapt the new Excel, you can do 
     {
         "PreProcessSteps": [
             {
-                "Priority": 1,
-                "Name": "CreateJiraStory",
-                "Enabled": true,
-                "Config": {}
-            },
-            {
                 "Name": "FilterOutStoryWithoutId",
                 "Enabled": true,
                 "Priority": 1,
                 "Config": {}
-            },
-            {
-                "Name": "RetrieveJiraInformation",
-                "Enabled": true,
-                "Priority": 2,
-                "Config": {}
-            },
-            {
-                "Name": "FilterOutStoryBasedOnJiraStatus",
-                "Enabled": true,
-                "Priority": 3,
-                "Config": {
-                    "JiraStatuses": [
-                        "SPRINT COMPLETE",
-                        "PENDING RELEASE",
-                        "PRODUCTION TESTING",
-                        "CLOSED"
-                    ]
-                }
             }
         ],
         "SortStrategies": [
@@ -67,24 +42,8 @@ If you want to customize the definition file to adapt the new Excel, you can do 
               "Priority": 2,
               "Enabled": true,
               "Config": {}
-          },
-          {
-              "Name": "SortOrder",
-              "Priority": 3,
-              "Enabled": true,
-              "Config": {
-                  "ParentScopeIndexRange": "12-19"
-              }
-          },
-          {
-              "Name": "RaiseRanking",
-              "Priority": 4,
-              "Enabled": true,
-              "Config": {
-                  "ParentScopeIndexRange": "12-19"
-              }
           }
-      ]
+        ]
     },
     {
         "Columns": [
@@ -112,34 +71,33 @@ If you want to customize the definition file to adapt the new Excel, you can do 
 
 2. Indicating the definition file location to the :code:`run_steps_and_sort_excel_file` method like below.
 
-.. code-block:: python
-
+```python
   run_steps_and_sort_excel_file(
       HERE / "source.xlsx", 
       HERE / "target.xlsx", 
       excel_definition_file=HERE / "definition_file.json"
   )
+```
 
 Meantime, you can follow the same way to customize the milestone priority file.
 
 1. Configuration file
 
-.. code-block:: json
-
-  [
-      {
-        "Priority": 1,
-        "Sprints": ["R134 S1", "M109"]
-      }
-  ]
+```json
+[
+    {
+      "Priority": 1,
+      "Sprints": ["R134 S1", "M109"]
+    }
+]
+```
 
 2. Code example
 
-.. code-block:: python
-
-  run_steps_and_sort_excel_file(
-      HERE / "source.xlsx", 
-      HERE / "target.xlsx", 
-      sprint_schedule_file=HERE / "milestone_priority.json"
-  )
-
+```python
+run_steps_and_sort_excel_file(
+    HERE / "source.xlsx", 
+    HERE / "target.xlsx", 
+    sprint_schedule_file=HERE / "milestone_priority.json"
+)
+```
