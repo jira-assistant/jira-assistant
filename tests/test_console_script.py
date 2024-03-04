@@ -273,3 +273,36 @@ def test_update_jira_info_failed():
         )
 
     assert "Please check the access token" in str(e.value.output)
+
+
+def test_dry_run_steps_and_sort_excel_file(tmpdir):
+    result = run(
+        [
+            "process-excel-file",
+            ASSETS_FILES / "excel.xlsx",
+            "--output-folder",
+            tmpdir,
+            "--excel-definition-file",
+            ASSETS_FILES / "excel_definition_avoid_jira_operations.json",
+            "--sprint-schedule-file",
+            ASSETS_FILES / "sprint_schedule.json",
+            "--dry-run",
+        ],
+        capture_output=True,
+        check=True,
+    )
+
+    output = result.stdout.decode("utf-8")
+    assert not (tmpdir / "excel_sorted.xlsx").exists()
+    assert "Using custom sprint schedule..." in output
+    assert "Using custom excel definition..." in output
+    assert "Validating excel definition success." in output
+    assert "There are 29 columns in the excel." in output
+    assert "There are 25 columns in the definition file." in output
+    assert "There are 8 stories can be sorted." in output
+    assert "Pre-process steps:" in output
+    assert "FilterOutStoryWithoutId" in output
+    assert "Sort strategies:" in output
+    assert "InlineWeights" in output
+    assert "SortOrder" in output
+    assert "RaiseRanking" in output
