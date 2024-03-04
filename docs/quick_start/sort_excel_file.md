@@ -169,3 +169,10 @@ Running the `process-excel-file` can give us the final result.
 Now, you can see the **excel_sorted.xlsx** file has been created successfully!
 
 ![sort_excel_file_excel_result](../_static/image/quick_start/sort_excel_file/sort_excel_file_excel_result.png)
+
+## Additional
+
+Actually, if you just want to know what kind of steps will be triggered or the detail information about the excel file or definition file.
+You can append the `--dry-run` option to the command before running.
+
+![sort_excel_command_dry_run](../_static/image/quick_start/sort_excel_file/sort_excel_command_dry_run.png)
