@@ -291,7 +291,7 @@ def test_generate_jira_field_mapping_file_over_write_is_true(tmpdir):
 
 
 def test_generate_jira_field_mapping_file_over_write_is_false(tmpdir):
-    with pytest.raises(FileExistsError) as e:
+    with pytest.raises(expected_exception=FileExistsError) as e:
         with Mocker(
             real_http=False, case_sensitive=False, adapter=mock_jira_requests()
         ):
