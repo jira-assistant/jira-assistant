@@ -4,6 +4,35 @@ After [installation](../installation/install_jira_assistant.md), the `update-jir
 
 ![update_jira_info_command](../_static/image/reference/update-jira-info/update_jira_info_command.png)
 
+## Options
+
+**`-h` and `--help`**
+
+> Print out the help message and tell the user how to run the command.
+
+**`--access-token`**
+
+> Used by Jira API inside the package.
+> Check [this](#access-token) for more info.
+
+**`--url`**
+
+> Used by Jira API inside the package.
+> Check [this](#url) for more info.
+
+**`--env-file`**
+
+> Indicate the environment file.
+> Absolute or relative path are all supported.
+
+> **Default: Environment file inside the package.**
+
+> Check [this](#environment-file) for more info.
+
+**`--v` and `--version`**
+
+> Print out the **version** info.
+
 > ## Access Token
 
 > Currently, this package using the Basic Authentication to connect/operate with Jira platform.
