@@ -92,10 +92,8 @@ def get_args_for_process_excel_file() -> Namespace:
     parser.add_argument(
         "--dry-run",
         "--dry_run",
-        metavar="True|False",
-        type=bool,
         required=False,
-        default=False,
+        action="store_true",
         help="Only analyze the input and definition files. No side effects at all.",
     )
     parser.add_argument(

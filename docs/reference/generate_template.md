@@ -6,6 +6,37 @@ After [installation](../installation/install_jira_assistant.md), the `generate-t
 
 You can use this command to get all file examples you will need when you are using this package.
 
+## Options
+
+**`template_type`**
+
+> There are up to **4** kinds of file that will be (directly) used when running the command.
+> For more info, please check **[Excel](#excel)**, **[Excel Definition](#excel-definition)**, 
+> **[Sprint Schedule](#sprint-schedule)** and **[Jira Field Mapping](#jira-field-mapping)**.
+
+**`-h` and `--help`**
+
+> Print out the help message and tell the user how to run the command.
+
+**`-o` and `--output-folder`**
+
+> Indicate where to put the output file.
+> Absolute or relative path are all supported.
+
+> **Default: Current shell location.**
+
+**`--env-file`**
+
+> Indicate the environment file.
+> Absolute or relative path are all supported.
+
+> **Default: Environment file inside the package.**
+
+> Check [this](../reference/update_jira_info.md#environment-file) to get the default file and more info.
+
+**`--v` and `--version`**
+
+> Print out the **version** info.
 > ## Excel
 
 > You can type command `generate-template excel` in the shell then you will see an Excel file has been created in the current folder like below.
