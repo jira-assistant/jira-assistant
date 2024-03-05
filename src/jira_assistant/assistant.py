@@ -7,6 +7,7 @@ from json import dump
 from os import environ, remove
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union, Tuple
+from termcolor import cprint
 
 from dotenv import load_dotenv
 from urllib3 import disable_warnings
@@ -51,23 +52,28 @@ def __clear_env_variables():
 def __get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
     if env_file is None:
         if not load_dotenv(ASSETS / ".env"):
-            print(
+            cprint(
                 """The default env file is missing.
-                Please use the update-jira-info command to 
-                run any command for creating the file."""
+Please use the update-jira-info command to 
+run any command for creating the file.""",
+                color="light_yellow",
             )
             return None
     else:
         __clear_env_variables()
         if not load_dotenv(env_file):
-            print("The env file is invalid. Please double check the env file.")
+            cprint(
+                "The env file is invalid. Please double check the env file.",
+                color="light_red",
+            )
             return None
 
     jira_url: Optional[str] = environ.get("JIRA_URL", default=None)
     if jira_url is None or jira_url.isspace() or len(jira_url) == 0:
-        print(
+        cprint(
             """The jira url is invalid.
-            Please use the update-jira-info command to add/update url."""
+Please use the update-jira-info command to add/update url.""",
+            color="light_red",
         )
         return None
 
@@ -77,9 +83,10 @@ def __get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
         or jira_acccess_token.isspace()
         or len(jira_acccess_token) == 0
     ):
-        print(
+        cprint(
             """The jira access token is invalid.
-            Please use the update-jira-info command to add/update token."""
+Please use the update-jira-info command to add/update token.""",
+            color="light_red",
         )
         return None
 
@@ -91,13 +98,14 @@ def __get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
     jira_client = JiraClient(jira_url, jira_acccess_token, jira_timeout)
 
     if not jira_client.health_check():
-        print(
+        cprint(
             """The jira access token is revoked.
-           Please use the update-jira-info command to add/update token."""
+Please use the update-jira-info command to add/update token.""",
+            color="light_red",
         )
         return None
 
-    print(f"Jira link: {jira_url}")
+    cprint(f"Jira link: {jira_url}", color="light_cyan")
 
     return jira_client
 
@@ -151,13 +159,17 @@ def __query_jira_information(
                         .get(jira_field["jira_path"], "")
                         .upper()
                     )
-                print(
+                cprint(
                     f"Story id has been changed. \
 Previous: {story_id.upper()}, \
-Current: {story['storyid'].upper()}"
+Current: {story['storyid'].upper()}",
+                    color="light_blue",
                 )
             else:
-                print(f"Cannot find related information for story: {story_id}")
+                cprint(
+                    f"Cannot find related information for story: {story_id}",
+                    color="light_yellow",
+                )
                 story.need_sort = False
                 continue
 
@@ -174,12 +186,13 @@ def __check_allowed_value(
     if excel_column["jira_field_mapping"] is not None:
         jira_field_path = excel_column["jira_field_mapping"]["path"]
         if not jira_field.is_value_allowed(str(current_value), jira_field_path):
-            print(
-                f"{excel_column['name']} has not allowed value: {current_value}. ProjectType: {project_type_name} and IssueType: {issue_type_name}."  # pylint: disable=line-too-long
+            cprint(
+                f"{excel_column['name']} has not allowed value: {current_value}. ProjectType: {project_type_name} and IssueType: {issue_type_name}.",  # pylint: disable=line-too-long
+                color="light_yellow",
             )
-            print("Allowed values:")
+            cprint("Allowed values:", color="light_yellow")
             for index, value in enumerate(jira_field.allowed_values[jira_field_path]):
-                print(f"{index + 1}. {value}")
+                cprint(f"{index + 1}. {value}", color="light_yellow")
             return False
     return True
 
@@ -214,14 +227,18 @@ def __create_jira_stories(
         input_issue_type: Optional[str] = story["issuetype"]
         # Validation
         if input_project_type is None or input_issue_type is None:
-            print(
+            cprint(
                 f"Please fulfill ProjectType/IssueType field. \
-Excel row number: {story.excel_row_index}."
+Excel row number: {story.excel_row_index}.",
+                color="light_yellow",
             )
             continue
         project_type = jira_client.get_project_by_project_name(input_project_type)
         if project_type is None:
-            print(f"ProjectType: {input_project_type} is not supported.")
+            cprint(
+                f"ProjectType: {input_project_type} is not supported.",
+                color="light_yellow",
+            )
             continue
         issue_type: Optional[JiraIssueType] = None
         for item in jira_client.get_issue_types(project_type.name):
@@ -229,7 +246,9 @@ Excel row number: {story.excel_row_index}."
                 issue_type = item
                 break
         if issue_type is None:
-            print(f"IssueType: {input_issue_type} is not supported.")
+            cprint(
+                f"IssueType: {input_issue_type} is not supported.", color="light_yellow"
+            )
             continue
 
         (
@@ -249,8 +268,9 @@ Excel row number: {story.excel_row_index}."
             )
 
             if not excel_columns:
-                print(
-                    f"Excel definition missing required field: {required_field.id_}."  # pylint: disable=line-too-long
+                cprint(
+                    f"Excel definition missing required field: {required_field.id_}.",  # pylint: disable=line-too-long
+                    color="light_red",
                 )
                 all_fields_valid = False
                 continue
@@ -258,7 +278,10 @@ Excel row number: {story.excel_row_index}."
             for excel_column in excel_columns:
                 excel_column_name = excel_column["name"]
                 if not hasattr(story, standardlize_column_name(excel_column_name)):
-                    print(f"Story missing required field: {excel_column_name}.")
+                    cprint(
+                        f"Story missing required field: {excel_column_name}.",
+                        color="light_red",
+                    )
                     all_fields_valid = False
                     continue
                 current_value = story[standardlize_column_name(excel_column_name)]
@@ -305,7 +328,7 @@ Excel row number: {story.excel_row_index}."
                 )
 
         if not all_fields_valid:
-            print("Please fix the above issues.")
+            cprint("Please fix the above issues.", color="light_red")
             continue
 
         # Special fields
@@ -314,7 +337,10 @@ Excel row number: {story.excel_row_index}."
         new_story = jira_client.create_story(new_story_fields)
         if new_story is not None:
             story["storyid"] = new_story.key
-            print(f"New story: {jira_client.get_jira_browser_link(new_story.key)}")
+            cprint(
+                f"New story: {jira_client.get_jira_browser_link(new_story.key)}",
+                color="light_green",
+            )
             continue
         return False
     return True
@@ -329,7 +355,7 @@ def __run_pre_steps(
     pre_process_steps = excel_definition.get_pre_process_steps()
 
     for pre_process_step in pre_process_steps:
-        print(f"Executing step: {pre_process_step.name}...")
+        cprint(f"Executing step: {pre_process_step.name}...")
         if strip_lower(pre_process_step.name) == strip_lower("RetrieveJiraInformation"):
             need_call_jira_api: bool = False
             for excel_definition_column in excel_definition.get_columns():
@@ -345,7 +371,7 @@ def __run_pre_steps(
                 if not __query_jira_information(
                     stories_need_call_jira, excel_definition, env_file
                 ):
-                    print("Retrieve jira information failed.")
+                    cprint("Retrieve jira information failed.", color="light_yellow")
                     return
         elif strip_lower(pre_process_step.name) == strip_lower(
             "FilterOutStoryWithoutId"
@@ -374,9 +400,12 @@ def __run_pre_steps(
                 if not __create_jira_stories(
                     stories_need_to_create, excel_definition, env_file
                 ):
-                    print("Error occurred when creating Jira stories.")
+                    cprint(
+                        "Error occurred when creating Jira stories.",
+                        color="light_yellow",
+                    )
                     return
-        print("Executing finish.")
+        cprint("Executing finish.")
 
 
 def __run_sort_logics(
@@ -395,7 +424,7 @@ def __run_sort_logics(
     sort_strategies = excel_definition.get_sort_strategies()
 
     for sort_strategy in sort_strategies:
-        print(f"Executing {sort_strategy.name} sorting...")
+        cprint(f"Executing {sort_strategy.name} sorting...")
         if strip_lower(sort_strategy.name) == strip_lower("InlineWeights"):
             stories_need_sort = sort_stories_by_inline_weights(stories_need_sort)
         elif strip_lower(sort_strategy.name) == strip_lower("SortOrder"):
@@ -410,7 +439,7 @@ def __run_sort_logics(
                 excel_definition.get_columns(),
                 sort_strategy,
             )
-        print("Executing finish.")
+        cprint("Executing finish.")
 
     return (stories_need_sort, stories_no_need_sort)
 
@@ -444,37 +473,38 @@ def run_steps_and_sort_excel_file(
     """
     sprint_schedule = SprintScheduleStore()
     if sprint_schedule_file is None:
-        print("Using default sprint schedule...")
+        cprint("Using default sprint schedule...")
         sprint_schedule.load(DEFAULT_SPRINT_SCHEDULE_FILE.read_text(encoding="utf-8"))
     else:
-        print("Using custom sprint schedule...")
+        cprint("Using custom sprint schedule...")
         sprint_schedule.load_file(sprint_schedule_file)
 
     excel_definition = ExcelDefinition()
     if excel_definition_file is None:
-        print("Using default excel definition...")
+        cprint("Using default excel definition...")
         excel_definition.load(DEFAULT_EXCEL_DEFINITION_FILE.read_text(encoding="utf-8"))
     else:
-        print("Using custom excel definition...")
+        cprint("Using custom excel definition...")
         excel_definition.load_file(excel_definition_file)
 
     validation_result = excel_definition.validate()
     if len(validation_result) != 0:
-        print(
+        cprint(
             """Validating excel definition failed.
-Please check below information to fix first."""
+Please check below information to fix first.""",
+            color="light_red",
         )
-        for item in validation_result:
-            print(item)
+        for index, item in enumerate(validation_result):
+            cprint(f"{index + 1}. {item}", color="light_yellow")
         return
-    print("Validating excel definition success.")
+    cprint("Validating excel definition success.", color="light_green")
 
     excel_columns, stories = read_excel_file(
         input_file, excel_definition, sprint_schedule
     )
 
     if stories is None or len(stories) == 0:
-        print("There are no stories inside the excel file.")
+        cprint("There are no stories inside the excel file.", color="light_yellow")
         return
 
     __run_pre_steps(stories, excel_definition, env_file)
@@ -490,7 +520,7 @@ Please check below information to fix first."""
         over_write=over_write,
     )
 
-    print(f"{output_file} has been saved.")
+    cprint(f"{output_file} has been saved.", color="light_green")
 
 
 def generate_jira_field_mapping_file(
@@ -555,37 +585,38 @@ def dry_run_steps_and_sort_excel_file(
     """
     sprint_schedule = SprintScheduleStore()
     if sprint_schedule_file is None:
-        print("Using default sprint schedule...")
+        cprint("Using default sprint schedule...")
         sprint_schedule.load(DEFAULT_SPRINT_SCHEDULE_FILE.read_text(encoding="utf-8"))
     else:
-        print("Using custom sprint schedule...")
+        cprint("Using custom sprint schedule...")
         sprint_schedule.load_file(sprint_schedule_file)
 
     excel_definition = ExcelDefinition()
     if excel_definition_file is None:
-        print("Using default excel definition...")
+        cprint("Using default excel definition...")
         excel_definition.load(DEFAULT_EXCEL_DEFINITION_FILE.read_text(encoding="utf-8"))
     else:
-        print("Using custom excel definition...")
+        cprint("Using custom excel definition...")
         excel_definition.load_file(excel_definition_file)
 
     validation_result = excel_definition.validate()
     if len(validation_result) != 0:
-        print(
+        cprint(
             """Validating excel definition failed.
-Please check below information to fix first."""
+Please check below information to fix first.""",
+            color="light_red",
         )
-        for item in validation_result:
-            print(item)
+        for index, item in enumerate(validation_result):
+            cprint(f"{index + 1}. {item}", color="light_yellow")
         return
-    print("Validating excel definition success.")
+    cprint("Validating excel definition success.", color="light_green")
 
     excel_columns, stories = read_excel_file(
         input_file, excel_definition, sprint_schedule
     )
 
-    print(f"There are {len(excel_columns)} columns in the excel.")
-    print(f"There are {excel_definition.column_count} columns in the definition file.")
+    cprint(f"There are {len(excel_columns)} columns in the excel.")
+    cprint(f"There are {excel_definition.column_count} columns in the definition file.")
 
     story_need_sort: int = 0
     for story in stories:
@@ -593,20 +624,20 @@ Please check below information to fix first."""
             story_need_sort += 1
 
     if not stories:
-        print("There are no stories inside the excel file.")
+        cprint("There are no stories inside the excel file.", color="light_yellow")
     else:
-        print(f"There are {story_need_sort} stories can be sorted.")
+        cprint(f"There are {story_need_sort} stories can be sorted.")
 
     if not excel_definition.count_of_pre_process_steps():
-        print("No pre-process steps have been configured.")
+        cprint("No pre-process steps have been configured.", color="light_red")
     else:
-        print("Pre-process steps:")
+        cprint("Pre-process steps:")
         for index, step in enumerate(excel_definition.get_pre_process_steps()):
-            print(f"{index + 1}: {step.name}. Enabled: {step.enabled}.")
+            cprint(f"{index + 1}: {step.name}. Enabled: {step.enabled}.")
 
     if not excel_definition.count_of_sort_strategies():
-        print("No sort strategies have been configured.")
+        cprint("No sort strategies have been configured.", color="yellow")
     else:
-        print("Sort strategies:")
+        cprint("Sort strategies:")
         for index, strategy in enumerate(excel_definition.get_sort_strategies()):
-            print(f"{index + 1}: {strategy.name}. Enabled: {strategy.enabled}.")
+            cprint(f"{index + 1}: {strategy.name}. Enabled: {strategy.enabled}.")

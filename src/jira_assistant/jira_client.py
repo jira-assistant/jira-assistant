@@ -10,6 +10,7 @@ from json import loads
 from typing import Any, Dict, List, Optional, TypedDict, Tuple, Union
 
 from jira import JIRA, JIRAError, Issue
+from termcolor import cprint
 from urllib3 import disable_warnings
 from typing_extensions import Required, NotRequired, Self
 
@@ -402,7 +403,10 @@ class JiraClient:
                 prefetch=False,
             )
         except JIRAError as e:
-            print(f"Calling create story API failed. {self.__extract_error_message(e)}")
+            cprint(
+                f"Calling create story API failed. {self.__extract_error_message(e)}",
+                color="light_yellow",
+            )
         return None
 
     def get_jira_browser_link(self, key: str) -> "str":
@@ -444,8 +448,9 @@ class JiraClient:
                         )
                         self.__project_issue_map_using_id[proj_id] = issue_types
                     except JIRAError as e:
-                        print(
-                            f"""Get issue types failed. Project: {proj_name}. {self.__extract_error_message(e)}"""  # pylint: disable=line-too-long
+                        cprint(
+                            f"""Get issue types failed. Project: {proj_name}. {self.__extract_error_message(e)}""",  # pylint: disable=line-too-long
+                            color="light_yellow",
                         )
                         continue
         return list(self.__project_map.values())
@@ -609,7 +614,6 @@ class JiraClient:
             start_index = 0
             end_index = batch_size
             while end_index <= len(story_ids) and start_index < len(story_ids):
-                # print(f"Start: {start_index}, End: {end_index}")
                 final_result.update(
                     self.__internal_get_stories_detail(
                         story_ids[start_index:end_index], jira_fields
@@ -659,7 +663,10 @@ class JiraClient:
 
             return final_result
         except JIRAError as e:
-            print(f"Calling search API failed. {self.__extract_error_message(e)}")
+            cprint(
+                f"Calling search API failed. {self.__extract_error_message(e)}",
+                color="light_yellow",
+            )
         return {}
 
     def __extract_error_message(self, error: JIRAError) -> "str":

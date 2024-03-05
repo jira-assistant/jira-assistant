@@ -351,7 +351,7 @@ class ExcelDefinition:
 
         return self
 
-    def validate(self) -> "List":
+    def validate(self) -> "List[str]":
         return (
             self.__validate_pre_process_steps()
             + self.__validate_sort_strategies()
