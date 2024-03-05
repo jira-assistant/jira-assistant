@@ -7,7 +7,7 @@ Jira Assistant - Connect Excel with Jira
     :target: https://github.com/jira-assistant/jira-assistant
     :alt: Jira Assistant
 
-|PyPI| |SupportedVersions| |Download| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |CodeClimate| |License|
+|PyPI| |SupportedVersions| |Download| |GitHubCommit| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |CodeClimate| |License|
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square
     :target: https://pypi.org/project/jira-assistant/
@@ -20,6 +20,10 @@ Jira Assistant - Connect Excel with Jira
 .. |Download| image:: https://static.pepy.tech/personalized-badge/jira-assistant?period=month&units=international_system&left_color=black&right_color=blue&left_text=downloads/month
     :target: https://pepy.tech/project/jira-assistant
     :alt: download
+
+.. |GitHubCommit| image:: https://img.shields.io/github/commit-activity/m/jira-assistant/jira-assistant
+    :target: https://github.com/jira-assistant/jira-assistant
+    :alt: GitHub commit activity
 
 .. |Package Size| image:: https://img.shields.io/github/repo-size/jira-assistant/jira-assistant
     :target: https://img.shields.io/github/repo-size/jira-assistant/jira-assistant
