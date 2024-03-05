@@ -597,10 +597,16 @@ Please check below information to fix first."""
     else:
         print(f"There are {story_need_sort} stories can be sorted.")
 
-    print("Pre-process steps:")
-    for pre_process_step in excel_definition.get_pre_process_steps():
-        print(pre_process_step.name)
+    if not excel_definition.count_of_pre_process_steps():
+        print("No pre-process steps have been configured.")
+    else:
+        print("Pre-process steps:")
+        for index, step in enumerate(excel_definition.get_pre_process_steps()):
+            print(f"{index + 1}: {step.name}. Enabled: {step.enabled}.")
 
-    print("Sort strategies:")
-    for sort_strategy in excel_definition.get_sort_strategies():
-        print(sort_strategy.name)
+    if not excel_definition.count_of_sort_strategies():
+        print("No sort strategies have been configured.")
+    else:
+        print("Sort strategies:")
+        for index, strategy in enumerate(excel_definition.get_sort_strategies()):
+            print(f"{index + 1}: {strategy.name}. Enabled: {strategy.enabled}.")

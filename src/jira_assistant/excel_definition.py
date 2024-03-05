@@ -746,6 +746,9 @@ class ExcelDefinition:
     def column_count(self) -> int:
         return len(self.__columns)
 
+    def count_of_sort_strategies(self) -> int:
+        return len(self.__sort_strategies)
+
     def get_sort_strategies(self, enabled: bool = True) -> "List[SortStrategy]":
         result: list[SortStrategy] = []
         for sort_strategy in self.__sort_strategies:
@@ -753,6 +756,9 @@ class ExcelDefinition:
                 result.append(deepcopy(sort_strategy))
         result.sort(key=ExcelDefinition.__sort_priority_map, reverse=False)
         return result
+
+    def count_of_pre_process_steps(self) -> int:
+        return len(self.__pre_process_steps)
 
     def get_pre_process_steps(self, enabled: bool = True) -> "List[PreProcessStep]":
         result: list[PreProcessStep] = []
