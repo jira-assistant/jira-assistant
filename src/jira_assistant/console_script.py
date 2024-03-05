@@ -13,6 +13,7 @@ from typing import Optional
 from urllib.parse import ParseResult, urlparse
 
 from dotenv import set_key
+from termcolor import cprint
 
 from .assistant import (
     generate_jira_field_mapping_file,
@@ -119,11 +120,17 @@ def process_excel_file() -> None:
         ).resolve()
 
         if input_file_absolute_path.suffix.lower() != ".xlsx":
-            print(f"Please provide an Excel file. File: {input_file_absolute_path}.")
+            cprint(
+                f"Please provide an Excel file. File: {input_file_absolute_path}.",
+                color="light_yellow",
+            )
             sys.exit(1)
 
         if not os.path.exists(input_file_absolute_path):
-            print(f"Input file is not exist. File: {input_file_absolute_path}.")
+            cprint(
+                f"Input file is not exist. File: {input_file_absolute_path}.",
+                color="light_yellow",
+            )
             sys.exit(1)
 
         input_file_name_without_extension = input_file_absolute_path.stem
@@ -206,7 +213,7 @@ def process_excel_file() -> None:
 
         sys.exit(0)
     except Exception as e:
-        print(e)
+        cprint(e, color="light_red")
         sys.exit(1)
 
 
@@ -295,19 +302,25 @@ def generate_template():
                 args.env_file,
             )
         else:
-            print(
+            cprint(
                 """Invalid template type.
-                Choices: excel, excel-definition or sprint-schedule."""
+Choices: excel, excel-definition or sprint-schedule.""",
+                color="light_red",
             )
 
         if result is not None and result.is_file():
-            print(f"Generate success! Template type: {template_type}.")
+            cprint(
+                f"Generate success! Template type: {template_type}.",
+                color="light_green",
+            )
             sys.exit(0)
         else:
-            print(f"Generate failed! Template type: {template_type}.")
+            cprint(
+                f"Generate failed! Template type: {template_type}.", color="light_red"
+            )
             sys.exit(1)
     except Exception as e:
-        print(e)
+        cprint(e, color="light_red")
         sys.exit(1)
 
 
@@ -332,7 +345,7 @@ def __generate_excel_template(output_file: "Path") -> Optional[Path]:
         )
         return output_file
     except Exception as e:
-        print(e)
+        cprint(e, color="light_red")
         return None
 
 
@@ -343,7 +356,7 @@ def __generate_jira_field_mapping_template(
         if generate_jira_field_mapping_file(output_file, env_file=env_file):
             return output_file
     except Exception as e:
-        print(e)
+        cprint(e, color="light_red")
     return None
 
 
@@ -408,7 +421,7 @@ def update_jira_info():
             parsed_url: ParseResult = urlparse(str(args.url))
 
             if parsed_url.scheme not in ("https", "http"):
-                print("Please check the jira url.")
+                cprint("Please check the jira url.", color="light_red")
             else:
                 result, _, _ = set_key(
                     env_file,
@@ -418,16 +431,16 @@ def update_jira_info():
                 )
 
                 if result is True:
-                    print("Add/Update jira url success!")
+                    cprint("Add/Update jira url success!", color="light_green")
                 else:
-                    print("Add/Update jira url failed!")
+                    cprint("Add/Update jira url failed!", color="light_red")
 
         # ACCESS TOKEN Part
         if args.access_token is not None:
             access_token: str = str(args.access_token)
 
             if len(access_token.strip()) == 0 or access_token.isspace():
-                print("Please check the access token.")
+                cprint("Please check the access token.", color="light_red")
                 sys.exit(1)
             else:
                 result, _, _ = set_key(
@@ -438,11 +451,11 @@ def update_jira_info():
                 )
 
                 if result is True:
-                    print("Add/Update jira access token success!")
+                    cprint("Add/Update jira access token success!", color="light_green")
                     sys.exit(0)
                 else:
-                    print("Add/Update jira access token failed!")
+                    cprint("Add/Update jira access token failed!", color="light_red")
                     sys.exit(1)
     except Exception as e:
-        print(e)
+        cprint(e, color="light_red")
         sys.exit(1)
