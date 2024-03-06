@@ -1,20 +1,18 @@
 # Create Jira Story
 
-Inside this package, there is a shell command named `process-excel-file` and using this tool can create Jira stories based on the information from the Excel.
+Please note that there is a shell command inside this package called `process-excel-file` that can be used to create Jira stories based on the information from an Excel file.
 
-Before following below steps, we need to make sure the Jira related information has been configured correctly.
-You can run the `update-jira-info` command to do the job like below.
+Before proceeding with the steps below, it is important to ensure that the Jira-related information has been configured correctly. You can run the `update-jira-info` command to do this, as shown in the image below:
 
 ![update_jira_info_success](../_static/image/quick_start/update_jira_info_success.png)
 
-For more info about this command, please check [update_jira_info](../reference/update_jira_info.md).
+For more information about this command, please refer to the [update_jira_info](../reference/update_jira_info.md) page.
 
 ## Step 1: Prepare the definition file
 
-We need to create a definition file which contains the `CreateJiraStory` step. And since we need to connect this file with Jira platform, a column named `storyId` is required.
-Furthermore, column named `projectType` and `issueType` are also needed so that program can decide which kind of project and issue you want to create.
+To create a definition file that contains the `CreateJiraStory` step, you need to include a column named `storyId` to connect the file with the Jira platform. Additionally, columns named `projectType` and `issueType` are also required to help the program determine which type of project and issue you want to create.
 
-Below is an example file and along with text version.
+Here is an example file and the corresponding text version:
 
 ![excel_definition_example](../_static/image/quick_start/create_jira_story/create_jira_story_excel_definition.png)
 
@@ -340,30 +338,30 @@ Below is an example file and along with text version.
 ]
 ```
 
-For more info about this command, please check [template files](../reference/generate_template.md).
+To learn more about this command, please refer to the [template files](../reference/generate_template.md).
 
 ## Step 2: Prepare the Excel file
 
-According to the column information from the definition file, we need to create an Excel file like below.
+Using the column information from the definition file, create an Excel file that looks like the image below.
 
 ![create_jira_story_excel](../_static/image/quick_start/create_jira_story/create_jira_story_excel.png)
 
 ## Step 3: Running the shell command
 
-Now, we have the definition file and the Excel file. Running the `process-excel-file` can give us the final result.
+With both the definition and Excel files ready, run the `process-excel-file` command to obtain the final result.
 
 ![create_jira_story_command_success](../_static/image/quick_start/create_jira_story/create_jira_story_command_success.png)
 
-If there are anything wrong happened, the console will print the error message like below and you can correct both files based on those information.
+If an error occurs, the console will display an error message like the one below, providing information that can be used to correct both files.
 
 ![create_jira_story_command_error](../_static/image/quick_start/create_jira_story/create_jira_story_command_error.png)
 
 ## Step 4: Congratulations!!!
 
-Now, you can see the **excel_sorted.xlsx** file has been created successfully! The `storyId` now has the latest value.
+The file **excel_sorted.xlsx** has been created successfully! The `storyId` field now has the latest value.
 
 ![create_jira_story_excel_result](../_static/image/quick_start/create_jira_story/create_jira_story_excel_result.png)
 
-And compare with the ticket showed in the browser, we can see all properties have been created correctly!
+When compared with the ticket displayed in the browser, we can see that all properties have been created correctly!
 
 ![create_jira_story_from_ui](../_static/image/quick_start/create_jira_story/create_jira_story_from_ui.png)
