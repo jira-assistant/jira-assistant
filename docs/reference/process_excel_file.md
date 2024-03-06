@@ -9,7 +9,7 @@ After [installation](../installation/install_jira_assistant.md), the `process-ex
 **`input_file`**
 
 > The file path of the Excel that you want to process.
-> Absolute or relative path are all supported.
+> Absolute or relative paths are all supported.
 
 **`-h` and `--help`**
 
@@ -17,15 +17,15 @@ After [installation](../installation/install_jira_assistant.md), the `process-ex
 
 **`-o` and `--output-folder`**
 
-> Indicate where to put the output file.
-> Absolute or relative path are all supported.
+> The location where you would like to save the output file.
+> Absolute or relative paths are all supported.
 
 > **Default: Current shell location.**
 
 **`--excel-definition-file`**
 
-> Indicate the definition file which used to describe the relationships between the Excel and the Jira.
-> Absolute or relative path are all supported.
+> The location where you would like to read the definition file used to describe the relationships between Excel and Jira.
+> Absolute or relative paths are all supported.
 
 > **Default: Excel definition file inside the package.**
 
@@ -33,8 +33,8 @@ After [installation](../installation/install_jira_assistant.md), the `process-ex
 
 **`--sprint-schedule-file`**
 
-> Indicate the milestone definition file which defined the order of each milestone.
-> Absolute or relative path are all supported.
+> The location where you would like to read the milestone definition file which defines the order of each milestone.
+> Absolute or relative paths are all supported.
 
 > **Default: Sprint schedule file inside the package.**
 
@@ -42,14 +42,14 @@ After [installation](../installation/install_jira_assistant.md), the `process-ex
 
 **`--over-write`**
 
-> Indicate whether to replace the exist output file or not.
+> Indicate whether to replace the existing output file or not.
 
 > **Default: True**
 
 **`--env-file`**
 
-> Indicate the environment file.
-> Absolute or relative path are all supported.
+> The location where you would like to read the environment file.
+> Absolute or relative paths are all supported.
 
 > **Default: Environment file inside the package.**
 
@@ -65,7 +65,7 @@ After [installation](../installation/install_jira_assistant.md), the `process-ex
 
 > Print out the **version** info.
 
-For more information, please check below pages.
+For more information, please check the below pages.
 > 1. [Query Jira information](../quick_start/gathering_jira_info.md)
 > 2. [Sort Excel file](../quick_start/sort_excel_file.md)
 > 3. [Create Jira story](../quick_start/create_jira_story.md)

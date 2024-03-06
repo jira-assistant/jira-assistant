@@ -104,10 +104,10 @@ https://github.com/jira-assistant/jira-assistant
 Features
 ========
 
-* Quering the Jira platform to fulfill the excel file.
-* Create new stories on the Jira platform.
-* Multiple defined procedures (retrieving additional info, customized filter and etc.) can be choosed and combined to process the Excel file.
-* Sorting the Excel rows based on multiple sorting algorithms which can be choosed and combined.
+* Currently using the Jira platform to gather the necessary information to complete the Excel file.
+* Able to create new stories on the Jira platform as needed.
+* There are multiple defined procedures available to retrieve additional information, apply customized filters and more, which can be combined to process the Excel file.
+* The Excel rows can be sorted using multiple sorting algorithms that can also be combined as per your requirement.
 
 Author
 ======

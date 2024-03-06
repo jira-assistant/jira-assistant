@@ -1,14 +1,14 @@
 # Quick install guide
 
-Before you can use this tool, you’ll need to get it installed. This guide will guide you to a minimal installation that’ll work while you walk through the introduction.
+Before you begin using this tool, you will need to install it. This guide will lead you through a minimal installation that will work while you go through the introduction.
 
 ## Install Python
 
-We recommend using the latest version of Python. Jira Assistant supports Python 3.8 and newer.
+We suggest utilizing the most recent version of Python to ensure optimal performance of Jira Assistant. The application supports Python 3.8 and later versions.
 
-Get the latest version of Python at https://www.python.org/downloads/ or with your operating system’s package manager.
+To obtain the latest version of Python, you can either visit [https://www.python.org/downloads/](https://www.python.org/downloads/) or use your operating system's package manager.
 
-You can verify that Python is installed by typing python from your shell; you should see something like:
+To verify that Python is installed, simply type `Python` from your shell. You should see similar output to the following:
 
 ```python
 Python 3.x.y [MSC v.1937 64 bit (AMD64)] on win32
@@ -28,7 +28,7 @@ Jira Assistant is now installed.
 
 ## Verifying
 
-To verify that Jira Assistant can be used as expected, type `process-excel-file --version` from your shell.
+To verify that Jira Assistant works, enter `process-excel-file --version` in your shell.
 
 ```shell
 >>> process-excel-file --version
