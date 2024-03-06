@@ -1,19 +1,18 @@
 # Gathering Jira Information
 
-Inside this package, there is a shell command named `process-excel-file` and using this tool can help us to retrieve jira ticket's properties. 
+This package contains a shell command called `process-excel-file` that can be used to retrieve Jira ticket properties. 
 
-Before following below steps, we need to make sure the Jira related information has been configured correctly.
-You can run the `update-jira-info` command to do the job like below.
+Before proceeding, it is important to ensure that the Jira-related information has been configured correctly. You can use the `update-jira-info` command to configure it, as shown below.
 
 ![update_jira_info_success](../_static/image/quick_start/update_jira_info_success.png)
 
-For more info about this command, please check [update_jira_info](../reference/update_jira_info.md).
+For more information about this command, please refer to the [update_jira_info](../reference/update_jira_info.md) link.
 
-## Step 1: Prepare the definition file
+## Step 1: Preparing the Definition File
 
-We need to create a definition file which contains the `RetrieveJiraInformation` step. And since we need to connect this file with Jira platform, a column named `storyId` is required. Step named `FilterOutStoryWithoutId` is also recommended since we need to make sure that all `storyId` column should have the valid value.
+To connect the file with the Jira platform, we need to create a definition file that contains the `RetrieveJiraInformation` step. This file must have a column named `storyId`, and we recommend using the `FilterOutStoryWithoutId` step to ensure that all `storyId` columns have valid values.
 
-Below is an example file and along with text version.
+Here is an example file and its text version:
 
 ![excel_definition_example](../_static/image/quick_start/gathering_jira_info/excel_definition_example.png)
 
@@ -87,30 +86,30 @@ Below is an example file and along with text version.
 ]
 ```
 
-For more info about this command, please check [template files](../reference/generate_template.md).
+To learn more about this command, please refer to the [template files](../reference/generate_template.md).
 
-## Step 2: Prepare the Excel file
+## Step 2: Preparing the Excel File
 
-Now, we can create the Excel file according to the definition file.
+Next, you need to create an Excel file based on the definition file. Here's an example of what the Excel file should look like:
 
 ![excel_example](../_static/image/quick_start/gathering_jira_info/excel_example.png)
 
-Below snapshot shows what kind of files we've created for now.
+Here's a snapshot of the files you should have created so far:
 
 ![folder_snapshot](../_static/image/quick_start/gathering_jira_info/folder_snapshot.png)
 
-## Step 3: Running the shell command
+## Step 3: Running the Shell Command
 
-Running the `process-excel-file` can give us the final result.
+Run the `process-excel-file` command to get the final result. Here's a screenshot of what it should look like:
 
 ![running_command](../_static/image/quick_start/gathering_jira_info/running_command.png)
 
-## Step 4: Congratulations!!!
+## Step 4: Congratulations!
 
-Now, you can see the **excel_sorted.xlsx** file has been created successfully!
+You should now see that the **excel_sorted.xlsx** file has been successfully created!
 
 ![excel_sorted](../_static/image/quick_start/gathering_jira_info/excel_sorted.png)
 
-And compare with the ticket showed in the browser, you can see the **Story Title** and the **Story Desc** inside the Excel file have the correct value from the Jira ticket.
+Compare the ticket displayed in the browser with the **Story Title** and **Story Desc** values in the Excel file to verify that they match.
 
 ![ticket_from_ui](../_static/image/quick_start/gathering_jira_info/ticket_from_ui.png)

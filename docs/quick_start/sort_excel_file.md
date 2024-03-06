@@ -1,9 +1,8 @@
 # Using multiple sort strategy to sort Excel file
 
-Inside this package, there is a shell command named `process-excel-file` and using this tool can help you sort the Excel file.
+To sort an Excel file, you can use the shell command `process-excel-file`. 
 
-Before following below steps, we need to make sure the Jira related information has been configured correctly.
-You can run the `update-jira-info` command to do the job like below.
+Before starting, ensure that the Jira related information is configured correctly by running the `update-jira-info` command.
 
 ![update_jira_info_success](../_static/image/quick_start/update_jira_info_success.png)
 
@@ -11,22 +10,16 @@ For more info about this command, please check [update_jira_info](../reference/u
 
 ## Step 1: Prepare the definition file
 
-We need to create a definition file which contains the **SortStrategies** part. 
+To begin, create a definition file with the **SortStrategies** section. Three strategies have been applied: 
 
-Inside this part, we applied **3** different strategies.
+1. The `InlineWeights` strategy has the highest priority and takes into account columns with an `InlineWeights` value greater than 0. In this case, **Communication**, **Learning Ability**, and **Skills** are considered.
 
-The `InlineWeights` strategy has the top priority so it will be triggered first. It will take columns of which `InlineWeights` value is bigger than **0** into consideration.
-In this case, there are **Communication**, **Learning Ability** and **Skills**.
+2. The `SortOrder` strategy considers columns with `ScopeRequireSort` set to `true` and does not affect the parent level sort order. In this example, **Student Name**, **Height**, and **Weight** are considered.
 
-The second strategy is `SortOrder`. It will take columns of which `ScopeRequireSort` is `true` into consideration.
-In this case, there are **Student Name**, **Height** and **Weight**. 
+3. The `RaiseRanking` strategy considers columns with a `ScopeRaiseRanking` value greater than 0 and also does not affect the parent level sort order. In this case, only the **Wealthy** column is considered.
 The `ParentScopeIndexRange` inside this strategy's config guarantee the parent level sort order will not be effected.
 
-And the last strategy is `RaiseRanking`. It means each column of which `ScopeRaiseRanking` value is bigger than **0** into consideration.
-In this case, only **Wealthy** column will be applied to this strategy.
-The `ParentScopeIndexRange` inside this strategy's config guarantee the parent level sort order will not be effected.
-
-Below is the example file and along with text version.
+The example file and its text version are provided below.
 
 ![excel_definition_example](../_static/image/quick_start/sort_excel_file/sort_excel_file_excel_definition.png)
 
@@ -48,8 +41,8 @@ Below is the example file and along with text version.
                 "Priority": 2,
                 "Enabled": true,
                 "Config": {
-					"ParentScopeIndexRange": "4,5,6"
-				}
+		            "ParentScopeIndexRange": "4,5,6"
+		        }
             },
             {
                 "Name": "RaiseRanking",
@@ -152,27 +145,26 @@ Below is the example file and along with text version.
 ]
 ```
 
-## Step 2: Prepare the Excel file
+## Step 2: Prepare the Excel File
 
-Now, we can create the Excel file according to the definition file.
+We can now create the Excel file based on the definition file.
 
 ![sort_excel_file_excel](../_static/image/quick_start/sort_excel_file/sort_excel_file_excel.png)
 
-## Step 3: Running the shell command
+## Step 3: Running the Shell Command
 
-Running the `process-excel-file` can give us the final result.
+Running the `process-excel-file` command will give us the final result.
 
 ![sort_excel_command_success](../_static/image/quick_start/sort_excel_file/sort_excel_command_success.png)
 
-## Step 4: Congratulations!!!
+## Step 4: Congratulations!
 
-Now, you can see the **excel_sorted.xlsx** file has been created successfully!
+You can now see that the **excel_sorted.xlsx** file has been created successfully!
 
 ![sort_excel_file_excel_result](../_static/image/quick_start/sort_excel_file/sort_excel_file_excel_result.png)
 
-## Additional
+## Additional Information
 
-Actually, if you just want to know what kind of steps will be triggered or the detail information about the excel file or definition file.
-You can append the `--dry-run` option to the command before running.
+If you only want to know which steps will be triggered or want to see detailed information about the Excel or definition file, you can append the `--dry-run` option to the command before running it.
 
 ![sort_excel_command_dry_run](../_static/image/quick_start/sort_excel_file/sort_excel_command_dry_run.png)

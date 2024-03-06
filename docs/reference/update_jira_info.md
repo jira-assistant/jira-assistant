@@ -1,6 +1,6 @@
 # Add/Update Jira Information
 
-After [installation](../installation/install_jira_assistant.md), the `update-jira-info` command will be installed. You can type `update-jira-info -h` in the shell to verify.
+After you install the Jira assistant, you can verify by typing `update-jira-info -h` in the shell.
 
 ![update_jira_info_command](../_static/image/reference/update-jira-info/update_jira_info_command.png)
 
@@ -22,8 +22,8 @@ After [installation](../installation/install_jira_assistant.md), the `update-jir
 
 **`--env-file`**
 
-> Indicate the environment file.
-> Absolute or relative path are all supported.
+> The location where you would like to read the environment file.
+> Absolute or relative paths are all supported.
 
 > **Default: Environment file inside the package.**
 
@@ -35,14 +35,14 @@ After [installation](../installation/install_jira_assistant.md), the `update-jir
 
 > ## Access Token
 
-> Currently, this package using the Basic Authentication to connect/operate with Jira platform.
+> Currently, this package uses the Basic Authentication to connect/operate with the Jira platform.
 > Here we are using the self-host Jira platform as an example to show you how to generate an API token.
 
-> First, you need to login the platform and navigate to your profile page. After you choose the **Personal Access Tokens** tab in the left of the window, you can see below page.
+> First, you must log into the platform and navigate your profile page. After you choose the **Personal Access Tokens** tab on the left of the window, you can see the below page.
 
 > ![update_jira_info_generate_token](../_static/image/reference/update-jira-info/update_jira_info_generate_token.png)
 
-> Now, you can click the **Create token** button on the right top of the window. Then a new form will be showed.
+> Now, you can click the **Create token** button at the top of the window. Then a new form will be shown.
 
 > ![update_jira_info_new_token_form](../_static/image/reference/update-jira-info/update_jira_info_new_token_form.png)
 
@@ -54,17 +54,17 @@ After [installation](../installation/install_jira_assistant.md), the `update-jir
 
 > If you are using Jira Cloud, check this [article](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) about how to manage API tokens.
 
-> If you want to know more about the Authentication/Authorization, please check below documentation.
+> If you want to know more about Authentication/Authorization, please check the below documentation.
 
 > [https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis](https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis)
 
 > ## URL
 
-> This is the Jira website URL that you are using to visit in the browser.
+> This is the Jira website URL you use to visit in the browser.
 
 > ## Environment File
 
-> By default, the **AccessToken** and the **URL** parameter will be add/update in the default env file which located inside the package folder after installation.
-> This option gives you an ability to create/update your own env file so that it can be used in other commands like `process-excel-file` or `generate-template`.
+> By default, the **AccessToken** and the **URL** parameters will be add/updated in the default env file which is located inside the package folder after installation.
+> This option gives you the ability to create/update your env file so that it can be used in other commands like `process-excel-file` or `generate-template`.
 
-> **Notice: This behavior only has effect when executing current command.**
+> **Notice: This behavior only applies for the duration of the current command.**
