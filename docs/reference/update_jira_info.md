@@ -35,6 +35,8 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 
 > ## Access Token
 
+> ### Self-Host Jira Server
+
 > Currently, this package uses the Basic Authentication to connect/operate with the Jira platform.
 > Here we are using the self-host Jira platform as an example to show you how to generate an API token.
 
@@ -50,13 +52,25 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 
 > ![update_jira_info_new_token](../_static/image/reference/update-jira-info/update_jira_info_new_token.png)
 
-> Documentation: [https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+> ### Jira Cloud
 
-> If you are using Jira Cloud, check this [article](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/) about how to manage API tokens.
+> We use the [ATLASSIAN Account site](https://id.atlassian.com/manage-profile/security) to generate the token.
+
+> ![update_jira_info_generate_token_in_cloud](../_static/image/reference/update-jira-info/update_jira_info_generate_token_in_cloud.png)
+
+> Now, you can follow the red number sequence to create a new token.
+
+> ![update_jira_info_new_token_form_in_cloud](../_static/image/reference/update-jira-info/update_jira_info_new_token_form_in_cloud.png)
+
+> After you click the **Create** button, you can see a new token has been created and you need to click the **Copy** button to have it.
+
+> ![update_jira_info_new_token_in_cloud](../_static/image/reference/update-jira-info/update_jira_info_new_token_in_cloud.png)
 
 > If you want to know more about Authentication/Authorization, please check the below documentation.
 
-> [https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis](https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis)
+> [Basic Authentication for Jira](https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis)
+> [API tokens used by Jira Server](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+> [API tokens used by Jira Cloud](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
 
 > ## URL
 
