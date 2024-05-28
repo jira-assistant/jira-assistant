@@ -35,7 +35,7 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 
 > ## Access Token
 
-> ### Self-Host Jira Server
+> ### Jira Server
 
 > Currently, this package uses the Basic Authentication to connect/operate with the Jira platform.
 > Here we are using the self-host Jira platform as an example to show you how to generate an API token.
@@ -68,9 +68,9 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 
 > If you want to know more about Authentication/Authorization, please check the below documentation.
 
-> [Basic Authentication for Jira](https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis)
-> [API tokens used by Jira Server](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
-> [API tokens used by Jira Cloud](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
+> 1. [Basic Authentication for Jira](https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis)
+> 2. [API tokens used by Jira Server](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
+> 3. [API tokens used by Jira Cloud](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
 
 > ## URL
 
