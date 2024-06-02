@@ -444,6 +444,46 @@ def __run_sort_logics(
     return (stories_need_sort, stories_no_need_sort)
 
 
+def __pre_parse_excel_file(
+    input_file: Union[str, Path],
+    excel_definition_file: Optional[Union[str, Path]] = None,
+    sprint_schedule_file: Optional[Union[str, Path]] = None,
+) -> Tuple[ExcelDefinition, Optional[List[str]], Optional[List[Story]]]:
+    sprint_schedule = SprintScheduleStore()
+    if sprint_schedule_file is None:
+        cprint("Using default sprint schedule...")
+        sprint_schedule.load(DEFAULT_SPRINT_SCHEDULE_FILE.read_text(encoding="utf-8"))
+    else:
+        cprint("Using custom sprint schedule...")
+        sprint_schedule.load_file(sprint_schedule_file)
+
+    excel_definition = ExcelDefinition()
+    if excel_definition_file is None:
+        cprint("Using default excel definition...")
+        excel_definition.load(DEFAULT_EXCEL_DEFINITION_FILE.read_text(encoding="utf-8"))
+    else:
+        cprint("Using custom excel definition...")
+        excel_definition.load_file(excel_definition_file)
+
+    validation_result = excel_definition.validate()
+    if len(validation_result) != 0:
+        cprint(
+            """Validating excel definition failed.
+Please check below information to fix first.""",
+            color="light_red",
+        )
+        for index, item in enumerate(validation_result):
+            cprint(f"{index + 1}. {item}", color="light_yellow")
+        return (excel_definition, None, None)
+    cprint("Validating excel definition success.", color="light_green")
+
+    excel_columns, stories = read_excel_file(
+        input_file, excel_definition, sprint_schedule
+    )
+
+    return (excel_definition, excel_columns, stories)
+
+
 def run_steps_and_sort_excel_file(
     input_file: Union[str, Path],
     output_file: Union[str, Path],
@@ -471,39 +511,15 @@ def run_steps_and_sort_excel_file(
     :parm over_write:
         Whether or not the exist output file will be over-write.
     """
-    sprint_schedule = SprintScheduleStore()
-    if sprint_schedule_file is None:
-        cprint("Using default sprint schedule...")
-        sprint_schedule.load(DEFAULT_SPRINT_SCHEDULE_FILE.read_text(encoding="utf-8"))
-    else:
-        cprint("Using custom sprint schedule...")
-        sprint_schedule.load_file(sprint_schedule_file)
-
-    excel_definition = ExcelDefinition()
-    if excel_definition_file is None:
-        cprint("Using default excel definition...")
-        excel_definition.load(DEFAULT_EXCEL_DEFINITION_FILE.read_text(encoding="utf-8"))
-    else:
-        cprint("Using custom excel definition...")
-        excel_definition.load_file(excel_definition_file)
-
-    validation_result = excel_definition.validate()
-    if len(validation_result) != 0:
-        cprint(
-            """Validating excel definition failed.
-Please check below information to fix first.""",
-            color="light_red",
-        )
-        for index, item in enumerate(validation_result):
-            cprint(f"{index + 1}. {item}", color="light_yellow")
-        return
-    cprint("Validating excel definition success.", color="light_green")
-
-    excel_columns, stories = read_excel_file(
-        input_file, excel_definition, sprint_schedule
+    excel_definition, excel_columns, stories = __pre_parse_excel_file(
+        input_file, excel_definition_file, sprint_schedule_file
     )
 
-    if stories is None or len(stories) == 0:
+    if stories is None or excel_columns is None:
+        cprint("Parse excel file failed.", color="light_red")
+        return
+
+    if not stories:
         cprint("There are no stories inside the excel file.", color="light_yellow")
         return
 
@@ -583,51 +599,11 @@ def dry_run_steps_and_sort_excel_file(
         The JSON file which contains the input excel file's structure.
 
     """
-    sprint_schedule = SprintScheduleStore()
-    if sprint_schedule_file is None:
-        cprint("Using default sprint schedule...")
-        sprint_schedule.load(DEFAULT_SPRINT_SCHEDULE_FILE.read_text(encoding="utf-8"))
-    else:
-        cprint("Using custom sprint schedule...")
-        sprint_schedule.load_file(sprint_schedule_file)
-
-    excel_definition = ExcelDefinition()
-    if excel_definition_file is None:
-        cprint("Using default excel definition...")
-        excel_definition.load(DEFAULT_EXCEL_DEFINITION_FILE.read_text(encoding="utf-8"))
-    else:
-        cprint("Using custom excel definition...")
-        excel_definition.load_file(excel_definition_file)
-
-    validation_result = excel_definition.validate()
-    if len(validation_result) != 0:
-        cprint(
-            """Validating excel definition failed.
-Please check below information to fix first.""",
-            color="light_red",
-        )
-        for index, item in enumerate(validation_result):
-            cprint(f"{index + 1}. {item}", color="light_yellow")
-        return
-    cprint("Validating excel definition success.", color="light_green")
-
-    excel_columns, stories = read_excel_file(
-        input_file, excel_definition, sprint_schedule
+    excel_definition, excel_columns, stories = __pre_parse_excel_file(
+        input_file, excel_definition_file, sprint_schedule_file
     )
 
-    cprint(f"There are {len(excel_columns)} columns in the excel.")
     cprint(f"There are {excel_definition.column_count} columns in the definition file.")
-
-    story_need_sort: int = 0
-    for story in stories:
-        if story.need_sort:
-            story_need_sort += 1
-
-    if not stories:
-        cprint("There are no stories inside the excel file.", color="light_yellow")
-    else:
-        cprint(f"There are {story_need_sort} stories can be sorted.")
-
     if not excel_definition.count_of_pre_process_steps():
         cprint("No pre-process steps have been configured.", color="light_red")
     else:
@@ -641,3 +617,19 @@ Please check below information to fix first.""",
         cprint("Sort strategies:")
         for index, strategy in enumerate(excel_definition.get_sort_strategies()):
             cprint(f"{index + 1}: {strategy.name}. Enabled: {strategy.enabled}.")
+
+    if stories is None or excel_columns is None:
+        cprint("Parse excel file failed.", color="light_red")
+        return
+
+    cprint(f"There are {len(excel_columns)} columns in the excel.")
+
+    if not stories:
+        cprint("There are no stories inside the excel file.", color="light_yellow")
+    else:
+        story_need_sort: int = 0
+        for story in stories:
+            if story.need_sort:
+                story_need_sort += 1
+
+        cprint(f"There are {story_need_sort} stories can be sorted.")
