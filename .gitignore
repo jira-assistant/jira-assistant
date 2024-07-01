@@ -131,3 +131,6 @@ dmypy.json
 
 # Avoid Company data
 confident.xlsx
+
+# Avoid PyCharm data
+.idea/
