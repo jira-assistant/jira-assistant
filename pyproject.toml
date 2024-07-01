@@ -34,7 +34,7 @@ classifiers = [
 ]
 keywords = ["jira", "excel", "sorting", "project management", "tool"]
 dependencies = [
-    "openpyxl >= 3.2.0b1",
+    "openpyxl >= 3.1.5",
     "python-dateutil >= 2.9.0.post0",
     "python-dotenv >= 1.0.1",
     "requests >= 2.32.3",
@@ -45,7 +45,7 @@ dependencies = [
     'requests-mock >= 1.12.1',
     'termcolor >= 2.4.0'
 ]
-version = "0.1.36"
+version = "0.1.37"
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "pylint"]
