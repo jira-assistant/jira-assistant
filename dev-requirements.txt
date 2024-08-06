@@ -27,7 +27,7 @@ requests-toolbelt==1.0.0
 six==1.16.0
 termcolor==2.4.0
 types-cffi==1.16.0.20240331
-types-oauthlib==3.2.0.20240217
+types-oauthlib==3.2.0.20240806
 types-openpyxl==3.1.5.20240719
 types-python-dateutil==2.9.0.20240316
 types-requests==2.32.0.20240712
