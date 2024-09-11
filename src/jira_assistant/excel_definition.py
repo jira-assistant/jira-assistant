@@ -10,16 +10,16 @@ from datetime import datetime
 from json import loads
 from json.decoder import JSONDecodeError
 from pathlib import Path
-from typing import Any, List, Optional, TypedDict, Union, Dict
+from typing import Any, Dict, List, Optional, TypedDict, Union
 
 from .milestone import Milestone
 from .priority import Priority
 from .utils import (
     dict_has_key,
     is_absolute_path_valid,
+    is_index_range_valid,
     standardlize_column_name,
     strip_lower,
-    is_index_range_valid,
 )
 
 __all__ = ["ExcelDefinition"]
@@ -359,7 +359,7 @@ class ExcelDefinition:
         )
 
     def __validate_pre_process_steps(self) -> "List[str]":
-        invalid_definitions = []
+        invalid_definitions: List[str] = []
         valid_pre_process_steps = [
             "CreateJiraStory".lower(),
             "FilterOutStoryWithoutId".lower(),
@@ -453,7 +453,7 @@ class ExcelDefinition:
         return invalid_definitions
 
     def __validate_sort_strategies(self) -> "List[str]":
-        invalid_definitions = []
+        invalid_definitions: List[str] = []
 
         # Validate Strategies
         strategy_priorities: List[int] = []
@@ -501,7 +501,7 @@ class ExcelDefinition:
     def __validate_column_definitions(  # pylint: disable=too-many-branches
         self,
     ) -> "List[str]":
-        invalid_definitions = []
+        invalid_definitions: List[str] = []
 
         # Validate the Columns
         exist_story_id_column = False
