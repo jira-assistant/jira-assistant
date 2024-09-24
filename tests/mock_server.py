@@ -14,7 +14,7 @@ from requests_mock.response import create_response
 
 from . import ASSETS_FILES
 
-mock_jira_stories: Dict[str, Dict[str, str]] = {}
+mock_jira_stories: Dict[str, Dict[str, str]]
 with open(ASSETS_FILES / "mock_jira_stories.json", encoding="utf-8") as file:
     mock_jira_stories = load(file)
 
@@ -62,7 +62,7 @@ def custom_matcher(request: _RequestObjectProxy) -> Optional[Response]:
         )
         is not None
     ):
-        return mock_createmeta_issue_types_response(request)
+        return mock_create_meta_issue_types_response(request)
     if (
         match(
             pattern=r"^/rest/api/2/issue/createmeta/\w{1,}?/issuetypes/\w{1,}?$",
@@ -71,7 +71,7 @@ def custom_matcher(request: _RequestObjectProxy) -> Optional[Response]:
         )
         is not None
     ):
-        return mock_createmeta_specific_issue_type_response(request)
+        return mock_create_meta_specific_issue_type_response(request)
     return None
 
 
@@ -118,7 +118,7 @@ def custom_matcher_with_failed_status_code(
         )
         is not None
     ):
-        return mock_createmeta_issue_types_response(request, status_code=400)
+        return mock_create_meta_issue_types_response(request, status_code=400)
     if (
         match(
             pattern=r"^/rest/api/2/issue/createmeta/\w{1,}?/issuetypes/\w{1,}?$",
@@ -127,7 +127,7 @@ def custom_matcher_with_failed_status_code(
         )
         is not None
     ):
-        return mock_createmeta_specific_issue_type_response(request, status_code=400)
+        return mock_create_meta_specific_issue_type_response(request, status_code=400)
     return None
 
 
@@ -192,7 +192,7 @@ def mock_search_response(
 ) -> Response:
     story_ids = [
         story_id.strip("'")
-        for story_id in re.findall(r"('[\w-]{1,}'){1,}", request.qs["jql"][0])
+        for story_id in re.findall(r"('[\w-]+')+", request.qs["jql"][0])
     ]
 
     response_json = {
@@ -349,7 +349,7 @@ def mock_project_response(
     )
 
 
-def mock_createmeta_issue_types_response(
+def mock_create_meta_issue_types_response(
     request: _RequestObjectProxy, status_code: int = 200
 ) -> Response:
     return create_response(
@@ -422,7 +422,7 @@ def mock_createmeta_issue_types_response(
     )
 
 
-def mock_createmeta_specific_issue_type_response(
+def mock_create_meta_specific_issue_type_response(
     request: _RequestObjectProxy, status_code: int = 200
 ) -> Response:
     return create_response(

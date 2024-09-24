@@ -18,11 +18,11 @@ from .utils import (
     dict_has_key,
     is_absolute_path_valid,
     is_index_range_valid,
-    standardlize_column_name,
+    standardize_column_name,
     strip_lower,
 )
 
-__all__ = ["ExcelDefinition"]
+__all__ = ["ExcelDefinition", "ExcelDefinitionColumn", "SortStrategy"]
 
 
 class BasicStep:
@@ -271,7 +271,7 @@ class ExcelDefinition:
 
     def load(self, content: str) -> "ExcelDefinition":
         """
-        Load json string to generate the excel definition
+        Load json string to generate the Excel definition
 
         :param content:
             JSON string content
@@ -332,7 +332,7 @@ class ExcelDefinition:
 
     def load_file(self, file: Union[str, Path]) -> "ExcelDefinition":
         """
-        Load json file to generate the excel definition
+        Load json file to generate the Excel definition
 
         :param file:
             JSON file location
@@ -381,14 +381,14 @@ class ExcelDefinition:
             ):
                 # ProjectType: ProjectIdOrName
                 if (
-                    standardlize_column_name("ProjectType")
+                    standardize_column_name("ProjectType")
                     not in self.get_columns_name()
                 ):
                     invalid_definitions.append(
                         "The PreProcessStep: CreateJiraStory must have a column named ProjectType."
                     )
                 # IssueType: IssueIdOrName
-                if standardlize_column_name("IssueType") not in self.get_columns_name():
+                if standardize_column_name("IssueType") not in self.get_columns_name():
                     invalid_definitions.append(
                         "The PreProcessStep: CreateJiraStory must have a column named IssueType."
                     )
@@ -401,7 +401,7 @@ class ExcelDefinition:
                 and pre_process_step.enabled
             ):
                 # ProjectType: ProjectIdOrName
-                if standardlize_column_name("Status") not in self.get_columns_name():
+                if standardize_column_name("Status") not in self.get_columns_name():
                     invalid_definitions.append(
                         "The PreProcessStep: FilterOutStoryBasedOnJiraStatus must have a column named Status."
                     )
@@ -532,14 +532,14 @@ class ExcelDefinition:
                 )
                 continue
 
-            if standardlize_column_name(column_name) in exist_column_names:
+            if standardize_column_name(column_name) in exist_column_names:
                 invalid_definitions.append(
                     f"Column named {column_name} has been duplicated."
                 )
                 continue
-            exist_column_names.append(standardlize_column_name(column_name))
+            exist_column_names.append(standardize_column_name(column_name))
 
-            if standardlize_column_name(column_name) == standardlize_column_name(
+            if standardize_column_name(column_name) == standardize_column_name(
                 "StoryId"
             ):
                 exist_story_id_column = True
@@ -724,16 +724,16 @@ class ExcelDefinition:
         result: List[ExcelDefinitionColumn] = []
         for item in self.__columns:
             jira_field_mapping = item.get("jira_field_mapping", None)
-            if jira_field_mapping is not None and standardlize_column_name(
+            if jira_field_mapping is not None and standardize_column_name(
                 jira_field_mapping["path"].split(".")[0]
-            ) == standardlize_column_name(name):
+            ) == standardize_column_name(name):
                 result.append(deepcopy(item))
         return result
 
-    def get_columns_name(self, standardlized: bool = True) -> "List[str]":
-        if standardlized:
+    def get_columns_name(self, standardized: bool = True) -> "List[str]":
+        if standardized:
             return [
-                standardlize_column_name(item.get("name", ""))
+                standardize_column_name(item.get("name", ""))
                 for item in self.__columns
             ]
         return [item["name"] for item in self.__columns]

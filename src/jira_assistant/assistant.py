@@ -22,7 +22,7 @@ from .story import (
     sort_stories_by_property_and_order,
     sort_stories_by_raise_ranking,
 )
-from .utils import standardlize_column_name, strip_lower
+from .utils import standardize_column_name, strip_lower
 
 __all__ = [
     "run_steps_and_sort_excel_file",
@@ -77,11 +77,11 @@ Please use the update-jira-info command to add/update url.""",
         )
         return None
 
-    jira_acccess_token = environ.get("JIRA_ACCESS_TOKEN", default=None)
+    jira_access_token = environ.get("JIRA_ACCESS_TOKEN", default=None)
     if (
-        jira_acccess_token is None
-        or jira_acccess_token.isspace()
-        or len(jira_acccess_token) == 0
+        jira_access_token is None
+        or jira_access_token.isspace()
+        or len(jira_access_token) == 0
     ):
         cprint(
             """The jira access token is invalid.
@@ -95,7 +95,7 @@ Please use the update-jira-info command to add/update token.""",
     if tmp is not None:
         jira_timeout = float(tmp)
 
-    jira_client = JiraClient(jira_url, jira_acccess_token, jira_timeout)
+    jira_client = JiraClient(jira_url, jira_access_token, jira_timeout)
 
     if not jira_client.health_check():
         cprint(
@@ -277,14 +277,14 @@ Excel row number: {story.excel_row_index}.",
 
             for excel_column in excel_columns:
                 excel_column_name = excel_column["name"]
-                if not hasattr(story, standardlize_column_name(excel_column_name)):
+                if not hasattr(story, standardize_column_name(excel_column_name)):
                     cprint(
                         f"Story missing required field: {excel_column_name}.",
                         color="light_red",
                     )
                     all_fields_valid = False
                     continue
-                current_value = story[standardlize_column_name(excel_column_name)]
+                current_value = story[standardize_column_name(excel_column_name)]
                 if not __check_allowed_value(
                     current_value,
                     required_field,
@@ -308,10 +308,10 @@ Excel row number: {story.excel_row_index}.",
             )
             for excel_column in excel_columns:
                 excel_column_name = excel_column["name"]
-                if not hasattr(story, standardlize_column_name(excel_column_name)):
+                if not hasattr(story, standardize_column_name(excel_column_name)):
                     continue
                 is_array = not_required_field.is_array
-                current_value = story[standardlize_column_name(excel_column_name)]
+                current_value = story[standardize_column_name(excel_column_name)]
                 if current_value is None:
                     continue
                 if not __check_allowed_value(
@@ -441,7 +441,7 @@ def __run_sort_logics(
             )
         cprint("Executing finish.")
 
-    return (stories_need_sort, stories_no_need_sort)
+    return stories_need_sort, stories_no_need_sort
 
 
 def __pre_parse_excel_file(
@@ -474,14 +474,14 @@ Please check below information to fix first.""",
         )
         for index, item in enumerate(validation_result):
             cprint(f"{index + 1}. {item}", color="light_yellow")
-        return (excel_definition, None, None)
+        return excel_definition, None, None
     cprint("Validating excel definition success.", color="light_green")
 
     excel_columns, stories = read_excel_file(
         input_file, excel_definition, sprint_schedule
     )
 
-    return (excel_definition, excel_columns, stories)
+    return excel_definition, excel_columns, stories
 
 
 def run_steps_and_sort_excel_file(
@@ -493,23 +493,23 @@ def run_steps_and_sort_excel_file(
     env_file: Optional[Path] = None,
 ):
     """
-    Sort the excel file and output the result
+    Sort the Excel file and output the result
 
-    :parm input_file:
-        The excel file need to be sorted. (Absolute path only)
+    parm input_file:
+        The Excel file need to be sorted. (Absolute path only)
 
-    :parm output_file:
-        The sorted excel file location. (Absolute path only)
+    parm output_file:
+        The sorted Excel file location. (Absolute path only)
 
-    :parm sprint_schedule_file:
+    parm sprint_schedule_file:
         The JSON file which contains the priority list to
         calculate the :py:class:`Milestone`
 
-    :parm excel_definition_file:
-        The JSON file which contains the input excel file's structure.
+    parm excel_definition_file:
+        The JSON file which contains the input Excel file's structure.
 
-    :parm over_write:
-        Whether or not the exist output file will be over-write.
+    parm over_write:
+        Whether the exist output file will be over-write.
     """
     excel_definition, excel_columns, stories = __pre_parse_excel_file(
         input_file, excel_definition_file, sprint_schedule_file
@@ -585,18 +585,18 @@ def dry_run_steps_and_sort_excel_file(
     """
     Analyze the input and print the result.
 
-    :parm input_file:
-        The excel file need to be sorted. (Absolute path only)
+    parm input_file:
+        The Excel file need to be sorted. (Absolute path only)
 
-    :parm output_file:
-        The sorted excel file location. (Absolute path only)
+    parm output_file:
+        The sorted Excel file location. (Absolute path only)
 
-    :parm sprint_schedule_file:
+    parm sprint_schedule_file:
         The JSON file which contains the priority list to
         calculate the :py:class:`Milestone`
 
-    :parm excel_definition_file:
-        The JSON file which contains the input excel file's structure.
+    parm excel_definition_file:
+        The JSON file which contains the input Excel file's structure.
 
     """
     excel_definition, excel_columns, stories = __pre_parse_excel_file(

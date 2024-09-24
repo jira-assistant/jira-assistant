@@ -23,7 +23,7 @@ from .assistant import (
 from .excel_definition import ExcelDefinition
 from .excel_operation import output_to_excel_file
 
-__all__ = ["process_excel_file", "generate_template", "update_jira_info"]
+__all__ = ["process_excel_file", "generate_template", "update_jira_info", "get_package_version"]
 
 if sys.version_info < (3, 8):
     import importlib_metadata as metadata
@@ -184,7 +184,7 @@ def process_excel_file() -> None:
                 pathlib.Path.cwd() / args.sprint_schedule_file.as_posix()
             ).resolve()
 
-        # Over write parameter.
+        # Overwrite parameter.
         over_write = True
         if args.over_write is not None:
             over_write = args.over_write
@@ -341,7 +341,7 @@ def __generate_excel_template(output_file: "Path") -> Optional[Path]:
         output_to_excel_file(
             output_file,
             [],
-            excel_column_names=excel_definition.get_columns_name(standardlized=False),
+            excel_column_names=excel_definition.get_columns_name(standardized=False),
         )
         return output_file
     except Exception as e:
