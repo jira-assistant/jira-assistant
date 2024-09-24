@@ -23,7 +23,7 @@ from .assistant import (
 from .excel_definition import ExcelDefinition
 from .excel_operation import output_to_excel_file
 
-__all__ = ["process_excel_file", "generate_template", "update_jira_info", "get_package_version"]
+__all__ = ["process_excel_file", "generate_template", "update_jira_info", "get_package_version"]  # pylint: disable=line-too-long
 
 if sys.version_info < (3, 8):
     import importlib_metadata as metadata
