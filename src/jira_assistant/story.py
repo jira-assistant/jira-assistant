@@ -12,7 +12,7 @@ from .excel_definition import ExcelDefinitionColumn, SortStrategy
 from .milestone import Milestone
 from .priority import Priority, convert_to_priority
 from .sprint_schedule import SprintScheduleStore
-from .utils import standardlize_column_name, parse_index_range
+from .utils import standardize_column_name, parse_index_range
 
 __all__ = [
     "Story",
@@ -81,10 +81,10 @@ class Story:
         self.__excel_row_index = value
 
     def __getitem__(self, property_name: str) -> Any:
-        return getattr(self, standardlize_column_name(property_name))
+        return getattr(self, standardize_column_name(property_name))
 
     def format_value(self, property_name: str) -> str:
-        property_value = getattr(self, standardlize_column_name(property_name), None)
+        property_value = getattr(self, standardize_column_name(property_name), None)
         if property_value is None:
             return ""
         if isinstance(property_value, datetime):
@@ -98,7 +98,7 @@ class Story:
         return str(property_value)
 
     def set_value(self, property_type: Any, property_name: str, property_value: Any):
-        property_name = standardlize_column_name(property_name)
+        property_name = standardize_column_name(property_name)
         if property_type is str:
             setattr(self, property_name, property_value)
         elif property_type is bool:
@@ -165,7 +165,7 @@ class StoryFactory:
             if column["inline_weights"] > 0:
                 rules.append(
                     (
-                        standardlize_column_name(column["name"]),
+                        standardize_column_name(column["name"]),
                         column["inline_weights"],
                     )
                 )
@@ -196,13 +196,13 @@ def compare_story_based_on_inline_weights(
     """
     Compare two stories.
 
-    :parm a:
+    parm a:
         First story
-    :parm b:
+    parm b:
         Second story
-    :parm sort_rule:
+    parm sort_rule:
         Priority information
-    :return
+    return
         1: means a > b
         0: means a == b
         -1: means a < b
@@ -312,7 +312,7 @@ def sort_stories_by_property_and_order(
             if column["scope_require_sort"] is True and column["name"] is not None:
                 sort_rules.append(
                     (
-                        standardlize_column_name(column["name"]),
+                        standardize_column_name(column["name"]),
                         column["scope_sort_order"],
                     )
                 )
@@ -325,7 +325,7 @@ def sort_stories_by_property_and_order(
             if column["require_sort"] is True and column["name"] is not None:
                 sort_rules.append(
                     (
-                        standardlize_column_name(column["name"]),
+                        standardize_column_name(column["name"]),
                         column["sort_order"],
                     )
                 )
@@ -358,10 +358,10 @@ def __internal_sort_stories_by_property_and_order_considering_parent_range(
             for column_index in parent_level_index_range:
                 if (
                     stories[i][
-                        standardlize_column_name(story_columns[column_index]["name"])
+                        standardize_column_name(story_columns[column_index]["name"])
                     ]
                     != stories[i + 1][
-                        standardlize_column_name(story_columns[column_index]["name"])
+                        standardize_column_name(story_columns[column_index]["name"])
                     ]
                 ):
                     all_parent_column_matched = False
@@ -373,8 +373,8 @@ def __internal_sort_stories_by_property_and_order_considering_parent_range(
         # Same parent level process
         for column_name, sort_order in reversed(sort_rules):
             if begin_index != end_index:
-                stories[begin_index : end_index + 1] = sorted(
-                    stories[begin_index : end_index + 1],
+                stories[begin_index: end_index + 1] = sorted(
+                    stories[begin_index: end_index + 1],
                     key=attrgetter(column_name),
                     reverse=sort_order,
                 )
@@ -408,7 +408,7 @@ def sort_stories_by_raise_ranking(
             if column["scope_raise_ranking"] > 0 and column["name"] is not None:
                 sort_rules.append(
                     (
-                        standardlize_column_name(column["name"]),
+                        standardize_column_name(column["name"]),
                         column["scope_raise_ranking"],
                     )
                 )
@@ -430,7 +430,7 @@ def sort_stories_by_raise_ranking(
             if column["raise_ranking"] > 0 and column["name"] is not None:
                 sort_rules.append(
                     (
-                        standardlize_column_name(column["name"]),
+                        standardize_column_name(column["name"]),
                         column["raise_ranking"],
                     )
                 )
@@ -450,7 +450,7 @@ def __internal_raise_story_ranking_by_property(
     stories: "List[Story]", property_name: str
 ) -> "List[Story]":
     if stories is None or len(stories) == 0:
-        return stories
+        return []
     # Use first story as example
     if not hasattr(stories[0], property_name):
         return stories
@@ -471,10 +471,10 @@ def __internal_raise_story_ranking_by_property_considering_parent_level(
             for column_index in parent_level_index_range:
                 if (
                     stories[i][
-                        standardlize_column_name(story_columns[column_index]["name"])
+                        standardize_column_name(story_columns[column_index]["name"])
                     ]
                     != stories[i + 1][
-                        standardlize_column_name(story_columns[column_index]["name"])
+                        standardize_column_name(story_columns[column_index]["name"])
                     ]
                 ):
                     all_parent_column_matched = False
@@ -486,8 +486,8 @@ def __internal_raise_story_ranking_by_property_considering_parent_level(
 
         # Same parent level process
         for column_name, _ in reversed(sort_rules):
-            stories[begin_index : end_index + 1] = __raise_story_ranking_by_property(
-                stories[begin_index : end_index + 1], column_name
+            stories[begin_index: end_index + 1] = __raise_story_ranking_by_property(
+                stories[begin_index: end_index + 1], column_name
             )
 
         begin_index = end_index + 1
