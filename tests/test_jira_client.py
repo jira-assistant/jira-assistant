@@ -240,7 +240,7 @@ def test_get_fields_by_project_name_and_issue_name():
         assert len(not_required_fields) == 3
 
 
-def test_get_fields_by_unkown_project_name_and_issue_name():
+def test_get_fields_by_unknown_project_name_and_issue_name():
     with Mocker(
         real_http=False,
         case_sensitive=False,
@@ -254,7 +254,7 @@ def test_get_fields_by_unkown_project_name_and_issue_name():
         assert issue_type is None
 
 
-def test_get_fields_by_project_name_and_unkown_issue_name():
+def test_get_fields_by_project_name_and_unknown_issue_name():
     with Mocker(
         real_http=False,
         case_sensitive=False,
@@ -341,7 +341,7 @@ def test_get_jira_field_use_complex_type():
     assert "statusCategory" in [p.name for p in actual_field.properties]
 
 
-def test_get_field_paths_of_jira_field_use_unkown_type():
+def test_get_field_paths_of_jira_field_use_unknown_type():
     actual_field_paths = get_field_paths_of_jira_field(
         "abc", "abc", ASSETS_FILES / "jira_field_type.json"
     )

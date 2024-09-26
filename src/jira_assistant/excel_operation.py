@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-This module offers a set of operations that user can modify their excel files.
+This module offers a set of operations that user can modify their Excel files.
 """
 import pathlib
 import warnings
@@ -19,7 +19,7 @@ from urllib3 import disable_warnings
 from .excel_definition import ExcelDefinition, ExcelDefinitionColumn
 from .sprint_schedule import SprintScheduleStore
 from .story import Story, StoryFactory
-from .utils import is_absolute_path_valid, standardlize_column_name
+from .utils import is_absolute_path_valid, standardize_column_name
 
 __all__ = ["read_excel_file", "output_to_excel_file"]
 
@@ -35,16 +35,16 @@ def read_excel_file(
     sprint_schedule: SprintScheduleStore,
 ) -> Tuple[List[str], List[Story]]:
     """
-    Read and parse the excel file
+    Read and parse the Excel file
 
-    :parm file:
-        The excel file that you want to read
+    parm file:
+        The Excel file that you want to read
 
-    :parm excel_definition:
-        The excel column definition which is imported
+    parm excel_definition:
+        The Excel column definition which is imported
         from the :py:class:`ExcelDefinition`
 
-    :parm sprint_schedule:
+    parm sprint_schedule:
         The priority mapping for the :py:class:`Milestone` object.
 
     :return:
@@ -81,7 +81,7 @@ def read_excel_file(
                 column_count = excel_definition.max_column_index
 
             if sheet.max_row is not None and sheet.max_row < 2:
-                return ([], [])
+                return [], []
 
             actual_excel_columns: List[str] = []
             actual_column_names: List[str] = []
@@ -92,12 +92,12 @@ def read_excel_file(
                 if column_value is None or not str(column_value):
                     raise ValueError("The input excel file has invalid/empty column.")
                 actual_excel_columns.append(column_value)
-                if standardlize_column_name(column_value) in actual_column_names:
+                if standardize_column_name(column_value) in actual_column_names:
                     raise ValueError(
                         f"""The input excel file has duplicate column.
 Column name: {column_value}."""
                     )
-                actual_column_names.append(standardlize_column_name(column_value))
+                actual_column_names.append(standardize_column_name(column_value))
 
             stories: List[Story] = []
 
@@ -111,7 +111,7 @@ Column name: {column_value}."""
             defined_columns: List[_DefinedColumn] = [
                 {
                     "finded": False,
-                    "name": standardlize_column_name(i["name"]),
+                    "name": standardize_column_name(i["name"]),
                     "self": i,
                 }
                 for i in defined_excel_columns
@@ -140,7 +140,7 @@ Column name: {column_value}."""
                     for finded_defined_excel_column in defined_columns:
                         if finded_defined_excel_column[
                             "name"
-                        ] == standardlize_column_name(actual_column_name):
+                        ] == standardize_column_name(actual_column_name):
                             finded_defined_excel_column["finded"] = True
                             story.set_value(
                                 finded_defined_excel_column["self"]["type"],
@@ -178,7 +178,7 @@ Column name: {column_value}."""
     finally:
         if work_book:
             work_book.close()
-    return (actual_excel_columns, stories)
+    return actual_excel_columns, stories
 
 
 def __should_skip(row: Tuple[Cell, ...]) -> bool:
@@ -208,20 +208,20 @@ def output_to_excel_file(
     over_write: bool = True,
 ):
     """
-    Generate excel file
+    Generate Excel file
 
-    :parm file:
-        Output excel file name including the path
+    parm file:
+        Output Excel file name including the path
 
-    :parm stories:
-        A list of :py:class:`Story` which need to be wrote to the excel
+    parm stories:
+        A list of :py:class:`Story` which need to be written to the Excel
 
-    :parm excel_column_names:
+    parm excel_column_names:
         Excel columns
         the :py:class:`ExcelDefinition`
 
-    :parm over_write:
-        Whether or not the exist output file will be over-write.
+    parm over_write:
+        Whether the exist output file will be over-write.
     """
     if file is None or not pathlib.Path(file).is_absolute():
         raise ValueError("The output file path is invalid.")

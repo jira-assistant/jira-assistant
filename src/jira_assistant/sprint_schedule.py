@@ -54,7 +54,7 @@ Hint: {e.msg} in line {e.lineno}:{e.colno}."""
 
     def load_file(self, file: Union[str, Path]):
         """
-        Load json file to generate the excel definition
+        Load json file to generate the Excel definition
 
         :param file:
             JSON file location

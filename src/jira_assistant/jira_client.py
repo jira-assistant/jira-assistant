@@ -526,9 +526,10 @@ class JiraClient:
                 required_fields.append(item)
             else:
                 not_required_fields.append(item)
-        return (required_fields, not_required_fields)
+        return required_fields, not_required_fields
 
-    def __convert_field_type_to_jira_field(self, field_type: Any) -> "JiraField":
+    @staticmethod
+    def __convert_field_type_to_jira_field(field_type: Any) -> "JiraField":
         result: JiraField
 
         result = JiraField(
@@ -553,9 +554,9 @@ class JiraClient:
                 else:
                     result.allowed_values[pre_key] = [item]
             if isinstance(item, dict):
-                for key, value in item.items():
+                for _key, _value in item.items():
                     __extract_allowed_values(
-                        value, connect_jira_field_path(pre_key, key)
+                        _value, connect_jira_field_path(pre_key, _key)
                     )
 
         if "allowedValues" in field_type:
@@ -669,7 +670,8 @@ class JiraClient:
             )
         return {}
 
-    def __extract_error_message(self, error: JIRAError) -> "str":
+    @staticmethod
+    def __extract_error_message(error: JIRAError) -> "str":
         if error.status_code == 400 and error.response.text:
             error_response: Dict[str, Any] = error.response.json()
             error_messages = error_response.get("errorMessages", [])

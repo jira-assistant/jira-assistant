@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, Union, Set, Optional
 
 _INDEX_RANGE_RULE = re.compile(
-    r"(^( *\d{1,} *,){0,} *\d{1,} *$)|^ *\d{1,} *- *\d{1,} *$"
+    r"(^( *\d+ *,)* *\d+ *$)|^ *\d+ *- *\d+ *$"
 )
 
 
@@ -17,7 +17,7 @@ def is_absolute_path_valid(path: Union[str, Path]) -> bool:
     return True
 
 
-def standardlize_column_name(name: str) -> "str":
+def standardize_column_name(name: str) -> "str":
     return strip_lower(name.replace("\n", "").replace(" ", ""))
 
 

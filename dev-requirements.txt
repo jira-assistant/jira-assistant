@@ -5,7 +5,7 @@ coverage==7.6.1
 defusedxml==0.7.1
 et-xmlfile==1.1.0
 execnet==2.1.1
-idna==3.8
+idna==3.10
 iniconfig==2.0.0
 jira==3.8.0
 mypy==1.11.2
@@ -28,9 +28,9 @@ six==1.16.0
 termcolor==2.4.0
 types-cffi==1.16.0.20240331
 types-oauthlib==3.2.0.20240806
-types-openpyxl==3.1.5.20240822
+types-openpyxl==3.1.5.20240918
 types-python-dateutil==2.9.0.20240906
-types-requests==2.32.0.20240712
-types-setuptools==74.1.0.20240907
+types-requests==2.32.0.20240914
+types-setuptools==75.1.0.20240917
 typing_extensions==4.12.2
-urllib3==2.2.2
+urllib3==2.2.3
