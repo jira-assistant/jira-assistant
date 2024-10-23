@@ -4,7 +4,7 @@ Before you begin using this tool, you will need to install it. This guide will l
 
 ## Install Python
 
-We suggest utilizing the most recent version of Python to ensure optimal performance of Jira Assistant. The application supports Python 3.8 and later versions.
+We suggest utilizing the most recent version of Python to ensure optimal performance of Jira Assistant. The application supports Python 3.9 and later versions.
 
 To obtain the latest version of Python, you can either visit [https://www.python.org/downloads/](https://www.python.org/downloads/) or use your operating system's package manager.
 
