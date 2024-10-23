@@ -7,6 +7,7 @@ import pathlib
 import sys
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser, Namespace
 from datetime import datetime
+from importlib.metadata import version
 from pathlib import Path
 from shutil import copyfile
 from typing import Optional
@@ -16,27 +17,23 @@ from dotenv import set_key
 from termcolor import cprint
 
 from .assistant import (
+    dry_run_steps_and_sort_excel_file,
     generate_jira_field_mapping_file,
     run_steps_and_sort_excel_file,
-    dry_run_steps_and_sort_excel_file,
 )
 from .excel_definition import ExcelDefinition
 from .excel_operation import output_to_excel_file
 
-__all__ = ["process_excel_file", "generate_template", "update_jira_info", "get_package_version"]  # pylint: disable=line-too-long
-
-if sys.version_info < (3, 8):
-    import importlib_metadata as metadata
-
-    version_ = metadata.version
-else:
-    from importlib.metadata import version
-
-    version_ = version
+__all__ = [
+    "process_excel_file",
+    "generate_template",
+    "update_jira_info",
+    "get_package_version",
+]
 
 
 def get_package_version() -> str:
-    return version_("jira_assistant")
+    return version("jira_assistant")
 
 
 def get_args_for_process_excel_file() -> Namespace:
