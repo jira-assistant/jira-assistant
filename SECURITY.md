@@ -4,12 +4,13 @@
 
 | Python Version  | Supported          |
 | -------         | ------------------ |
+| 3.14.x          | :white_check_mark: |
+| 3.13.x          | :white_check_mark: |
 | 3.12.x          | :white_check_mark: |
 | 3.11.x          | :white_check_mark: |
 | 3.10.x          | :white_check_mark: |
 | 3.9.x           | :white_check_mark: |
-| 3.8.x           | :white_check_mark: |
-| < 3.8           | :x:                |
+| < 3.9           | :x:                |
 
 ## Reporting a Vulnerability
 
