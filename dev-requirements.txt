@@ -3,7 +3,7 @@ charset-normalizer==3.4.0
 colorama==0.4.6
 coverage==7.6.4
 defusedxml==0.7.1
-et-xmlfile==1.1.0
+et-xmlfile==2.0.0
 execnet==2.1.1
 idna==3.10
 iniconfig==2.0.0
