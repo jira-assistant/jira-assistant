@@ -1,7 +1,7 @@
 certifi==2024.8.30
 charset-normalizer==3.4.0
 colorama==0.4.6
-coverage==7.6.4
+coverage==7.6.7
 defusedxml==0.7.1
 et-xmlfile==2.0.0
 execnet==2.1.1
