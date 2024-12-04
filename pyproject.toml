@@ -43,7 +43,7 @@ dependencies = [
     'requests-mock >= 1.12.1',
     'termcolor >= 2.4.0'
 ]
-version = "0.1.40"
+version = "1.0.0"
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "pylint"]
