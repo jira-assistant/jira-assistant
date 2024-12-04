@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   macos-build:
-    runs-on: macos-12
+    runs-on: macos-latest
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
