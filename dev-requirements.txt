@@ -24,7 +24,7 @@ requests==2.32.3
 requests-mock==1.12.1
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
-six==1.16.0
+six==1.17.0
 termcolor==2.5.0
 types-cffi==1.16.0.20240331
 types-oauthlib==3.2.0.20240806
