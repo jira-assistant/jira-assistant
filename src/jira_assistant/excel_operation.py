@@ -9,11 +9,11 @@ from pathlib import Path
 from typing import List, Optional, Tuple, TypedDict, Union
 
 import openpyxl
+from openpyxl.cell.cell import Cell, MergedCell
+from openpyxl.cell.read_only import EmptyCell
 from openpyxl.workbook import Workbook
 from openpyxl.worksheet._read_only import ReadOnlyWorksheet
 from openpyxl.worksheet.worksheet import Worksheet
-from openpyxl.cell.cell import Cell
-from openpyxl.cell.read_only import EmptyCell
 from urllib3 import disable_warnings
 
 from .excel_definition import ExcelDefinition, ExcelDefinitionColumn
@@ -129,7 +129,7 @@ Column name: {column_value}."""
 
                 story: Story = story_factory.create_story()
                 story.excel_row_index = __extract_row_number(row)
-                actual_column_values: List[Cell] = list(row)
+                actual_column_values: List[Cell | MergedCell] = list(row)
 
                 for actual_column_index, actual_column_name in enumerate(
                     actual_column_names
@@ -181,7 +181,7 @@ Column name: {column_value}."""
     return actual_excel_columns, stories
 
 
-def __should_skip(row: Tuple[Cell, ...]) -> bool:
+def __should_skip(row: Tuple[Cell | MergedCell, ...]) -> bool:
     is_all_cell_empty = True
     for cell in row:
         if (
@@ -194,9 +194,9 @@ def __should_skip(row: Tuple[Cell, ...]) -> bool:
     return is_all_cell_empty
 
 
-def __extract_row_number(row: Tuple[Cell, ...]) -> int:
+def __extract_row_number(row: Tuple[Cell | MergedCell, ...]) -> int:
     for cell in row:
-        if cell and not isinstance(cell, EmptyCell):
+        if cell and not isinstance(cell, (EmptyCell, MergedCell)):
             return int(cell.row)
     return 0
 
