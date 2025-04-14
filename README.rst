@@ -7,7 +7,7 @@ Jira Assistant - Connect Excel with Jira
     :target: https://github.com/jira-assistant/jira-assistant
     :alt: Jira Assistant
 
-|PyPI| |SupportedVersions| |Download| |GitHubCommit| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |CodeClimate| |License|
+|PyPI| |SupportedVersions| |dependencyStatus| |Download| |GitHubCommit| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |CodeClimate| |License|
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square
     :target: https://pypi.org/project/jira-assistant/
@@ -16,6 +16,10 @@ Jira Assistant - Connect Excel with Jira
 .. |SupportedVersions| image:: https://img.shields.io/pypi/pyversions/jira-assistant
     :target: https://pypi.org/project/jira-assistant/
     :alt: Supported versions
+
+.. |dependencyStatus| image:: https://img.shields.io/librariesio/release/pypi/jira-assistant
+   :target: https://pypi.org/project/jira-assistant/
+   :alt: Libraries.io dependency status for latest release
 
 .. |Download| image:: https://static.pepy.tech/personalized-badge/jira-assistant?period=month&units=international_system&left_color=black&right_color=blue&left_text=downloads/month
     :target: https://pepy.tech/project/jira-assistant
