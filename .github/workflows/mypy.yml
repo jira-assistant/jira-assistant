@@ -1,4 +1,6 @@
 name: MyPy
+permissions:
+  contents: read
 
 on: [push]
 
