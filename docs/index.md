@@ -4,7 +4,7 @@
 
 ![PyPI](https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square)
 ![SupportedVersions](https://img.shields.io/pypi/pyversions/jira-assistant)
-![Download](https://static.pepy.tech/personalized-badge/jira-assistant?period=month&units=international_system&left_color=black&right_color=blue&left_text=downloads/month)
+![Downloads](https://img.shields.io/pepy/dt/jira-assistant)
 ![Package Size](https://img.shields.io/github/repo-size/jira-assistant/jira-assistant)
 ![GitHubIssues](https://img.shields.io/github/issues/jira-assistant/jira-assistant)
 ![Linux](https://github.com/jira-assistant/jira-assistant/actions/workflows/python-3-linux-test.yml/badge.svg)
