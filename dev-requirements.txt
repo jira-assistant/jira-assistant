@@ -33,4 +33,4 @@ types-openpyxl==3.1.5.20250602
 types-requests==2.32.4.20250611
 types-setuptools==80.9.0.20250529
 typing_extensions==4.14.0
-urllib3==2.4.0
+urllib3==2.5.0
