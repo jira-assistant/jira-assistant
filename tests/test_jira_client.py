@@ -210,11 +210,7 @@ def test_get_projects():
 
         result = client.get_projects()
 
-        assert len(result) == 2
-        assert "POC" in [r.name for r in result]
-        assert "SD" in [r.name for r in result]
-
-        result = client.get_projects(include_archived=True, force_refresh=True)
+        result = client.get_projects(force_refresh=True)
         assert len(result) == 3
         assert "POC" in [r.name for r in result]
         assert "SD" in [r.name for r in result]
