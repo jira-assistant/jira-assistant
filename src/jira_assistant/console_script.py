@@ -360,7 +360,7 @@ def __generate_jira_field_mapping_template(
 def get_args_for_update_jira_info() -> Namespace:
     """Process console command's arguments. Command: update_jira_info"""
     parser = ArgumentParser(
-        description="Used to add/update jira url or access token.",
+        description="Used to add/update jira url, access token and user email.",
         formatter_class=ArgumentDefaultsHelpFormatter,
         allow_abbrev=False,
     )
@@ -373,13 +373,20 @@ def get_args_for_update_jira_info() -> Namespace:
         required=False,
         help="Please follow the documentation to get your own access token.",
     )
-
     parser.add_argument(
         "--url",
         metavar="<jira url>",
         type=str,
         required=False,
         help="Please provide the JIRA website url.",
+    )
+    parser.add_argument(
+        "--user-email",
+        "--user_email",
+        metavar="<user email>",
+        type=str,
+        required=False,
+        help="Please provide the email address that you use in the JIRA website.",
     )
     parser.add_argument(
         "--env-file",
@@ -449,10 +456,32 @@ def update_jira_info():
 
                 if result is True:
                     cprint("Add/Update jira access token success!", color="light_green")
-                    sys.exit(0)
                 else:
                     cprint("Add/Update jira access token failed!", color="light_red")
+
+        # USER EMAIL Part
+        if args.user_email is not None:
+            user_email: str = str(args.user_email)
+
+            if len(user_email.strip()) == 0 or user_email.isspace():
+                cprint("Please check the email address.", color="light_red")
+                sys.exit(1)
+            else:
+                result, _, _ = set_key(
+                    env_file,
+                    key_to_set="JIRA_USER_EMAIL",
+                    value_to_set=user_email,
+                    quote_mode="never",
+                )
+
+                if result is True:
+                    cprint("Add/Update jira user email success!", color="light_green")
+                    sys.exit(0)
+                else:
+                    cprint("Add/Update jira user email failed!", color="light_red")
                     sys.exit(1)
+        sys.exit(0)
+
     except Exception as e:
         cprint(e, color="light_red")
         sys.exit(1)

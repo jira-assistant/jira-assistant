@@ -2,19 +2,18 @@
 """This module will provide console command signatures."""
 import pathlib
 import warnings
-
 from json import dump
 from os import environ, remove
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union, Tuple
-from termcolor import cprint
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from dotenv import load_dotenv
+from termcolor import cprint
 from urllib3 import disable_warnings
 
 from .excel_definition import ExcelDefinition, ExcelDefinitionColumn
 from .excel_operation import output_to_excel_file, read_excel_file
-from .jira_client import JiraClient, JiraIssueType, JiraField
+from .jira_client import JiraClient, JiraField, JiraIssueType, is_jira_cloud_url
 from .sprint_schedule import SprintScheduleStore
 from .story import (
     Story,
@@ -47,6 +46,8 @@ def __clear_env_variables():
         del environ["JIRA_URL"]
     if "JIRA_ACCESS_TOKEN" in environ:
         del environ["JIRA_ACCESS_TOKEN"]
+    if "JIRA_USER_EMAIL" in environ:
+        del environ["JIRA_USER_EMAIL"]
 
 
 def __get_jira_client(env_file: Optional[Path] = None) -> Optional[JiraClient]:
@@ -90,12 +91,27 @@ Please use the update-jira-info command to add/update token.""",
         )
         return None
 
+    jira_user_email = environ.get("JIRA_USER_EMAIL", default=None)
+    if is_jira_cloud_url(jira_url) and (
+        jira_user_email is None
+        or jira_user_email.isspace()
+        or len(jira_user_email) == 0
+    ):
+        cprint(
+            """The jira user email is invalid.
+Please use the update-jira-info command to add/update user email.""",
+            color="light_red",
+        )
+        return None
+
     jira_timeout: Optional[float] = None
     tmp = environ.get("JIRA_TIMEOUT", default=None)
     if tmp is not None:
         jira_timeout = float(tmp)
 
-    jira_client = JiraClient(jira_url, jira_access_token, jira_timeout)
+    jira_client = JiraClient(
+        jira_url, jira_access_token, user_email=jira_user_email, timeout=jira_timeout
+    )
 
     if not jira_client.health_check():
         cprint(
