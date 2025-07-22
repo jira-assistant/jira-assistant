@@ -2,9 +2,9 @@
 # pylint: disable=line-too-long
 from __future__ import annotations
 
-from json import load
-from re import IGNORECASE, DOTALL, match, search
 import re
+from json import load
+from re import DOTALL, IGNORECASE, match, search
 from typing import Dict, Optional
 
 from requests import Response
@@ -41,10 +41,19 @@ def custom_matcher(request: _RequestObjectProxy) -> Optional[Response]:
     ):
         return mock_server_info_response(request)
     if (
-        search(pattern="^/rest/api/2/project", string=request.path, flags=IGNORECASE)
+        search(
+            pattern=r"^/rest/api/2/project/\w{1,}$",
+            string=request.path,
+            flags=IGNORECASE,
+        )
         is not None
     ):
         return mock_project_response(request)
+    if (
+        search(pattern="^/rest/api/2/project$", string=request.path, flags=IGNORECASE)
+        is not None
+    ):
+        return mock_all_project_response(request)
     if (
         match(
             pattern=r"^/rest/api/2/issue$",
@@ -106,10 +115,19 @@ def custom_matcher_with_failed_status_code(
         # Server info should be 200, otherwise, following tests cannot be executed as expected.
         return mock_server_info_response(request, status_code=200)
     if (
-        search(pattern="rest/api/2/project", string=request.path, flags=IGNORECASE)
+        search(
+            pattern=r"^/rest/api/2/project/\w{1,}$",
+            string=request.path,
+            flags=IGNORECASE,
+        )
         is not None
     ):
         return mock_project_response(request, status_code=400)
+    if (
+        search(pattern="rest/api/2/project$", string=request.path, flags=IGNORECASE)
+        is not None
+    ):
+        return mock_all_project_response(request, status_code=400)
     if (
         match(
             pattern=r"^/rest/api/2/issue/createmeta/\w{1,}?/issuetypes$",
@@ -294,6 +312,95 @@ def mock_field_response(
 
 
 def mock_project_response(
+    request: _RequestObjectProxy, status_code: int = 200
+) -> Response:
+    return create_response(
+        request=request,
+        status_code=status_code,
+        json=[
+            {
+                "expand": "description,lead,issueTypes,url,projectKeys,permissions,insight",
+                "self": "https://your_jira.com/rest/api/2/project/10000",
+                "id": "10000",
+                "key": "SD",
+                "description": "",
+                "lead": {
+                    "self": "https://your_jira.com/rest/api/2/user?accountId=557058:c9b9c393-abd3-45a5-ac41-b3c2f5e2d96c",
+                    "accountId": "557058:c9b9c393-abd3-45a5-ac41-b3c2f5e2d96c",
+                    "avatarUrls": {
+                        "48x48": "https://secure.gravatar.com/avatar/FAT-2.png",
+                        "24x24": "https://secure.gravatar.com/avatar/FAT-2.png",
+                        "16x16": "https://secure.gravatar.com/avatar/FAT-2.png",
+                        "32x32": "https://secure.gravatar.com/avatar/FAT-2.png",
+                    },
+                    "displayName": "Good Know",
+                    "active": True,
+                },
+                "components": [],
+                "issueTypes": [
+                    {
+                        "self": "https://your_jira.com/rest/api/2/issuetype/10002",
+                        "id": "10002",
+                        "description": "A task that needs to be done.",
+                        "iconUrl": "https://your_jira.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10552?size=medium",
+                        "name": "Task",
+                        "subtask": False,
+                        "avatarId": 10552,
+                        "hierarchyLevel": 0,
+                    },
+                    {
+                        "self": "https://your_jira.com/rest/api/2/issuetype/10003",
+                        "id": "10003",
+                        "description": "The sub-task of the issue",
+                        "iconUrl": "https://your_jira.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10553?size=medium",
+                        "name": "Sub-task",
+                        "subtask": True,
+                        "avatarId": 10553,
+                        "hierarchyLevel": -1,
+                    },
+                    {
+                        "self": "https://your_jira.com/rest/api/2/issuetype/10001",
+                        "id": "10001",
+                        "description": "For general requests",
+                        "iconUrl": "https://your_jira.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10551?size=medium",
+                        "name": "General request",
+                        "subtask": True,
+                        "avatarId": 10551,
+                        "hierarchyLevel": 0,
+                    },
+                    {
+                        "self": "https://your_jira.com/rest/api/2/issuetype/10150",
+                        "id": "10150",
+                        "description": "For requests that require approval.",
+                        "iconUrl": "https://your_jira.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10306?size=medium",
+                        "name": "Service Request with Approvals",
+                        "subtask": False,
+                        "avatarId": 10306,
+                        "hierarchyLevel": 0,
+                    },
+                ],
+                "url": "https://your_jira.site/portal/1",
+                "assigneeType": "UNASSIGNED",
+                "versions": [],
+                "name": "Sandbox",
+                "roles": {},
+                "avatarUrls": {
+                    "48x48": "https://your_jira.com/rest/api/2/universal_avatar/view/type/project/avatar/10414",
+                    "24x24": "https://your_jira.com/rest/api/2/universal_avatar/view/type/project/avatar/10414?size=small",
+                    "16x16": "https://your_jira.com/rest/api/2/universal_avatar/view/type/project/avatar/10414?size=xsmall",
+                    "32x32": "https://your_jira.com/rest/api/2/universal_avatar/view/type/project/avatar/10414?size=medium",
+                },
+                "projectTypeKey": "service_desk",
+                "simplified": False,
+                "style": "classic",
+                "isPrivate": False,
+                "properties": {},
+            }
+        ],
+    )
+
+
+def mock_all_project_response(
     request: _RequestObjectProxy, status_code: int = 200
 ) -> Response:
     return create_response(

@@ -356,7 +356,7 @@ class JiraField:
         return True
 
 
-_DEFAULT_JIRA_TIMEOUT = 20.0
+_DEFAULT_JIRA_TIMEOUT = 60.0
 
 
 # Jira are case-sensitive APIs.
@@ -368,12 +368,13 @@ class JiraClient:
         user_email: Optional[str] = None,
         timeout: Optional[float] = None,
     ) -> None:
+        self.__is_jira_cloud = is_jira_cloud_url(url)
         # Authentication/Authorization
         # https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis/
         if timeout is None:
             timeout = _DEFAULT_JIRA_TIMEOUT
 
-        if not is_jira_cloud_url(url):
+        if not self.__is_jira_cloud:
             self.jira = JIRA(
                 server=url,
                 token_auth=access_token,
@@ -388,6 +389,8 @@ class JiraClient:
                 options={"verify": False},
             )
 
+        # TODO: Fix this hack later.
+        self.jira.deploymentType = ()
         self.__field_cache: Dict[
             str, Dict[str, Optional[List[JiraFieldPropertyPathDefinition]]]
         ] = {}
@@ -439,19 +442,37 @@ class JiraClient:
         self.__project_map.clear()
         project_response = self.jira.projects()
         for proj in project_response:
-            proj_name: str = proj.key
-            proj_id: int = proj.id
-            if proj_name:
+            proj_name: Optional[str] = getattr(proj, "key", None)
+            proj_id: Optional[int] = getattr(proj, "id", None)
+            if proj_name and proj_id:
                 self.__project_map[strip_lower(proj_name)] = JiraProject(
-                    proj.id, proj.key
+                    proj_id, proj_name
                 )
-                # loading project related issue types
+
                 try:
-                    response = self.jira.project_issue_types(str(proj_id))
-                    issue_types: List[JiraIssueType] = [
-                        JiraIssueType(issue_type.id, issue_type.name, proj.id)
-                        for issue_type in response
-                    ]
+                    issue_types: List[JiraIssueType] = []
+
+                    if self.__is_jira_cloud:
+                        get_project_response = self.jira.project(str(proj_id))
+                        issue_types.extend(
+                            [
+                                JiraIssueType(issue_type.id, issue_type.name, proj_id)
+                                for issue_type in get_project_response.issueTypes
+                                if hasattr(issue_type, "id")
+                                and hasattr(issue_type, "name")
+                            ]
+                        )
+                    else:
+                        # loading project related issue types
+                        response = self.jira.project_issue_types(str(proj_id))
+                        issue_types.extend(
+                            [
+                                JiraIssueType(issue_type.id, issue_type.name, proj_id)
+                                for issue_type in response
+                                if hasattr(issue_type, "id")
+                                and hasattr(issue_type, "name")
+                            ]
+                        )
                     self.__project_issue_map_using_name[strip_lower(proj_name)] = (
                         issue_types
                     )
@@ -506,23 +527,59 @@ class JiraClient:
             [],
         )
         if not result:
-            issue_response = self.jira.project_issue_types(str(project_id))
+            issue_type_ids: List[int] = []
+
+            if self.__is_jira_cloud:
+                project_response = self.jira.project(str(project_id))
+                issue_type_ids.extend(
+                    [
+                        issue_type.id
+                        for issue_type in project_response.issueTypes
+                        if hasattr(issue_type, "id")
+                    ]
+                )
+            else:
+                issue_response = self.jira.project_issue_types(str(project_id))
+                issue_type_ids.extend(
+                    [
+                        issue_type.id
+                        for issue_type in issue_response
+                        if hasattr(issue_type, "id")
+                    ]
+                )
             # Loading all issue types and related fields.
-            for issue_type in issue_response:
+            for issue_type_id in issue_type_ids:
                 # Should be same as issue_name
-                issue_type_id: int = issue_type.id
                 if (
-                    project_id,
-                    issue_type_id,
-                ) not in self.__project_issue_field_map:
-                    field_types = self.jira.project_issue_fields(
-                        str(project_id), str(issue_type_id)
+                    issue_type_id is not None
+                    and (
+                        project_id,
+                        issue_type_id,
                     )
-                    if field_types:
-                        self.__project_issue_field_map[(project_id, issue_type_id)] = [
-                            self.__convert_field_type_to_jira_field(field_type.raw)
-                            for field_type in field_types
-                        ]
+                    not in self.__project_issue_field_map
+                ):
+                    if self.__is_jira_cloud:
+                        field_types_cloud = self.jira.createmeta_fieldtypes(
+                            str(project_id), str(issue_type_id)
+                        )
+                        if "fields" in field_types_cloud:
+                            self.__project_issue_field_map[
+                                (project_id, issue_type_id)
+                            ] = [
+                                self.__convert_field_type_to_jira_field(field_type)
+                                for field_type in field_types_cloud["fields"]
+                            ]
+                    else:
+                        field_types = self.jira.project_issue_fields(
+                            str(project_id), str(issue_type_id)
+                        )
+                        if field_types:
+                            self.__project_issue_field_map[
+                                (project_id, issue_type_id)
+                            ] = [
+                                self.__convert_field_type_to_jira_field(field_type.raw)
+                                for field_type in field_types
+                            ]
         # Try to search again.
         result = self.__project_issue_field_map.get(
             (project_id, issue_id),
@@ -681,7 +738,14 @@ class JiraClient:
 
     @staticmethod
     def __extract_error_message(error: JIRAError) -> "str":
-        if error.status_code == 400 and error.response.text:
+        if hasattr(error, "text") and error.text:
+            return error.text
+
+        if (
+            error.status_code == 400
+            and error.response is not None
+            and error.response.text
+        ):
             error_response: Dict[str, Any] = error.response.json()
             error_messages = error_response.get("errorMessages", [])
             if error_messages:
