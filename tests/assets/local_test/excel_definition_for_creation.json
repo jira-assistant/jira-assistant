@@ -1,0 +1,127 @@
+[
+	{
+		"Version": 1
+	},
+    {
+        "PreProcessSteps": [
+            {
+                "Name": "CreateJiraStory",
+                "Enabled": true,
+                "Priority": 1,
+                "Config": {}
+            }
+        ]
+    },
+    {
+        "Columns": [
+            {
+                "Index": 1,
+                "Name": "storyId",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0
+            },
+			{
+                "Index": 2,
+                "Name": "projectType",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "project",
+                    "path": "project.key"
+                }
+            },
+            {
+                "Index": 3,
+                "Name": "issueType",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "issuetype",
+                    "path": "issuetype.name"
+                }
+            },
+            {
+                "Index": 4,
+                "Name": "Story Title",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "summary",
+                    "path": "summary"
+                }
+            },
+			{
+                "Index": 5,
+                "Name": "Story Desc",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "description",
+                    "path": "description"
+                }
+            },
+			{
+                "Index": 6,
+                "Name": "Theme",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "customfield_11204",
+                    "path": "customfield_11204.value"
+                }
+            },
+			{
+                "Index": 7,
+                "Name": "Domain",
+                "Type": "str",
+                "RequireSort": false,
+                "SortOrder": false,
+                "ScopeRequireSort": false,
+                "ScopeSortOrder": false,
+                "InlineWeights": 0,
+                "RaiseRanking": 0,
+                "ScopeRaiseRanking": 0,
+                "JiraFieldMapping": {
+                    "name": "customfield_15601",
+                    "path": "customfield_15601.value"
+                }
+            }
+        ]
+    }
+]
