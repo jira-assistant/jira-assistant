@@ -5,24 +5,33 @@ from requests_mock import Mocker
 
 from jira_assistant.jira_client import (
     JiraClient,
-    get_jira_field,
-    get_field_paths_of_jira_field,
-    convert_fields_to_create_issue_body,
-    connect_jira_field_path,
-    JiraProject,
     JiraIssueType,
+    JiraProject,
+    connect_jira_field_path,
+    convert_fields_to_create_issue_body,
+    get_field_paths_of_jira_field,
+    get_jira_field,
+    is_jira_cloud_url,
 )
 from tests.mock_server import (
     mock_jira_requests,
-    mock_jira_requests_with_failed_status_code,
     mock_jira_requests_with_error_response,
+    mock_jira_requests_with_failed_status_code,
     mock_jira_stories,
 )
 
 from . import ASSETS_FILES
 
 DEFAULT_JIRA_URL = "http://localhost"
+DEFAULT_JIRA_CLOUD_URL = "http://jira.atlassian.net"
 DEFAULT_JIRA_ACCESS_TOKEN = "123"
+DEFAULT_JIRA_USER_EMAIL = "sharry.xu@outlook.com"
+
+
+def test_is_jira_cloud_url():
+    assert is_jira_cloud_url("https://jira.atlassian.net")
+    assert not is_jira_cloud_url("https://www.google.com")
+    assert not is_jira_cloud_url(None)
 
 
 def test_jira_project():
@@ -101,9 +110,20 @@ def test_get_stories_detail_with_large_amount_of_stories():
         assert len(stories) == 247
 
 
-def test_health_check():
+def test_health_check_for_self_host_jira():
     with Mocker(real_http=False, adapter=mock_jira_requests()):
         client = JiraClient(DEFAULT_JIRA_URL, DEFAULT_JIRA_ACCESS_TOKEN)
+
+        assert client.health_check() is True
+
+
+def test_health_check_for_cloud_jira():
+    with Mocker(real_http=False, adapter=mock_jira_requests()):
+        client = JiraClient(
+            DEFAULT_JIRA_CLOUD_URL,
+            DEFAULT_JIRA_ACCESS_TOKEN,
+            user_email=DEFAULT_JIRA_USER_EMAIL,
+        )
 
         assert client.health_check() is True
 

@@ -14,7 +14,8 @@
                 "PYTEST_ADDOPTS": "--no-cov",
                 "PYTEST_DEBUG": "true"
             },
-            "justMyCode": false
+            "justMyCode": false,
+            "purpose": ["debug-test"]
         }
     ]
 }

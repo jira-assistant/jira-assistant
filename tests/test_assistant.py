@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 import pathlib
 from os import environ
-import pytest
 
+import pytest
 from requests_mock import Mocker
 
 from jira_assistant.assistant import (
+    dry_run_steps_and_sort_excel_file,
     generate_jira_field_mapping_file,
     run_steps_and_sort_excel_file,
-    dry_run_steps_and_sort_excel_file,
 )
 from jira_assistant.excel_definition import ExcelDefinition
 from jira_assistant.excel_operation import read_excel_file
@@ -48,6 +48,69 @@ def test_run_steps_and_sort_excel_file(tmpdir):
         assert len(stories) == 8
 
         jira_client = JiraClient(environ["JIRA_URL"], environ["JIRA_ACCESS_TOKEN"])
+
+        noneed_sort_statuses = [
+            "SPRINT COMPLETE",
+            "PENDING RELEASE",
+            "PRODUCTION TESTING",
+            "CLOSED",
+        ]
+
+        jira_fields = [
+            {
+                "name": "domain",
+                "jira_name": "customfield_15601",
+                "jira_path": "customfield_15601.value",
+            },
+            {"name": "status", "jira_name": "status", "jira_path": "status.name"},
+        ]
+
+        for i in range(len(stories) - 1):
+            story_id_0 = stories[i]["storyid"].lower().strip()
+            story_id_1 = stories[i + 1]["storyid"].lower().strip()
+            query_result = jira_client.get_stories_detail(
+                [story_id_0, story_id_1], jira_fields
+            )
+            if (
+                query_result[story_id_0]["status.name"].upper()
+                not in noneed_sort_statuses
+                and query_result[story_id_1]["status.name"].upper()
+                not in noneed_sort_statuses
+            ):
+                assert (
+                    compare_story_based_on_inline_weights(stories[i], stories[i + 1])
+                    >= 0
+                )
+
+
+def test_run_steps_and_sort_excel_file_for_jira_cloud(tmpdir):
+    with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
+        run_steps_and_sort_excel_file(
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
+            excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
+            sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
+            env_file=ASSETS_ENV_FILES / "default_cloud.env",
+        )
+
+        excel_definition = ExcelDefinition()
+        excel_definition.load_file(SRC_ASSETS / "excel_definition.json")
+        sprint_schedule = SprintScheduleStore()
+        sprint_schedule.load_file(SRC_ASSETS / "sprint_schedule.json")
+
+        _, stories = read_excel_file(
+            tmpdir / "excel_sorted.xlsx",
+            excel_definition,
+            sprint_schedule,
+        )
+
+        assert len(stories) == 8
+
+        jira_client = JiraClient(
+            environ["JIRA_URL"],
+            environ["JIRA_ACCESS_TOKEN"],
+            user_email=environ["JIRA_USER_EMAIL"],
+        )
 
         noneed_sort_statuses = [
             "SPRINT COMPLETE",
@@ -242,6 +305,19 @@ def test_run_steps_and_sort_excel_file_missing_access_token(capsys, tmpdir):
         )
         output = capsys.readouterr()
         assert "The jira access token is invalid." in output.out
+
+
+def test_run_steps_and_sort_excel_file_missing_user_email(capsys, tmpdir):
+    with Mocker(real_http=False, case_sensitive=False, adapter=mock_jira_requests()):
+        run_steps_and_sort_excel_file(
+            ASSETS_FILES / "excel.xlsx",
+            tmpdir / "excel_sorted.xlsx",
+            excel_definition_file=str(SRC_ASSETS / "excel_definition.json"),
+            sprint_schedule_file=str(SRC_ASSETS / "sprint_schedule.json"),
+            env_file=ASSETS_ENV_FILES / "missing_jira_user_email.env",
+        )
+        output = capsys.readouterr()
+        assert "The jira user email is invalid." in output.out
 
 
 def test_run_steps_and_sort_excel_file_jira_health_check_failed(capsys, tmpdir):
