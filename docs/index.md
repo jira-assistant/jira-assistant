@@ -15,7 +15,6 @@
 ![CodeQL](https://github.com/jira-assistant/jira-assistant/workflows/CodeQL/badge.svg)
 ![Documentation](https://readthedocs.org/projects/jira-assistant/badge/?version=latest)
 ![Codecov](https://codecov.io/gh/jira-assistant/jira-assistant/branch/main/graph/badge.svg?token=CRNM1vEsGf)
-![CodeClimate](https://api.codeclimate.com/v1/badges/571f5fe0a3e8fccbb3ff/maintainability)
 ![CodeFactor](https://www.codefactor.io/repository/github/jira-assistant/jira-assistant/badge)
 ![License](https://img.shields.io/github/license/jira-assistant/jira-assistant)
 
