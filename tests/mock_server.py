@@ -313,7 +313,6 @@ def mock_project_response(
                     "32x32": "https://your_jira.com/secure/projectavatar?size=medium&avatarId=13903",
                 },
                 "projectTypeKey": "software",
-                "archived": False,
             },
             {
                 "expand": "description,lead,url,projectKeys",
@@ -328,7 +327,6 @@ def mock_project_response(
                     "32x32": "https://your_jira.com/secure/projectavatar?size=medium&pid=11503&avatarId=16004",
                 },
                 "projectTypeKey": "software",
-                "archived": True,
             },
             {
                 "expand": "description,lead,url,projectKeys",
@@ -343,7 +341,6 @@ def mock_project_response(
                     "32x32": "https://your_jira.com/secure/projectavatar?size=medium&avatarId=13903",
                 },
                 "projectTypeKey": "software",
-                "archived": False,
             },
         ],
     )

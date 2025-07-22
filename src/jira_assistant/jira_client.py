@@ -400,18 +400,12 @@ class JiraClient:
         self.__project_issue_field_map: Dict[Tuple[int, int], List[JiraField]] = {}
 
     def health_check(self) -> bool:
-        if self.jira is None:
+        try:
+            if self.jira.myself() is not None:
+                return True
             return False
-
-        if not is_jira_cloud_url(self.jira.server_url):
-            try:
-                if self.jira.myself() is not None:
-                    return True
-                return False
-            except JIRAError:
-                return False
-
-        return True
+        except JIRAError:
+            return False
 
     def create_story(self, fields: Dict[str, Any]) -> "Optional[Issue]":
         try:
@@ -437,9 +431,7 @@ class JiraClient:
             self.get_projects()
         return self.__project_map.get(project_name, None)
 
-    def get_projects(
-        self, include_archived: bool = False, force_refresh: bool = False
-    ) -> "List[JiraProject]":
+    def get_projects(self, force_refresh: bool = False) -> "List[JiraProject]":
         # Otherwise, if there is no project,
         # still will call API to retrieve project list.
         if self.__project_map and force_refresh is not True:
@@ -447,30 +439,29 @@ class JiraClient:
         self.__project_map.clear()
         project_response = self.jira.projects()
         for proj in project_response:
-            if include_archived or proj.archived is False:
-                proj_name: str = proj.key
-                proj_id: int = proj.id
-                if proj_name:
-                    self.__project_map[strip_lower(proj_name)] = JiraProject(
-                        proj.id, proj.key
+            proj_name: str = proj.key
+            proj_id: int = proj.id
+            if proj_name:
+                self.__project_map[strip_lower(proj_name)] = JiraProject(
+                    proj.id, proj.key
+                )
+                # loading project related issue types
+                try:
+                    response = self.jira.project_issue_types(str(proj_id))
+                    issue_types: List[JiraIssueType] = [
+                        JiraIssueType(issue_type.id, issue_type.name, proj.id)
+                        for issue_type in response
+                    ]
+                    self.__project_issue_map_using_name[strip_lower(proj_name)] = (
+                        issue_types
                     )
-                    # loading project related issue types
-                    try:
-                        response = self.jira.project_issue_types(str(proj_id))
-                        issue_types: List[JiraIssueType] = [
-                            JiraIssueType(issue_type.id, issue_type.name, proj.id)
-                            for issue_type in response
-                        ]
-                        self.__project_issue_map_using_name[strip_lower(proj_name)] = (
-                            issue_types
-                        )
-                        self.__project_issue_map_using_id[proj_id] = issue_types
-                    except JIRAError as e:
-                        cprint(
-                            f"""Get issue types failed. Project: {proj_name}. {self.__extract_error_message(e)}""",  # pylint: disable=line-too-long
-                            color="light_yellow",
-                        )
-                        continue
+                    self.__project_issue_map_using_id[proj_id] = issue_types
+                except JIRAError as e:
+                    cprint(
+                        f"""Get issue types failed. Project: {proj_name}. {self.__extract_error_message(e)}""",  # pylint: disable=line-too-long
+                        color="light_yellow",
+                    )
+                    continue
         return list(self.__project_map.values())
 
     def get_issue_type_by_project_id_and_issue_name(
