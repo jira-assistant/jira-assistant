@@ -20,6 +20,11 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 > Used by Jira API inside the package.
 > Check [this](#url) for more info.
 
+**`--user-email`**
+
+> Used by Jira API inside the package.
+> Check [this](#user-email) for more info.
+
 **`--env-file`**
 
 > The location where you would like to read the environment file.
@@ -75,6 +80,10 @@ After you install the Jira assistant, you can verify by typing `update-jira-info
 > ## URL
 
 > This is the Jira website URL you use to visit in the browser.
+
+> ## USER EMAIL
+
+> This is the email address your Jira website display. It's a required field if you are using Jira Cloud.
 
 > ## Environment File
 

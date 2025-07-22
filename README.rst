@@ -7,7 +7,7 @@ Jira Assistant - Connect Excel with Jira
     :target: https://github.com/jira-assistant/jira-assistant
     :alt: Jira Assistant
 
-|PyPI| |SupportedVersions| |dependencyStatus| |Download| |GitHubCommit| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |CodeClimate| |License|
+|PyPI| |SupportedVersions| |dependencyStatus| |Download| |GitHubCommit| |Package Size| |CodeFactor| |GithubIssues| |Linux| |Windows| |Mac OS| |MyPy| |Pylint| |CodeQL| |Documentation| |Codecov| |License|
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/jira-assistant.svg?style=flat-square
     :target: https://pypi.org/project/jira-assistant/
@@ -68,10 +68,6 @@ Jira Assistant - Connect Excel with Jira
 .. |Codecov| image:: https://codecov.io/gh/jira-assistant/jira-assistant/branch/main/graph/badge.svg?token=CRNM1vEsGf
     :target: https://codecov.io/gh/jira-assistant/jira-assistant
     :alt: Codecov
-
-.. |CodeClimate| image:: https://api.codeclimate.com/v1/badges/571f5fe0a3e8fccbb3ff/maintainability
-   :target: https://codeclimate.com/github/jira-assistant/jira-assistant/maintainability
-   :alt: Maintainability
 
 .. |CodeFactor| image:: https://www.codefactor.io/repository/github/jira-assistant/jira-assistant/badge
    :target: https://www.codefactor.io/repository/github/jira-assistant/jira-assistant

@@ -4,15 +4,13 @@ This module is used to store excel column definition information.
 """
 import pathlib
 import warnings
-
 from json import loads
+from typing import Any, Dict, List, Optional, Tuple, TypedDict, Union
 
-from typing import Any, Dict, List, Optional, TypedDict, Tuple, Union
-
-from jira import JIRA, JIRAError, Issue
+from jira import JIRA, Issue, JIRAError
 from termcolor import cprint
+from typing_extensions import NotRequired, Required, Self
 from urllib3 import disable_warnings
-from typing_extensions import Required, NotRequired, Self
 
 from .utils import dict_has_key, strip_lower
 
@@ -31,7 +29,7 @@ class JiraFieldTypeDefinition:
         self,
         type_: Optional[str],
         name: Optional[str],
-        properties: Optional[List[Self]],
+        properties: List[Self],
         is_basic: Optional[bool],
         array_item_type: Optional[str],
     ) -> None:
@@ -58,12 +56,15 @@ class JiraFieldTypeDefinition:
         self.__name = value
 
     @property
-    def properties(self) -> Optional[List[Self]]:
+    def properties(self) -> List[Self]:
         return self.__properties
 
     @properties.setter
     def properties(self, value: Optional[List[Self]]):
-        self.__properties = value
+        if value is None:
+            self.__properties = []
+        else:
+            self.__properties = value
 
     @property
     def is_basic(self) -> Optional[bool]:
@@ -109,8 +110,6 @@ def __parse_json_to_jira_field_type_definition(raw: Any) -> JiraFieldTypeDefinit
     definition.is_basic = raw.get("isBasic", None)
     definition.name = raw.get("name", None)
     definition.array_item_type = raw.get("arrayItemType", None)
-    if definition.properties is None:
-        definition.properties = []
     for property_ in raw.get("properties", []):
         definition.properties.append(
             __parse_json_to_jira_field_type_definition(property_)
@@ -363,19 +362,32 @@ _DEFAULT_JIRA_TIMEOUT = 20.0
 # Jira are case-sensitive APIs.
 class JiraClient:
     def __init__(
-        self, url: str, access_token: str, timeout: Optional[float] = None
+        self,
+        url: str,
+        access_token: str,
+        user_email: Optional[str] = None,
+        timeout: Optional[float] = None,
     ) -> None:
         # Authentication/Authorization
         # https://developer.atlassian.com/cloud/jira/software/basic-auth-for-rest-apis/
         if timeout is None:
             timeout = _DEFAULT_JIRA_TIMEOUT
 
-        self.jira = JIRA(
-            server=url,
-            token_auth=access_token,
-            timeout=timeout,
-            options={"verify": False},
-        )
+        if not is_jira_cloud_url(url):
+            self.jira = JIRA(
+                server=url,
+                token_auth=access_token,
+                timeout=timeout,
+                options={"verify": False},
+            )
+        elif user_email is not None and access_token is not None:
+            self.jira = JIRA(
+                server=url,
+                basic_auth=(user_email, access_token),
+                timeout=timeout,
+                options={"verify": False},
+            )
+
         self.__field_cache: Dict[
             str, Dict[str, Optional[List[JiraFieldPropertyPathDefinition]]]
         ] = {}
@@ -388,12 +400,18 @@ class JiraClient:
         self.__project_issue_field_map: Dict[Tuple[int, int], List[JiraField]] = {}
 
     def health_check(self) -> bool:
-        try:
-            if self.jira.myself() is not None:
-                return True
+        if self.jira is None:
             return False
-        except JIRAError:
-            return False
+
+        if not is_jira_cloud_url(self.jira.server_url):
+            try:
+                if self.jira.myself() is not None:
+                    return True
+                return False
+            except JIRAError:
+                return False
+
+        return True
 
     def create_story(self, fields: Dict[str, Any]) -> "Optional[Issue]":
         try:
@@ -707,3 +725,9 @@ def convert_fields_to_create_issue_body(fields: Dict[str, Any]) -> "Dict[str, An
                     tmp[field_path] = {}
             tmp = tmp[field_path]
     return issue_fields
+
+
+def is_jira_cloud_url(jira_url: Optional[str]) -> bool:
+    if jira_url is not None and "atlassian.net".upper() in jira_url.upper():
+        return True
+    return False

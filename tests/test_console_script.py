@@ -3,7 +3,7 @@ from subprocess import CalledProcessError, run
 
 import pytest
 
-from . import ASSETS_FILES, ASSETS_ENV_FILES
+from . import ASSETS_ENV_FILES, ASSETS_FILES
 
 
 def test_process_excel_file(tmpdir):
@@ -49,6 +49,28 @@ def test_process_excel_file_apply_env_file(tmpdir):
             ASSETS_FILES / "sprint_schedule.json",
             "--env_file",
             ASSETS_ENV_FILES / "default.env",
+        ],
+        capture_output=True,
+        check=True,
+    )
+
+    assert "xlsx has been saved" in result.stdout.decode("utf-8")
+    assert (tmpdir / "excel_sorted.xlsx").exists()
+
+
+def test_process_excel_file_apply_jira_cloud_env_file(tmpdir):
+    result = run(
+        [
+            "process-excel-file",
+            ASSETS_FILES / "excel.xlsx",
+            "--output_folder",
+            tmpdir,
+            "--excel_definition_file",
+            ASSETS_FILES / "excel_definition_avoid_jira_operations.json",
+            "--sprint_schedule_file",
+            ASSETS_FILES / "sprint_schedule.json",
+            "--env_file",
+            ASSETS_ENV_FILES / "default_cloud.env",
         ],
         capture_output=True,
         check=True,
@@ -243,6 +265,8 @@ def test_update_jira_info():
             "123",
             "--url",
             "http://localhost",
+            "--user_email",
+            "sharry.xu@outlook.com",
             "--env_file",
             ASSETS_ENV_FILES / "default.env",
         ],
@@ -252,6 +276,7 @@ def test_update_jira_info():
 
     assert "Add/Update jira url success" in result.stdout.decode("utf-8")
     assert "Add/Update jira access token success" in result.stdout.decode("utf-8")
+    assert "Add/Update jira user email success" in result.stdout.decode("utf-8")
 
 
 def test_update_jira_info_output_version():
