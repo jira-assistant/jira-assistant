@@ -131,7 +131,7 @@ dmypy.json
 .pyre/
 
 # Avoid Company data
-confident.xlsx
+confident.*
 
 # Avoid PyCharm data
 .idea/
