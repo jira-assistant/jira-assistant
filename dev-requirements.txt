@@ -4,7 +4,7 @@ colorama==0.4.6
 coverage==7.11.0
 defusedxml==0.7.1
 et-xmlfile==2.0.0
-execnet==2.1.1
+execnet==2.1.2
 idna==3.11
 iniconfig==2.3.0
 jira==3.8.0
