@@ -1,5 +1,5 @@
 certifi==2026.6.17
-charset-normalizer==3.4.7
+charset-normalizer==3.4.9
 colorama==0.4.6
 coverage==7.15.0
 defusedxml==0.7.1
